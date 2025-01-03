@@ -196,4 +196,20 @@ body {
     background-color:rgba(253, 253, 253, 0.13);
     background-color:hsl(0, 0.00%, 100.00%);
     opacity: 0.9;
+    position: relative;
+}
+
+.carousel-shop-div{
+    cursor: pointer;
+    max-width: 80%;
+    margin: 0 auto;
+}
+
+.carousel-shop-div:hover{
+    transform: scale(1.05); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: 5px solid rgba(100, 4, 4, 0.57);
+}
+.carousel-item{
+    height: 200px;
 }
