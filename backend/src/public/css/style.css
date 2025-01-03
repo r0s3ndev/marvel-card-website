@@ -1,0 +1,43 @@
+.grid_container {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    gap: 10px;
+}
+
+.character-item {
+    width: 250px;
+    cursor: pointer;  
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.character-item:hover {
+    transform: scale(1.05); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.character-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.character-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+.character-desc {
+    font-size: 14px;
+    color: #666;
+    max-width: 200px;
+    text-align: justify;
+}
+
+

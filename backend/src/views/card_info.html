@@ -1,0 +1,52 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/css/style.css">
+    <title>Document</title>
+</head>
+<body>
+    <p>card information</p>
+    <div id="card_detail">
+        <h1 id="card_name"></h1>
+        <img id="card_img"/>
+        <p id="card_desc"></p>
+    </div>
+    
+
+
+
+    <script>
+        window.onload = async function () {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get("id");
+
+            if (!id) {
+                console.error("No character ID found in the URL.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/characters/${id}`);
+                const characterDetails = await response.json();
+                const data = characterDetails.data.results[0];
+
+                // Populate the character details
+                const card_name = document.getElementById("card_name");
+                const card_img = document.getElementById("card_img");
+                const card_desc = document.getElementById("card_desc");
+
+                if (card_name && card_img && card_desc) {
+                    card_name.textContent = data.name;
+                    card_img.src = data.thumbnail.path + "." + data.thumbnail.extension;
+                    card_desc.textContent = data.description || "No description available!";
+                } else {
+                    console.error("Card elements not found!");
+                }
+            } catch (error) {
+                console.error(`Error fetching character with id: ${id}`, error);
+            }
+        };
+    </script>
+</body>
+</html>
