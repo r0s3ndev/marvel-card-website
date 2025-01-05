@@ -38,19 +38,21 @@ function CardPack({setUserCredits, userCredits}) {
 
     return (
         <>
-            <a href="/homepage"> Home </a>
-            <h1>shop</h1>
             <div>
-                <h2> buys packs</h2>
-                <button onClick={buyPack}> Buy - 10c </button>
-            </div>
+                <a href="/homepage"> Home </a>
+                <h1>shop</h1>
+                <div>
+                    <h2> buys packs</h2>
+                    <button onClick={buyPack}> Buy - 10c </button>
+                </div>
 
-            {cards ? cards.map((card) => (
-                <p key={card.id}>{card.name}</p>
-            )) : 
-            <p> {loadingMsg} </p>}
+                {cards ? cards.map((card) => (
+                    <p key={card.id}>{card.name}</p>
+                )) : 
+                <p> {loadingMsg} </p>}
+            </div>
         </>
     )
-    }
+}
 
 export default CardPack

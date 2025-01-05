@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes, resolvePath } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import CardPack from "./components/boostershop/CardPack";
 import Homepage from "./components/Homepage";
 import Testing from "./components/Testing";
@@ -9,6 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios"
 import { useEffect, useState } from "react";
 import ProtectedRoute from "./components/custom/ProtectedRoute";
+import Layout from "./components/Layout";
 
 
 function App() {
@@ -56,9 +57,6 @@ function App() {
 
 
 
-
-
-
   //randomize card
   function shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {
@@ -97,7 +95,9 @@ function App() {
             {/* to protect */}
             <Route path="/homepage" element={
               <ProtectedRoute>
-                <Homepage  userData={userData} logoutUser={logoutUser}/>
+                <Layout userData={userData} logoutUser={logoutUser}>
+                  <Homepage  userData={userData} />
+                </Layout>
               </ProtectedRoute>}
             />
             <Route path="/shop" element={<CardPack/>}/>
