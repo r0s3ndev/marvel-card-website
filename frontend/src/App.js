@@ -9,7 +9,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios"
 import { useEffect, useState } from "react";
 import ProtectedRoute from "./components/custom/ProtectedRoute";
-import Layout from "./components/Layout";
+import NavBarLayout from "./components/NavBarLayout";
+import UserProfile from "./components/userprofile/UserProfile";
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
     const storedData = localStorage.getItem("userData");
     return storedData ? JSON.parse(storedData) : [];
   });
+  const [credits, setCredits] = useState(200);
 
 
   //Sign-in & sing-up API
@@ -92,15 +94,34 @@ function App() {
             <Route path="/" element={<Main/>}/>
             <Route path="/register" element={<UserRegister randomCharRegister={randomCharRegister} check_user_before_next_page={check_user_before_next_page} registerUser={registerUser}/>}/>
             <Route path="/login" element={<UserLogin loginUser={loginUser}/>}/>
-            {/* to protect */}
-            <Route path="/homepage" element={
+          
+          
+           {/* to protect */}
+            
+           <Route path="/homepage" element={
               <ProtectedRoute>
-                <Layout userData={userData} logoutUser={logoutUser}>
+                <NavBarLayout credits={credits} logoutUser={logoutUser}> 
                   <Homepage  userData={userData} />
-                </Layout>
+                </NavBarLayout>
               </ProtectedRoute>}
             />
-            <Route path="/shop" element={<CardPack/>}/>
+
+            <Route path="/shop" element={
+              <ProtectedRoute>
+                <NavBarLayout credits={credits} logoutUser={logoutUser}> 
+                  <CardPack credits={credits} setCredits={setCredits} randomCharBooster={randomCharBooster}/>
+                </NavBarLayout>
+              </ProtectedRoute>}
+            />
+
+            <Route path="/profile" element={
+              <ProtectedRoute>
+                <NavBarLayout credits={credits} logoutUser={logoutUser}> 
+                  <UserProfile userData={userData} randomCharBooster={randomCharBooster}/>
+                </NavBarLayout>
+              </ProtectedRoute>}
+            />
+
             <Route path="/test" element={<Testing/>}/>
         </Routes>
       </Router>

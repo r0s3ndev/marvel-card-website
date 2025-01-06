@@ -32,39 +32,7 @@ function Homepage({logoutUser, userData}) {
           </div>
         </div>
 
-        <div className='carousel-shop-div' onClick={handleShopClick}>
-          {/* shop section */}
-          <Carousel fade>
-            <Carousel.Item className='carousel-item'>
-              <img alt="1st_image" src="http://i.annihil.us/u/prod/marvel/i/mg/c/e0/535fecbbb9784.jpg" text="SHOP" />
-              <Carousel.Caption>
-                <h3>Buy booster to get more hero</h3>
-                <p>
-                  SHOP
-                </p>
-              </Carousel.Caption>
-            </Carousel.Item>
-            <Carousel.Item className='carousel-item'>
-              <img alt="2nd_image" src='http://i.annihil.us/u/prod/marvel/i/mg/3/20/5232158de5b16.jpg' text="SHOP" />
-              <Carousel.Caption>
-                <h3>Buy booster to get more hero</h3>
-                <p>
-                  SHOP
-                </p>
-              </Carousel.Caption>
-            </Carousel.Item>
-            <Carousel.Item className='carousel-item'>
-              <img alt="3rd_image" src='http://i.annihil.us/u/prod/marvel/i/mg/9/30/535feab462a64.jpg' text="SHOP" />
-              <Carousel.Caption>
-              <h3>Buy booster to get more hero</h3>
-                <p>
-                  SHOP
-                </p>
-              </Carousel.Caption>
-            </Carousel.Item>
-          </Carousel>
-
-        </div>
+        
 
     
 

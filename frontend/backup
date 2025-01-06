@@ -1,0 +1,23 @@
+<Route path="/homepage" element={
+                <ProtectedRoute>
+                  <NavBarLayout credits={credits} logoutUser={logoutUser}> 
+                    <Homepage  userData={userData} />
+                  </NavBarLayout>
+                </ProtectedRoute>}
+              />
+
+              <Route path="/shop" element={
+                <ProtectedRoute>
+                  <NavBarLayout credits={credits} logoutUser={logoutUser}> 
+                    <CardPack credits={credits} setCredits={setCredits} randomCharBooster={randomCharBooster}/>
+                  </NavBarLayout>
+                </ProtectedRoute>}
+              />
+
+              <Route path="/profile" element={
+                <ProtectedRoute>
+                  <NavBarLayout credits={credits} logoutUser={logoutUser}> 
+                    <UserProfile userData={userData} randomCharBooster={randomCharBooster}/>
+                  </NavBarLayout>
+                </ProtectedRoute>}
+              />
