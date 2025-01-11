@@ -20,7 +20,12 @@ function App() {
     const storedData = localStorage.getItem("userData");
     return storedData ? JSON.parse(storedData) : [];
   });
-  const [credits, setCredits] = useState(200);
+  const [credits, setCredits] = useState(userData.credits);
+
+  const update_user_data = async () => {
+    console.log("current credits ",credits);
+    await axios.post("http://localhost:5000/users/update-credits", {credits: credits});
+  }
 
 
   //Sign-in & sing-up API
@@ -107,11 +112,12 @@ function App() {
             />
 
             <Route path="/shop" element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <NavBarLayout credits={credits} logoutUser={logoutUser}> 
-                  <CardPack credits={credits} setCredits={setCredits} randomCharBooster={randomCharBooster}/>
+                  <CardPack update_user_data={update_user_data} credits={credits} setCredits={setCredits} randomCharBooster={randomCharBooster}/>
                 </NavBarLayout>
-              </ProtectedRoute>}
+              // </ProtectedRoute>
+              }
             />
 
             <Route path="/profile" element={

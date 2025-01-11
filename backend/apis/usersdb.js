@@ -124,4 +124,10 @@ router.get("/check_user_session", (req, res) => {
     }
 })
 
+
+//update credits on db
+router.post("/update-credits", (req, res) => {
+    console.log("update credits ", req.body);
+})
+
 module.exports = router;

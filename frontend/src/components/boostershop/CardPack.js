@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-function CardPack({setCredits, credits}) {
+function CardPack({setCredits, credits, update_user_data}) {
     const [cards, setCards] = useState();
     const [loadingMsg, setLoadingMsg] = useState("");
 
@@ -14,9 +14,9 @@ function CardPack({setCredits, credits}) {
     }
 
     const buyPack = () => {
-        console.log("loading cards");
-        setLoadingMsg("loading...");
         setCredits(credits - 10);
+        console.log("buypack ", credits)
+        update_user_data();
         // axios.get("http://localhost:5000/api/characters")
         // .then((res) => {
         //     const characterData = res.data;

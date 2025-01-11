@@ -7,6 +7,10 @@ function UserProfile({userData}) {
             <div className='user-profile-div'>
                 <h1> {userData.username} profile</h1>
                 <div>
+                    {/* item */}
+                    items
+                </div>
+                <div>
                     {/* album section */}
                     album
                 </div>
