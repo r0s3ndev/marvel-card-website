@@ -20,11 +20,12 @@ function App() {
     const storedData = localStorage.getItem("userData");
     return storedData ? JSON.parse(storedData) : [];
   });
-  const [credits, setCredits] = useState(userData.credits);
+  const [credits, setCredits] = useState();
 
-  const update_user_data = async () => {
-    console.log("current credits ",credits);
-    await axios.post("http://localhost:5000/users/update-credits", {credits: credits});
+
+  const update_user_data = async (c) => {
+    console.log("price ", credits - c)
+    await axios.post("http://localhost:5000/users/update-credits", {credits: credits - c});
   }
 
 
@@ -74,7 +75,7 @@ function App() {
   }
 
   //fetch all cards available
-  useEffect((e) => {
+  useEffect((e,userData) => {
       axios.get("http://localhost:5000/api/characters")
       .then((res) => {
           const characterData = res.data;
@@ -90,7 +91,13 @@ function App() {
       .catch((err) => {
           console.error("error: ", err);
       })
+
+      axios.get("http://localhost:5000/users/get-current-credits", {userId: userData})
+      .then((res) => {
+        console.log();
+      })
   }, []);
+  
 
   return (
     <>
@@ -114,7 +121,7 @@ function App() {
             <Route path="/shop" element={
               // <ProtectedRoute>
                 <NavBarLayout credits={credits} logoutUser={logoutUser}> 
-                  <CardPack update_user_data={update_user_data} credits={credits} setCredits={setCredits} randomCharBooster={randomCharBooster}/>
+                  <CardPack update_user_data={update_user_data} randomCharBooster={randomCharBooster}/>
                 </NavBarLayout>
               // </ProtectedRoute>
               }

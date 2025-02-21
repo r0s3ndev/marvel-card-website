@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-function CardPack({setCredits, credits, update_user_data}) {
+function CardPack({update_user_data}) {
     const [cards, setCards] = useState();
     const [loadingMsg, setLoadingMsg] = useState("");
 
@@ -13,10 +13,9 @@ function CardPack({setCredits, credits, update_user_data}) {
         return array;
     }
 
-    const buyPack = () => {
-        setCredits(credits - 10);
-        console.log("buypack ", credits)
-        update_user_data();
+    const buyPack = (e, price) => {
+        update_user_data(price);
+        
         // axios.get("http://localhost:5000/api/characters")
         // .then((res) => {
         //     const characterData = res.data;
@@ -47,15 +46,15 @@ function CardPack({setCredits, credits, update_user_data}) {
                         <div className='booster-selection-div'>
                             <div>
                                 <img alt="booster_1" src='https://www.goblins.net/files/styles/zoom/public/images/game/bgg/marvel-champions-card-game-ant-man-hero-pack.png?itok=XR4CeWFH'/>
-                                <button onClick={buyPack}> Buy - 10c </button>
+                                <button onClick={(e) => buyPack(e, 10)}> Buy - 10c </button>
                             </div>
                             <div>
                                 <img alt="booster_2" src='https://www.goblins.net/files/styles/zoom/public/images/game/bgg/marvel-champions-card-game-valkyrie-hero-pack.png?itok=C0r6XwQ2'/>
-                                <button onClick={buyPack}> Buy - 10c </button>
+                                <button onClick={(e) => buyPack(e, 20)}> Buy - 20c </button>
                             </div>
                             <div>
                                 <img alt="booster_3" src='https://www.goblins.net/files/styles/zoom/public/images/game/bgg/marvel-champions-card-game-vision-hero-pack.png?itok=653DPOdL'/>
-                                <button onClick={buyPack}> Buy - 10c </button>
+                                <button onClick={(e) => buyPack(e, 40)}> Buy - 40c </button>
                             </div>
                         </div>
                         

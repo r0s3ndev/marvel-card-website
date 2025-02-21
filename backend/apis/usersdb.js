@@ -124,7 +124,10 @@ router.get("/check_user_session", (req, res) => {
     }
 })
 
+router.get("/get-current-credits", async (req, res) => {
+    console.log("id ", req.body);
 
+})
 //update credits on db
 router.post("/update-credits", (req, res) => {
     console.log("update credits ", req.body);
