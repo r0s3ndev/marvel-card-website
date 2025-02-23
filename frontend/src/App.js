@@ -20,12 +20,16 @@ function App() {
     const storedData = localStorage.getItem("userData");
     return storedData ? JSON.parse(storedData) : [];
   });
-  const [credits, setCredits] = useState();
+  const [credits, setCredits] = useState(userData.credits);
 
 
   const update_user_data = async (c) => {
-    console.log("price ", credits - c)
-    await axios.post("http://localhost:5000/users/update-credits", {credits: credits - c});
+    try{
+      console.log(credits);
+      await axios.post("http://localhost:5000/users/update-credits", {username: userData.username, price: c});
+    } catch (error) {
+      throw error;
+    }
   }
 
 
@@ -92,10 +96,7 @@ function App() {
           console.error("error: ", err);
       })
 
-      axios.get("http://localhost:5000/users/get-current-credits", {userId: userData})
-      .then((res) => {
-        console.log();
-      })
+    
   }, []);
   
 

@@ -12,7 +12,7 @@ function generateSessionId() {
 router.get("/getUsers", async (req, res) => {
     try {
         const db = await connectToDatabase(); 
-        const users = await db.collection('users_list').find({ username: "user1"}).toArray();
+        const users = await db.collection('users_list').find({ username: "test"}).toArray();
         res.json(users); 
     } catch (error) {
         console.error("Error fetching users:", error);
@@ -124,13 +124,18 @@ router.get("/check_user_session", (req, res) => {
     }
 })
 
-router.get("/get-current-credits", async (req, res) => {
-    console.log("id ", req.body);
+// router.get("/get-current-credits", async (req, res) => {
+//     const db = await connectToDatabase(); 
+//     const users = await db.collection('users_list').find({ username: req.body}).toArray();
+//     res.json(user); 
+// })
 
-})
 //update credits on db
-router.post("/update-credits", (req, res) => {
-    console.log("update credits ", req.body);
+router.post("/update-credits", async (req, res) => {
+    const {username, price} = req.body;
+    console.log("update credits ", price);
+    const users = await db.collection("users_list").findOne({username});
+
 })
 
 module.exports = router;
