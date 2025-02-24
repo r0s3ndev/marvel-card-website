@@ -25,10 +25,11 @@ function App() {
 
   const update_user_data = async (c) => {
     try{
-      console.log(credits);
       await axios.post("http://localhost:5000/users/update-credits", {username: userData.username, price: c})
       .then((res) =>{
-        setCredits(res.credits);
+        setCredits(res.data.credits);
+        setUserData(prev => ({ ...prev, credits: res.data.credits }));
+        localStorage.setItem("userData", JSON.stringify({ ...userData, credits: res.data.credits }));
       })
     } catch (error) {
       throw error;
@@ -124,7 +125,7 @@ function App() {
 
             <Route path="/shop" element={
               // <ProtectedRoute>
-                <NavBarLayout credits={credits} username={userData.username} logoutUser={logoutUser}> 
+                <NavBarLayout credits={credits} setCredits={setCredits} userData={userData} logoutUser={logoutUser}> 
                   <CardPack update_user_data={update_user_data} randomCharBooster={randomCharBooster}/>
                 </NavBarLayout>
               // </ProtectedRoute>

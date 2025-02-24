@@ -2,21 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Navbar, Container, Nav, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
-function NavBarLayout({credits, username, logoutUser, children }) {
+function NavBarLayout({credits, setCredits, userData, logoutUser, children }) {
     const navigate = useNavigate();
-    const [c, setC] = useState(credits);
-    
-    useEffect(()=> {
-        setC(credits);
-        axios.get("http://localhost:5000/users/getUser", {username: username})
-        .then((res) => {
-            setC(res.credits);
-        })
-        .catch((err) => {
-            console.error("error: ", err);
-        })
 
-    }, []);
+    useEffect(()=> {
+    
+        setCredits(userData.credits);
+       
+
+    }, [userData]);
 
     const handleLogout = async () => {
         const res = await logoutUser();

@@ -9,7 +9,7 @@ function generateSessionId() {
     return crypto.randomBytes(16).toString('hex');
 }
 
-router.get("/getUser", async (req, res) => {
+router.post("/getUser", async (req, res) => {
     try {
         const {username} = req.body;
         const db = await connectToDatabase(); 
@@ -137,12 +137,9 @@ router.post("/update-credits", async (req, res) => {
         const db = await connectToDatabase(); 
         const {username, price} = req.body;
         console.log("update credits ", price);
-        const users = await db.collection('users_list').findOne({username: username});
-        const current_credits = users.credits;
-
-        const update_user_credits = await db.collection('users_list').updateOne(
-            {username: username}, 
-            {$set: {credits : current_credits - price}},
+        const update_user_credits = await db.collection('users_list').findOneAndUpdate(
+            {username: username},
+            {$inc: {credits : - price}},
             {returnDocument: "after"});
 
         res.json(update_user_credits);
