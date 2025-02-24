@@ -26,7 +26,10 @@ function App() {
   const update_user_data = async (c) => {
     try{
       console.log(credits);
-      await axios.post("http://localhost:5000/users/update-credits", {username: userData.username, price: c});
+      await axios.post("http://localhost:5000/users/update-credits", {username: userData.username, price: c})
+      .then((res) =>{
+        setCredits(res.credits);
+      })
     } catch (error) {
       throw error;
     }
@@ -113,7 +116,7 @@ function App() {
             
            <Route path="/homepage" element={
               <ProtectedRoute>
-                <NavBarLayout credits={credits} logoutUser={logoutUser}> 
+                <NavBarLayout credits={credits} username={userData.username} logoutUser={logoutUser}> 
                   <Homepage  userData={userData} />
                 </NavBarLayout>
               </ProtectedRoute>}
@@ -121,7 +124,7 @@ function App() {
 
             <Route path="/shop" element={
               // <ProtectedRoute>
-                <NavBarLayout credits={credits} logoutUser={logoutUser}> 
+                <NavBarLayout credits={credits} username={userData.username} logoutUser={logoutUser}> 
                   <CardPack update_user_data={update_user_data} randomCharBooster={randomCharBooster}/>
                 </NavBarLayout>
               // </ProtectedRoute>
@@ -130,7 +133,7 @@ function App() {
 
             <Route path="/profile" element={
               <ProtectedRoute>
-                <NavBarLayout credits={credits} logoutUser={logoutUser}> 
+                <NavBarLayout credits={credits} username={userData.username} logoutUser={logoutUser}> 
                   <UserProfile userData={userData} randomCharBooster={randomCharBooster}/>
                 </NavBarLayout>
               </ProtectedRoute>}

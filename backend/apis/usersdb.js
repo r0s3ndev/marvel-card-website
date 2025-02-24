@@ -9,11 +9,12 @@ function generateSessionId() {
     return crypto.randomBytes(16).toString('hex');
 }
 
-router.get("/getUsers", async (req, res) => {
+router.get("/getUser", async (req, res) => {
     try {
+        const {username} = req.body;
         const db = await connectToDatabase(); 
-        const users = await db.collection('users_list').find({ username: "test"}).toArray();
-        res.json(users); 
+        const user = await db.collection('users_list').findOne({ username: username});
+        res.json(user); 
     } catch (error) {
         console.error("Error fetching users:", error);
         res.status(500).send("Error fetching users.");
@@ -132,10 +133,24 @@ router.get("/check_user_session", (req, res) => {
 
 //update credits on db
 router.post("/update-credits", async (req, res) => {
-    const {username, price} = req.body;
-    console.log("update credits ", price);
-    const users = await db.collection("users_list").findOne({username});
+    try{
+        const db = await connectToDatabase(); 
+        const {username, price} = req.body;
+        console.log("update credits ", price);
+        const users = await db.collection('users_list').findOne({username: username});
+        const current_credits = users.credits;
 
-})
+        const update_user_credits = await db.collection('users_list').updateOne(
+            {username: username}, 
+            {$set: {credits : current_credits - price}},
+            {returnDocument: "after"});
+
+        res.json(update_user_credits);
+    
+    } catch (error) {
+        console.error("Error updating data:", error);
+        return res.status(500).send("Error updating data");
+    }
+})  
 
 module.exports = router;

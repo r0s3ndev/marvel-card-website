@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navbar, Container, Nav, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
-
-function NavBarLayout({ credits, logoutUser, children }) {
+import axios from 'axios';
+function NavBarLayout({credits, username, logoutUser, children }) {
     const navigate = useNavigate();
+    const [c, setC] = useState(credits);
     
+    useEffect(()=> {
+        setC(credits);
+        axios.get("http://localhost:5000/users/getUser", {username: username})
+        .then((res) => {
+            setC(res.credits);
+        })
+        .catch((err) => {
+            console.error("error: ", err);
+        })
+
+    }, []);
+
     const handleLogout = async () => {
         const res = await logoutUser();
         if(res.status === 200){
