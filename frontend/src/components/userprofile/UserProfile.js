@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-function UserProfile({userData, randomCharBooster }) {
-    const [user, setUser] = useState([]);
-    useEffect(()=>{
-        axios.post("http://localhost:5000/users/getUser", {username: userData.username} )
-        .then((res) =>{
-            setUser(res.data);
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-    }, []);
+function UserProfile({items, userData, randomCharBooster }) {
+    // const [user, setUser] = useState([]);
+    // useEffect(()=>{
+    //     axios.post("http://localhost:5000/users/getUser", {username: userData.username} )
+    //     .then((res) =>{
+    //         setUser(res.data);
+    //     })
+    //     .catch((err) => {
+    //         console.log(err);
+    //     })
+    // }, []);
 
 
+    
   return (
     <>
         <div>
@@ -21,7 +22,7 @@ function UserProfile({userData, randomCharBooster }) {
                 <h1> {userData.username} profile</h1>
                 <div>
                     {/* item */}
-                    items {user.items}
+                    items {!userData ? <p>loading...</p> : items }
                 </div>
                 <div>
                     {/* album section */}

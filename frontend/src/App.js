@@ -7,7 +7,7 @@ import UserRegister from "./components/authentication/UserRegister";
 import UserLogin from "./components/authentication/UserLogin";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios"
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ProtectedRoute from "./components/custom/ProtectedRoute";
 import NavBarLayout from "./components/NavBarLayout";
 import UserProfile from "./components/userprofile/UserProfile";
@@ -32,32 +32,42 @@ function App() {
   }
 
   //fetch all cards available
-  useEffect((e,userData) => {
-      axios.get("http://localhost:5000/api/characters")
-      .then((res) => {
-          const characterData = res.data;
+  useEffect(() => {
+    const fetchData = async () => {
+      try{
+        const [cardRes, userRes] = await Promise.all([
+          axios.get("http://localhost:5000/api/characters"),
+          userData ? axios.post("http://localhost:5000/users/getUser", {username: userData.username}) : null
+        ]);
+        console.log("check userdata --> ", userRes.data);
+        const characterData = cardRes.data;
+        // //get only character with descrption and photo
+        // const filteredCharacter = characterData.filter((data) => data.description !== "" && !data.thumbnail.path.includes("image_not_available"));
+        const randomCharRegisterSelection = shuffleArray(characterData).slice(0, 3);
+        const randomCharBoosterSelection = shuffleArray(characterData).slice(0, 5);
 
-          // //get only character with descrption and photo
-          // const filteredCharacter = characterData.filter((data) => data.description !== "" && !data.thumbnail.path.includes("image_not_available"));
-          const randomCharRegisterSelection = shuffleArray(characterData).slice(0, 3);
-          const randomCharBoosterSelection = shuffleArray(characterData).slice(0, 5);
+        setRandomCharRegister(randomCharRegisterSelection);
+        setRandomCharBooster(randomCharBoosterSelection);
 
-          setRandomCharRegister(randomCharRegisterSelection);
-          setRandomCharBooster(randomCharBoosterSelection);
-      })
-      .catch((err) => {
-          console.error("error: ", err);
-      })
+        // set userData
+        if(userRes){
+          localStorage.setItem("userData", JSON.stringify({ ...userData, items: userRes.data.items }));
+        }
 
-    
-  }, []);
+      } catch(err) {
+        console.error("Error fetching data:", err);
+      } 
+    }
 
-  const update_user_data = async (c, i) => {
+    fetchData();
+  }, [userData]);
+
+  const update_user_data = async (p, i) => {
     try{
-      await axios.post("http://localhost:5000/users/update-credits", {username: userData.username, price: c, item: i})
+      await axios.post("http://localhost:5000/users/update-credits", {username: userData.username, price: p, item: i})
       .then((res) =>{
         setCredits(res.data.credits);
-        setUserData(prev => ({ ...prev, credits: res.data.credits }));
+        setUserData(prev => ({ ...prev, credits: res.data.credits}));
         localStorage.setItem("userData", JSON.stringify({ ...userData, credits: res.data.credits }));
       })
     } catch (error) {
@@ -130,7 +140,7 @@ function App() {
             <Route path="/profile" element={
               // <ProtectedRoute>
                 <NavBarLayout credits={credits} userData={userData} logoutUser={logoutUser}> 
-                  <UserProfile userData={userData} randomCharBooster={randomCharBooster}/>
+                  <UserProfile items={userData.items} userData={userData} randomCharBooster={randomCharBooster}/>
                 </NavBarLayout>
               // </ProtectedRoute>
             }

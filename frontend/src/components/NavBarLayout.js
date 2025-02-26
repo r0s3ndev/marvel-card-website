@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Navbar, Container, Nav, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
-import axios from 'axios';
 function NavBarLayout({credits, userData, logoutUser, children }) {
     const navigate = useNavigate();
     const [localCredits, setLocalCredits] = useState(credits);
 
     useEffect(()=> {
-    
         setLocalCredits(userData.credits);
-       
-
     }, [userData]);
 
     const handleLogout = async () => {

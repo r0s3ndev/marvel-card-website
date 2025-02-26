@@ -14,6 +14,7 @@ router.post("/getUser", async (req, res) => {
         const {username} = req.body;
         const db = await connectToDatabase(); 
         const user = await db.collection('users_list').findOne({ username: username});
+        console.log("/getUser");
         res.json(user); 
     } catch (error) {
         console.error("Error fetching users:", error);

@@ -6,9 +6,6 @@ import Carousel from 'react-bootstrap/Carousel';
 
 function Homepage({logoutUser, userData}) {
   const [message, setMessage] = useState();
-
-  console.log("userData -> ", userData);
-
   const handleShopClick = () => {
     console.log("shop clicked");
   }
