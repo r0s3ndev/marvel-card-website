@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Navbar, Container, Nav, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
-function NavBarLayout({credits, setCredits, userData, logoutUser, children }) {
+function NavBarLayout({credits, userData, logoutUser, children }) {
     const navigate = useNavigate();
+    const [localCredits, setLocalCredits] = useState(credits);
 
     useEffect(()=> {
     
-        setCredits(userData.credits);
+        setLocalCredits(userData.credits);
        
 
     }, [userData]);
@@ -32,7 +33,7 @@ function NavBarLayout({credits, setCredits, userData, logoutUser, children }) {
                 </Nav>
                 <Navbar.Collapse className="justify-content-end">
                     <Navbar.Text>
-                    Credits: {credits}
+                    Credits: {localCredits}
                     </Navbar.Text>
                     <Button style={{marginLeft: "10px"}} variant="outline-secondary" onClick={handleLogout}>logout</Button>
                 </Navbar.Collapse>

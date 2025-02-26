@@ -64,6 +64,7 @@ router.post("/register", async (req, res) =>  {
             username: req.body.username,
             email: req.body.email,
             password: hashedPassword,
+            items: 0,
             favoriteHeroCard: req.body.favoriteHeroCard
         } 
         // const userData = req.body;
@@ -135,11 +136,17 @@ router.get("/check_user_session", (req, res) => {
 router.post("/update-credits", async (req, res) => {
     try{
         const db = await connectToDatabase(); 
-        const {username, price} = req.body;
+        const {username, price, item} = req.body;
         console.log("update credits ", price);
+        console.log("num of item ", item);
         const update_user_credits = await db.collection('users_list').findOneAndUpdate(
             {username: username},
-            {$inc: {credits : - price}},
+            {
+                $inc: {
+                    credits : - price,
+                    items: + item
+                },
+            },
             {returnDocument: "after"});
 
         res.json(update_user_credits);

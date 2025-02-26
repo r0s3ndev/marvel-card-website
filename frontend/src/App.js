@@ -14,18 +14,47 @@ import UserProfile from "./components/userprofile/UserProfile";
 
 
 function App() {
-  const [randomCharRegister, setRandomCharRegister] = useState();
-  const [randomCharBooster, setRandomCharBooster] = useState();
+  const [randomCharRegister, setRandomCharRegister] = useState([]);
+  const [randomCharBooster, setRandomCharBooster] = useState([]);
   const [userData, setUserData] = useState(() => {
     const storedData = localStorage.getItem("userData");
     return storedData ? JSON.parse(storedData) : [];
   });
   const [credits, setCredits] = useState(userData.credits);
 
+    //randomize card
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
 
-  const update_user_data = async (c) => {
+  //fetch all cards available
+  useEffect((e,userData) => {
+      axios.get("http://localhost:5000/api/characters")
+      .then((res) => {
+          const characterData = res.data;
+
+          // //get only character with descrption and photo
+          // const filteredCharacter = characterData.filter((data) => data.description !== "" && !data.thumbnail.path.includes("image_not_available"));
+          const randomCharRegisterSelection = shuffleArray(characterData).slice(0, 3);
+          const randomCharBoosterSelection = shuffleArray(characterData).slice(0, 5);
+
+          setRandomCharRegister(randomCharRegisterSelection);
+          setRandomCharBooster(randomCharBoosterSelection);
+      })
+      .catch((err) => {
+          console.error("error: ", err);
+      })
+
+    
+  }, []);
+
+  const update_user_data = async (c, i) => {
     try{
-      await axios.post("http://localhost:5000/users/update-credits", {username: userData.username, price: c})
+      await axios.post("http://localhost:5000/users/update-credits", {username: userData.username, price: c, item: i})
       .then((res) =>{
         setCredits(res.data.credits);
         setUserData(prev => ({ ...prev, credits: res.data.credits }));
@@ -35,7 +64,6 @@ function App() {
       throw error;
     }
   }
-
 
   //Sign-in & sing-up API
   const check_user_before_next_page = async (userData) => {
@@ -68,41 +96,7 @@ function App() {
     } catch (error) {
       throw error;
     }
-  }
-
-
-
-
-  //randomize card
-  function shuffleArray(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [array[i], array[j]] = [array[j], array[i]];
-      }
-      return array;
-  }
-
-  //fetch all cards available
-  useEffect((e,userData) => {
-      axios.get("http://localhost:5000/api/characters")
-      .then((res) => {
-          const characterData = res.data;
-
-          // //get only character with descrption and photo
-          // const filteredCharacter = characterData.filter((data) => data.description !== "" && !data.thumbnail.path.includes("image_not_available"));
-          const randomCharRegisterSelection = shuffleArray(characterData).slice(0, 3);
-          const randomCharBoosterSelection = shuffleArray(characterData).slice(0, 5);
-
-          setRandomCharRegister(randomCharRegisterSelection);
-          setRandomCharBooster(randomCharBoosterSelection);
-      })
-      .catch((err) => {
-          console.error("error: ", err);
-      })
-
-    
-  }, []);
-  
+  } 
 
   return (
     <>
@@ -116,28 +110,30 @@ function App() {
            {/* to protect */}
             
            <Route path="/homepage" element={
-              <ProtectedRoute>
-                <NavBarLayout credits={credits} username={userData.username} logoutUser={logoutUser}> 
+              // <ProtectedRoute>
+                <NavBarLayout credits={credits} userData={userData} logoutUser={logoutUser}> 
                   <Homepage  userData={userData} />
                 </NavBarLayout>
-              </ProtectedRoute>}
+              // </ProtectedRoute>
+            }
             />
 
             <Route path="/shop" element={
               // <ProtectedRoute>
-                <NavBarLayout credits={credits} setCredits={setCredits} userData={userData} logoutUser={logoutUser}> 
-                  <CardPack update_user_data={update_user_data} randomCharBooster={randomCharBooster}/>
+                <NavBarLayout credits={credits} userData={userData} logoutUser={logoutUser}> 
+                  <CardPack update_user_data={update_user_data}/>
                 </NavBarLayout>
               // </ProtectedRoute>
               }
             />
 
             <Route path="/profile" element={
-              <ProtectedRoute>
-                <NavBarLayout credits={credits} username={userData.username} logoutUser={logoutUser}> 
+              // <ProtectedRoute>
+                <NavBarLayout credits={credits} userData={userData} logoutUser={logoutUser}> 
                   <UserProfile userData={userData} randomCharBooster={randomCharBooster}/>
                 </NavBarLayout>
-              </ProtectedRoute>}
+              // </ProtectedRoute>
+            }
             />
 
             <Route path="/test" element={<Testing/>}/>
