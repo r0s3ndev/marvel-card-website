@@ -10,7 +10,7 @@ const url = "https://gateway.marvel.com/";
 //Endpoint configuration
 const time_stamp = new Date().getTime();
 const hash = crypto.createHash('md5').update(`${time_stamp}${private_key}${public_key}`).digest('hex');
-const auth = `?limit=100&ts=${time_stamp}&apikey=${public_key}&hash=${hash}`;
+const auth = `?limit=50&ts=${time_stamp}&apikey=${public_key}&hash=${hash}`;
 
 router.get("/characters", async (req, res) => {
     try {

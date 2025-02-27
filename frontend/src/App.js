@@ -50,6 +50,8 @@ function App() {
         console.log("check userdata --> ", userRes.data);
         //to remove loading effect on cardPack component
         setUpdatedData(false);
+
+       
         const characterData = cardRes.data;
         // //get only character with descrption and photo
         // const filteredCharacter = characterData.filter((data) => data.description !== "" && !data.thumbnail.path.includes("image_not_available"));
@@ -58,7 +60,7 @@ function App() {
 
         setRandomCharRegister(randomCharRegisterSelection);
         setRandomCharBooster(randomCharBoosterSelection);
-
+      
         // set userData
         if(userRes){
           localStorage.setItem("userData", JSON.stringify({ ...userData, items: userRes.data.items }));
