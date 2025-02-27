@@ -76,9 +76,10 @@ function App() {
     fetchData();
   }, [userData]);
 
-  const update_user_data = async (p, i) => {
+  const update_user_data = async (pack, i) => {
     try{
-      const res = await axios.post("http://localhost:5000/users/update-credits", {username: userData.username, price: p, item: i});
+      const res = await axios.post("http://localhost:5000/users/update-credits", {username: userData.username, pack: pack, amount: i});
+      console.log(res);
       setCredits(res.data.credits);
       setUserData(prev => ({ ...prev, credits: res.data.credits}));
       localStorage.setItem("userData", JSON.stringify({ ...userData, credits: res.data.credits }));

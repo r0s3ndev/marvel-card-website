@@ -65,7 +65,7 @@ router.post("/register", async (req, res) =>  {
             username: req.body.username,
             email: req.body.email,
             password: hashedPassword,
-            items: 0,
+            items: [],
             favoriteHeroCard: req.body.favoriteHeroCard
         } 
         // const userData = req.body;
@@ -137,20 +137,43 @@ router.get("/check_user_session", (req, res) => {
 router.post("/update-credits", async (req, res) => {
     try{
         const db = await connectToDatabase(); 
-        const {username, price, item} = req.body;
-        console.log("update credits ", price);
-        console.log("num of item ", item);
-        const update_user_credits = await db.collection('users_list').findOneAndUpdate(
-            {username: username},
-            {
-                $inc: {
-                    credits : - price,
-                    items: + item
-                },
-            },
-            {returnDocument: "after"});
+        const {username, pack, amount} = req.body;
+        console.log(typeof(pack.id));
 
-        res.json(update_user_credits);
+        // const updateUuser = await db.collection('users_list').findOneAndUpdate(
+        //     {
+        //         username: username,
+        //         "items.id": pack.id,
+        //     },
+        //     {
+        //         $inc: {
+        //             credits : - pack.price,
+        //             "items.$.amount": + amount
+        //         },
+        //     },
+        //     {returnDocument: "after"}
+        // );
+
+        // if(updateUuser === null ){
+        //     await db.collection("user_list").findOneAndUpdate(
+        //         {
+        //             username: username
+        //         },
+        //         {
+        //             $inc: { credits: - pack.price },
+        //             $push: {
+        //                 items: {
+        //                     id: pack.id,
+        //                     amount: + amount,
+        //                     src: pack.src
+        //                 },
+        //             },
+        //         },
+        //         {returnDocument: "after"}
+        //     )
+        // }
+
+        // res.json(updateUuser);
     
     } catch (error) {
         console.error("Error updating data:", error);
