@@ -27,7 +27,7 @@ function NavBarLayout({credits, userData, logoutUser, children }) {
                     <Nav.Link href="/shop"> SHOP</Nav.Link>
                     <Nav.Link href="/profile"> PROFILE</Nav.Link>
                 </Nav>
-                <Navbar.Collapse className="justify-content-end">
+                <Navbar.Collapse className="justify-content-end"> 
                     <Navbar.Text>
                     Credits: {localCredits}
                     </Navbar.Text>

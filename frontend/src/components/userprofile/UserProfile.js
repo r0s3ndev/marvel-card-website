@@ -13,6 +13,12 @@ function UserProfile({items, userData, randomCharBooster }) {
     //     })
     // }, []);
 
+     const [localItems, setLocalItems] = useState(items);
+    
+    useEffect(()=> {
+        setLocalItems(userData.items);
+    }, [userData]);
+
 
     
   return (
@@ -22,7 +28,7 @@ function UserProfile({items, userData, randomCharBooster }) {
                 <h1> {userData.username} profile</h1>
                 <div>
                     {/* item */}
-                    items {!userData ? <p>loading...</p> : items }
+                    items {localItems}
                 </div>
                 <div>
                     {/* album section */}

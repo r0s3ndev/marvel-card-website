@@ -227,6 +227,18 @@ body {
     display: flex;
 }
 
+.loading-overlay-cardPack{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.73); /* Semi-transparent background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; /* Ensures it stays on top */
+}
 
 /* USER PROFILE */
 .user-profile-div{

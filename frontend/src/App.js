@@ -16,11 +16,14 @@ import UserProfile from "./components/userprofile/UserProfile";
 function App() {
   const [randomCharRegister, setRandomCharRegister] = useState([]);
   const [randomCharBooster, setRandomCharBooster] = useState([]);
+  // const [userData, setUserData] = useState([]);
   const [userData, setUserData] = useState(() => {
     const storedData = localStorage.getItem("userData");
     return storedData ? JSON.parse(storedData) : [];
   });
+  const [updatedData, setUpdatedData] = useState(false);
   const [credits, setCredits] = useState(userData.credits);
+  const isFirstRender = useRef(true);
 
     //randomize card
   function shuffleArray(array) {
@@ -33,6 +36,11 @@ function App() {
 
   //fetch all cards available
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return; // Skip first render
+    }
+  
     const fetchData = async () => {
       try{
         const [cardRes, userRes] = await Promise.all([
@@ -40,6 +48,8 @@ function App() {
           userData ? axios.post("http://localhost:5000/users/getUser", {username: userData.username}) : null
         ]);
         console.log("check userdata --> ", userRes.data);
+        //to remove loading effect on cardPack component
+        setUpdatedData(false);
         const characterData = cardRes.data;
         // //get only character with descrption and photo
         // const filteredCharacter = characterData.filter((data) => data.description !== "" && !data.thumbnail.path.includes("image_not_available"));
@@ -56,7 +66,9 @@ function App() {
 
       } catch(err) {
         console.error("Error fetching data:", err);
-      } 
+      } finally {
+        isFirstRender.current = true;
+      }
     }
 
     fetchData();
@@ -64,12 +76,14 @@ function App() {
 
   const update_user_data = async (p, i) => {
     try{
-      await axios.post("http://localhost:5000/users/update-credits", {username: userData.username, price: p, item: i})
-      .then((res) =>{
-        setCredits(res.data.credits);
-        setUserData(prev => ({ ...prev, credits: res.data.credits}));
-        localStorage.setItem("userData", JSON.stringify({ ...userData, credits: res.data.credits }));
-      })
+      const res = await axios.post("http://localhost:5000/users/update-credits", {username: userData.username, price: p, item: i});
+      setCredits(res.data.credits);
+      setUserData(prev => ({ ...prev, credits: res.data.credits}));
+      localStorage.setItem("userData", JSON.stringify({ ...userData, credits: res.data.credits }));
+      //to add loading effect on cardPack component
+      setUpdatedData(true);
+      return res;
+      
     } catch (error) {
       throw error;
     }
@@ -131,7 +145,7 @@ function App() {
             <Route path="/shop" element={
               // <ProtectedRoute>
                 <NavBarLayout credits={credits} userData={userData} logoutUser={logoutUser}> 
-                  <CardPack update_user_data={update_user_data}/>
+                  <CardPack updatedData={updatedData} update_user_data={update_user_data}/>
                 </NavBarLayout>
               // </ProtectedRoute>
               }
