@@ -47,7 +47,7 @@ function App() {
           axios.get("http://localhost:5000/api/characters"),
           userData ? axios.post("http://localhost:5000/users/getUser", {username: userData.username}) : null
         ]);
-        console.log("check userdata --> ", userRes.data);
+        console.log("check cardRes --> ", cardRes.data);
         //to remove loading effect on cardPack component
         setUpdatedData(false);
 

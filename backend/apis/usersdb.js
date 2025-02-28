@@ -138,42 +138,45 @@ router.post("/update-credits", async (req, res) => {
     try{
         const db = await connectToDatabase(); 
         const {username, pack, amount} = req.body;
-        console.log(typeof(pack.id));
+        
 
-        // const updateUuser = await db.collection('users_list').findOneAndUpdate(
-        //     {
-        //         username: username,
-        //         "items.id": pack.id,
-        //     },
-        //     {
-        //         $inc: {
-        //             credits : - pack.price,
-        //             "items.$.amount": + amount
-        //         },
-        //     },
-        //     {returnDocument: "after"}
-        // );
+        var updateUuser = await db.collection('users_list').findOneAndUpdate(
+            {
+                username: username,
+                "items.id": pack.id,
+            },
+            {
+                $inc: {
+                    credits : - pack.price,
+                    "items.$.amount": + amount
+                },
+            },
+            {returnDocument: "after"}
+        );
+        console.log("packId: " + pack.id + " updatedUser ? --> ", updateUuser);
 
-        // if(updateUuser === null ){
-        //     await db.collection("user_list").findOneAndUpdate(
-        //         {
-        //             username: username
-        //         },
-        //         {
-        //             $inc: { credits: - pack.price },
-        //             $push: {
-        //                 items: {
-        //                     id: pack.id,
-        //                     amount: + amount,
-        //                     src: pack.src
-        //                 },
-        //             },
-        //         },
-        //         {returnDocument: "after"}
-        //     )
-        // }
+        if(updateUuser === null){
+           
+            updateUuser = await db.collection("users_list").findOneAndUpdate(
+                {
+                    username: username
+                },
+                {
+                    $inc: { credits: - pack.price },
+                    $push: {
+                        items: {
+                            id: pack.id,
+                            amount: + amount,
+                            src: pack.src
+                        },
+                    },
+                },
+                {returnDocument: "after"}
+            )
+            console.log("added pack");
+        }
 
-        // res.json(updateUuser);
+        res.json(updateUuser);
     
     } catch (error) {
         console.error("Error updating data:", error);

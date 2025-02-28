@@ -13,11 +13,14 @@ function UserProfile({items, userData, randomCharBooster }) {
     //     })
     // }, []);
 
-     const [localItems, setLocalItems] = useState(items);
-    
-    useEffect(()=> {
-        setLocalItems(userData.items);
-    }, [userData]);
+    const [localItems, setLocalItems] = useState(()=> {
+        return items.reduce((total, i)=> total + i.amount, 0);
+    });
+
+    // useEffect(()=> {
+    //     console.log("items", localItems);
+    //     setLocalItems(userData.items);
+    // }, [userData]);
 
 
     
