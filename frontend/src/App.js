@@ -11,6 +11,7 @@ import { useEffect, useRef, useState } from "react";
 import ProtectedRoute from "./components/custom/ProtectedRoute";
 import NavBarLayout from "./components/NavBarLayout";
 import UserProfile from "./components/userprofile/UserProfile";
+import UserAlbum from "./components/userprofile/UserAlbum";
 
 
 function App() {
@@ -158,6 +159,15 @@ function App() {
               // <ProtectedRoute>
                 <NavBarLayout credits={credits} userData={userData} logoutUser={logoutUser}> 
                   <UserProfile items={userData.items} userData={userData} randomCharBooster={randomCharBooster}/>
+                </NavBarLayout>
+              // </ProtectedRoute>
+            }
+            />
+
+            <Route path="/card_album" element={
+              // <ProtectedRoute>
+                <NavBarLayout credits={credits} userData={userData} logoutUser={logoutUser}> 
+                  <UserAlbum/>
                 </NavBarLayout>
               // </ProtectedRoute>
             }

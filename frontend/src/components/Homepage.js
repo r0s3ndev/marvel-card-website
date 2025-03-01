@@ -20,8 +20,10 @@ function Homepage({logoutUser, userData}) {
           <div>
             {/* favorite card & album - collectable card */}
             <h4>Your favvorite hero: </h4>
-            <img alt={userData.favoriteHeroCard[0].name} src={userData.favoriteHeroCard[0].thumbnail.path + "." + userData.favoriteHeroCard[0].thumbnail.extension}/>
-            <p>{userData.favoriteHeroCard.description ? userData.favoriteHeroCard.description : "no description available"}</p>
+            <a href='/card_album'>
+              <img alt={userData.favoriteHeroCard[0].name} src={userData.favoriteHeroCard[0].thumbnail.path + "." + userData.favoriteHeroCard[0].thumbnail.extension}/>
+              <p>{userData.favoriteHeroCard.description ? userData.favoriteHeroCard.description : "no description available"}</p>
+            </a>
           </div>
 
           <div style={{backgroundColo:"blue", border: "1px solid black", width: "100%"}}>

@@ -2,27 +2,10 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 function UserProfile({items, userData, randomCharBooster }) {
-    // const [user, setUser] = useState([]);
-    // useEffect(()=>{
-    //     axios.post("http://localhost:5000/users/getUser", {username: userData.username} )
-    //     .then((res) =>{
-    //         setUser(res.data);
-    //     })
-    //     .catch((err) => {
-    //         console.log(err);
-    //     })
-    // }, []);
 
     const [localItems, setLocalItems] = useState(()=> {
         return items.reduce((total, i)=> total + i.amount, 0);
     });
-
-    // useEffect(()=> {
-    //     console.log("items", localItems);
-    //     setLocalItems(userData.items);
-    // }, [userData]);
-
-
     
   return (
     <>
@@ -32,6 +15,7 @@ function UserProfile({items, userData, randomCharBooster }) {
                 <div>
                     {/* item */}
                     items {localItems}
+                    
                 </div>
                 <div>
                     {/* album section */}

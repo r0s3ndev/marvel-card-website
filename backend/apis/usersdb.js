@@ -153,7 +153,6 @@ router.post("/update-credits", async (req, res) => {
             },
             {returnDocument: "after"}
         );
-        console.log("packId: " + pack.id + " updatedUser ? --> ", updateUuser);
 
         if(updateUuser === null){
            
