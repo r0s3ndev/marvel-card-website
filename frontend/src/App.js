@@ -12,11 +12,12 @@ import ProtectedRoute from "./components/custom/ProtectedRoute";
 import NavBarLayout from "./components/NavBarLayout";
 import UserProfile from "./components/userprofile/UserProfile";
 import UserAlbum from "./components/userprofile/UserAlbum";
+import TradeSection from "./components/tradecenter/TradeSection";
 
 
 function App() {
-  const [randomCharRegister, setRandomCharRegister] = useState([]);
-  const [randomCharBooster, setRandomCharBooster] = useState([]);
+  const [randomCharRegister, setRandomCharRegister] = useState();
+  const [randomCharBooster, setRandomCharBooster] = useState();
   // const [userData, setUserData] = useState([]);
   const [userData, setUserData] = useState(() => {
     const storedData = localStorage.getItem("userData");
@@ -24,7 +25,9 @@ function App() {
   });
   const [updatedData, setUpdatedData] = useState(false);
   const [credits, setCredits] = useState(userData.credits);
-  const isFirstRender = useRef(true);
+  const isFetchingUser = useRef(true);
+  const isFetchingCard = useRef(true);
+
 
     //randomize card
   function shuffleArray(array) {
@@ -35,42 +38,61 @@ function App() {
     return array;
   }
 
-  //fetch all cards available
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
+  //fetch available cards
+  useEffect(()=>{
+    if (isFetchingCard.current) {
+      isFetchingCard.current = false;
       return; // Skip first render
     }
-  
+    
+    console.log("isFetchingCard...");
+    const fetchCard = async () => {
+      await axios.get("http://localhost:5000/api/characters")
+      .then((res)=> {
+        const characterData = res.data;
+        console.log("characterData ", characterData);
+        //ramdomize character shown in the registration from
+        const randomCharRegisterSelection = shuffleArray(characterData).slice(0, 3);
+        setRandomCharRegister(randomCharRegisterSelection);
+
+        //randomize character that will show during opening pack
+        const randomCharBoosterSelection = shuffleArray(characterData).slice(0, 5);
+        setRandomCharBooster(randomCharBoosterSelection);
+      })
+      .catch((e) => {
+        console.error("Error while fetching character data:", e);
+      })
+      .finally(() => {
+        isFetchingCard.current = true;
+      })
+
+    } 
+    fetchCard();
+  }, []);
+
+  useEffect(() => {
+    if (isFetchingUser.current) {
+      isFetchingUser.current = false;
+      return; // Skip first render
+    }
+    console.log("isFetchingUser...");
+
     const fetchData = async () => {
       try{
-        const [cardRes, userRes] = await Promise.all([
-          axios.get("http://localhost:5000/api/characters"),
-          userData ? axios.post("http://localhost:5000/users/getUser", {username: userData.username}) : null
-        ]);
-        console.log("check cardRes --> ", cardRes.data);
-        //to remove loading effect on cardPack component
-        setUpdatedData(false);
-
-       
-        const characterData = cardRes.data;
-        // //get only character with descrption and photo
-        // const filteredCharacter = characterData.filter((data) => data.description !== "" && !data.thumbnail.path.includes("image_not_available"));
-        const randomCharRegisterSelection = shuffleArray(characterData).slice(0, 3);
-        const randomCharBoosterSelection = shuffleArray(characterData).slice(0, 5);
-
-        setRandomCharRegister(randomCharRegisterSelection);
-        setRandomCharBooster(randomCharBoosterSelection);
-      
-        // set userData
+        const userRes = userData ? await axios.post("http://localhost:5000/users/getUser", {username: userData.username}) : null;
+        //simulate a loading effect
+        setTimeout(() => {
+          setUpdatedData(false);
+        }, "3000");
+          
         if(userRes){
           localStorage.setItem("userData", JSON.stringify({ ...userData, items: userRes.data.items }));
         }
 
-      } catch(err) {
-        console.error("Error fetching data:", err);
+      } catch(e) {
+        console.error("Error fetching user data:", e);
       } finally {
-        isFirstRender.current = true;
+        isFetchingUser.current = true;
       }
     }
 
@@ -131,7 +153,7 @@ function App() {
       <Router>
         <Routes>
             <Route path="/" element={<Main/>}/>
-            <Route path="/register" element={<UserRegister randomCharRegister={randomCharRegister} check_user_before_next_page={check_user_before_next_page} registerUser={registerUser}/>}/>
+            <Route path="/register" element={<UserRegister randomCharRegister={randomCharRegister} isFetchingCard={isFetchingCard} check_user_before_next_page={check_user_before_next_page} registerUser={registerUser}/>}/>
             <Route path="/login" element={<UserLogin loginUser={loginUser}/>}/>
           
           
@@ -167,12 +189,20 @@ function App() {
             <Route path="/card_album" element={
               // <ProtectedRoute>
                 <NavBarLayout credits={credits} userData={userData} logoutUser={logoutUser}> 
-                  <UserAlbum/>
+                  <UserAlbum userData={userData}/>
                 </NavBarLayout>
               // </ProtectedRoute>
             }
             />
-
+            
+            <Route path="/trade_section" element={
+              // <ProtectedRoute>
+                <NavBarLayout credits={credits} userData={userData} logoutUser={logoutUser}> 
+                  <TradeSection userData={userData}/>
+                </NavBarLayout>
+              // </ProtectedRoute>
+            }
+            />
             <Route path="/test" element={<Testing/>}/>
         </Routes>
       </Router>

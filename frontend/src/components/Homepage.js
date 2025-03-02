@@ -25,10 +25,12 @@ function Homepage({logoutUser, userData}) {
               <p>{userData.favoriteHeroCard.description ? userData.favoriteHeroCard.description : "no description available"}</p>
             </a>
           </div>
-
-          <div style={{backgroundColo:"blue", border: "1px solid black", width: "100%"}}>
-            TRADE section
-          </div>
+          <a href='/trade_section'>
+            <div style={{backgroundColo:"blue", border: "1px solid black", width: "100%"}}>
+              TRADE section
+            </div>
+          </a>
+          
         </div>
 
         

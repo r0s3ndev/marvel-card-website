@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router';
 
 
-function UserRegister({randomCharRegister, check_user_before_next_page, registerUser}) {
+function UserRegister({randomCharRegister, isFetchingCard, check_user_before_next_page, registerUser}) {
     const navitage = useNavigate();
     const [message, setMessage] = useState("");
     const [userChecked, setUserChecked] = useState(false);
@@ -15,6 +15,10 @@ function UserRegister({randomCharRegister, check_user_before_next_page, register
             favoriteHeroCard: []
         }
     );
+    useEffect(()=>{
+        console.log(randomCharRegister);
+        isFetchingCard.current = false;
+    }, []);
 
     const handleUserCheckAndToggle = async (e) => {
         e.preventDefault();
