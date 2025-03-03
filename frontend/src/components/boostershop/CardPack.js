@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-function CardPack({updatedData, update_user_data}) {
+function CardPack({updatedData, update_credits_and_data}) {
     const pack = {
         ONE : {id: 1, price: 10, src: "https://www.goblins.net/files/styles/zoom/public/images/game/bgg/marvel-champions-card-game-ant-man-hero-pack.png?itok=XR4CeWFH"},
         TWO : {id: 2, price: 20, src: "https://www.goblins.net/files/styles/zoom/public/images/game/bgg/marvel-champions-card-game-valkyrie-hero-pack.png?itok=C0r6XwQ2"},
@@ -7,14 +7,13 @@ function CardPack({updatedData, update_user_data}) {
     }
 
     const buyPack = (pack) => {
-        console.log(pack);
-        update_user_data(pack, 1);
+        update_credits_and_data(pack, 1);
     };
     
     return (
         <>
             <div>
-                <div className='shop-container'>
+                <div className='main-container'>
                     <h1>shop</h1>
                     <div>
                         <h2> buys packs</h2>

@@ -13,6 +13,7 @@ import NavBarLayout from "./components/NavBarLayout";
 import UserProfile from "./components/userprofile/UserProfile";
 import UserAlbum from "./components/userprofile/UserAlbum";
 import TradeSection from "./components/tradecenter/TradeSection";
+import UserItems from "./components/userprofile/UserItems";
 
 
 function App() {
@@ -29,7 +30,7 @@ function App() {
   const isFetchingCard = useRef(true);
 
 
-    //randomize card
+  //randomize card
   function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -99,22 +100,6 @@ function App() {
     fetchData();
   }, [userData]);
 
-  const update_user_data = async (pack, i) => {
-    try{
-      const res = await axios.post("http://localhost:5000/users/update-credits", {username: userData.username, pack: pack, amount: i});
-      console.log(res);
-      setCredits(res.data.credits);
-      setUserData(prev => ({ ...prev, credits: res.data.credits}));
-      localStorage.setItem("userData", JSON.stringify({ ...userData, credits: res.data.credits }));
-      //to add loading effect on cardPack component
-      setUpdatedData(true);
-      return res;
-      
-    } catch (error) {
-      throw error;
-    }
-  }
-
   //Sign-in & sing-up API
   const check_user_before_next_page = async (userData) => {
     try{
@@ -148,6 +133,36 @@ function App() {
     }
   } 
 
+
+
+  //update data in the DB
+  const update_credits_and_data = async (pack, i) => {
+    try{
+      const res = await axios.post("http://localhost:5000/users/update_credits_and_data", {username: userData.username, pack: pack, amount: i});
+      setCredits(res.data.credits);
+      setUserData(prev => ({ ...prev, credits: res.data.credits}));
+      localStorage.setItem("userData", JSON.stringify({ ...userData, credits: res.data.credits }));
+      //to add loading effect on cardPack component
+      setUpdatedData(true);
+      return res;
+      
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
+  const open_pack_and_update_data = async (pack_id, i) => {
+    try{
+      const res = await axios.post("http://localhost:5000/users/update_pack_and_data", {username: userData.username, pack_id: pack_id, amount: i});
+      
+      
+    } catch (error) {
+      throw error;
+    }
+  }
+
+
   return (
     <>
       <Router>
@@ -171,7 +186,7 @@ function App() {
             <Route path="/shop" element={
               // <ProtectedRoute>
                 <NavBarLayout credits={credits} userData={userData} logoutUser={logoutUser}> 
-                  <CardPack updatedData={updatedData} update_user_data={update_user_data}/>
+                  <CardPack updatedData={updatedData} update_credits_and_data={update_credits_and_data}/>
                 </NavBarLayout>
               // </ProtectedRoute>
               }
@@ -199,6 +214,15 @@ function App() {
               // <ProtectedRoute>
                 <NavBarLayout credits={credits} userData={userData} logoutUser={logoutUser}> 
                   <TradeSection userData={userData}/>
+                </NavBarLayout>
+              // </ProtectedRoute>
+            }
+            />
+
+            <Route path="/user_items" element={
+              // <ProtectedRoute>
+                <NavBarLayout credits={credits} userData={userData} logoutUser={logoutUser}> 
+                  <UserItems userData={userData} open_pack_and_update_data={open_pack_and_update_data}/>
                 </NavBarLayout>
               // </ProtectedRoute>
             }

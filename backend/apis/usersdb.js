@@ -132,13 +132,12 @@ router.get("/check_user_session", (req, res) => {
 //     res.json(user); 
 // })
 
-//update credits on db
-router.post("/update-credits", async (req, res) => {
+//update data on db
+router.post("/update_credits_and_data", async (req, res) => {
     try{
         const db = await connectToDatabase(); 
         const {username, pack, amount} = req.body;
         
-
         var updateUuser = await db.collection('users_list').findOneAndUpdate(
             {
                 username: username,
@@ -154,7 +153,6 @@ router.post("/update-credits", async (req, res) => {
         );
 
         if(updateUuser === null){
-           
             updateUuser = await db.collection("users_list").findOneAndUpdate(
                 {
                     username: username
@@ -173,13 +171,28 @@ router.post("/update-credits", async (req, res) => {
             )
             console.log("added pack");
         }
-
         res.json(updateUuser);
-    
+
+
     } catch (error) {
-        console.error("Error updating data:", error);
-        return res.status(500).send("Error updating data");
+        console.error("Error updating credits & data:", error);
+        return res.status(500).send("Error updating credits & data");
     }
 })  
+
+router.post("/update_pack_and_data", (req, res) => {
+    try{
+        const {username, pack_id, amount} = req.body;
+        console.log("username", username);
+        console.log("pack_id", pack_id);
+        console.log("amount", amount);
+
+    } catch (error) {
+        console.error("Error updating pack & data:", error);
+        return res.status(500).send("Error updating pack & data");
+    }
+})
+
+router.post("/update_data")
 
 module.exports = router;

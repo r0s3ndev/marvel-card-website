@@ -5,7 +5,7 @@ function UserAlbum({userData}) {
   return (
     <>
         <div>
-            <div className='shop-container'>
+            <div className='main-container'>
               <h1> Available cards </h1>
               {/* cardi list  */}
               {cards.map((c) => (

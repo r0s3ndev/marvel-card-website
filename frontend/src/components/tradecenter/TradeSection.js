@@ -3,7 +3,7 @@ import React from 'react'
 function TradeSection() {
   return (
     <>
-        <div>TradeSection</div>
+        <div className="main-container">TradeSection</div>
     </>
   )
 }

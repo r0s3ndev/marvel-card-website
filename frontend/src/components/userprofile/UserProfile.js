@@ -10,11 +10,13 @@ function UserProfile({items, userData, randomCharBooster }) {
   return (
     <>
         <div>
-            <div className='user-profile-div'>
+            <div className='main-container'>
                 <h1> {userData.username} profile</h1>
                 <div>
                     {/* item */}
-                    items {localItems}
+                    <a href='/user_items'>
+                        items {localItems}
+                    </a>
                     
                 </div>
                 <div>
