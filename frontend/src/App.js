@@ -27,8 +27,6 @@ function App() {
   const [updatedData, setUpdatedData] = useState(false);
   const [credits, setCredits] = useState(userData.credits);
   const isFetchingUser = useRef(true);
-  const isFetchingCard = useRef(true);
-
 
   //randomize card
   function shuffleArray(array) {
@@ -38,38 +36,6 @@ function App() {
     }
     return array;
   }
-
-  //fetch available cards
-  useEffect(()=>{
-    if (isFetchingCard.current) {
-      isFetchingCard.current = false;
-      return; // Skip first render
-    }
-    
-    console.log("isFetchingCard...");
-    const fetchCard = async () => {
-      await axios.get("http://localhost:5000/api/characters")
-      .then((res)=> {
-        const characterData = res.data;
-        console.log("characterData ", characterData);
-        //ramdomize character shown in the registration from
-        const randomCharRegisterSelection = shuffleArray(characterData).slice(0, 3);
-        setRandomCharRegister(randomCharRegisterSelection);
-
-        //randomize character that will show during opening pack
-        const randomCharBoosterSelection = shuffleArray(characterData).slice(0, 5);
-        setRandomCharBooster(randomCharBoosterSelection);
-      })
-      .catch((e) => {
-        console.error("Error while fetching character data:", e);
-      })
-      .finally(() => {
-        isFetchingCard.current = true;
-      })
-
-    } 
-    fetchCard();
-  }, []);
 
   useEffect(() => {
     if (isFetchingUser.current) {
@@ -84,7 +50,7 @@ function App() {
         //simulate a loading effect
         setTimeout(() => {
           setUpdatedData(false);
-        }, "3000");
+        }, "2000");
           
         if(userRes){
           localStorage.setItem("userData", JSON.stringify({ ...userData, items: userRes.data.items }));
@@ -99,6 +65,29 @@ function App() {
 
     fetchData();
   }, [userData]);
+
+
+  //fetch available cards
+  const fetchCard = async () => {
+    console.log("isFetchingCard...");
+    try {
+      const res = await axios.get("http://localhost:5000/api/characters");
+      const characterData = res.data;
+      console.log("characterData ", characterData);
+
+      //ramdomize character shown in the registration from
+      const randomCharRegisterSelection = shuffleArray(characterData).slice(0, 3);
+      setRandomCharRegister(randomCharRegisterSelection);
+
+      //randomize character that will show during opening pack
+      const randomCharBoosterSelection = shuffleArray(characterData).slice(0, 5);
+      setRandomCharBooster(randomCharBoosterSelection);
+
+      return randomCharBoosterSelection;
+    } catch (error) {
+      throw error;
+    }
+  }
 
   //Sign-in & sing-up API
   const check_user_before_next_page = async (userData) => {
@@ -154,7 +143,15 @@ function App() {
 
   const open_pack_and_update_data = async (pack_id, i) => {
     try{
-      const res = await axios.post("http://localhost:5000/users/update_pack_and_data", {username: userData.username, pack_id: pack_id, amount: i});
+      
+      console.log(userData.items[pack_id - 1].amount);
+      // const fetchRes = await fetchCard();
+      // if(fetchRes) {
+        
+      //   const res = await axios.post("http://localhost:5000/users/update_pack_and_data", {username: userData.username, pack_id: pack_id, amount: i, cards: fetchRes});
+      //   setUserData(prev => ({ ...prev, credits: res.data.credits}));
+      //   localStorage.setItem("userData", JSON.stringify({ ...userData, credits: res.data.credits }));
+      // }
       
       
     } catch (error) {
@@ -168,7 +165,7 @@ function App() {
       <Router>
         <Routes>
             <Route path="/" element={<Main/>}/>
-            <Route path="/register" element={<UserRegister randomCharRegister={randomCharRegister} isFetchingCard={isFetchingCard} check_user_before_next_page={check_user_before_next_page} registerUser={registerUser}/>}/>
+            <Route path="/register" element={<UserRegister randomCharRegister={randomCharRegister} fetchCard={fetchCard} check_user_before_next_page={check_user_before_next_page} registerUser={registerUser}/>}/>
             <Route path="/login" element={<UserLogin loginUser={loginUser}/>}/>
           
           
@@ -222,7 +219,7 @@ function App() {
             <Route path="/user_items" element={
               // <ProtectedRoute>
                 <NavBarLayout credits={credits} userData={userData} logoutUser={logoutUser}> 
-                  <UserItems userData={userData} open_pack_and_update_data={open_pack_and_update_data}/>
+                  <UserItems userData={userData} randomCharBooster={randomCharBooster} open_pack_and_update_data={open_pack_and_update_data}/>
                 </NavBarLayout>
               // </ProtectedRoute>
             }

@@ -138,7 +138,7 @@ router.post("/update_credits_and_data", async (req, res) => {
         const db = await connectToDatabase(); 
         const {username, pack, amount} = req.body;
         
-        var updateUuser = await db.collection('users_list').findOneAndUpdate(
+        var updateUser = await db.collection('users_list').findOneAndUpdate(
             {
                 username: username,
                 "items.id": pack.id,
@@ -152,8 +152,8 @@ router.post("/update_credits_and_data", async (req, res) => {
             {returnDocument: "after"}
         );
 
-        if(updateUuser === null){
-            updateUuser = await db.collection("users_list").findOneAndUpdate(
+        if(updateUser === null){
+            updateUser = await db.collection("users_list").findOneAndUpdate(
                 {
                     username: username
                 },
@@ -171,7 +171,7 @@ router.post("/update_credits_and_data", async (req, res) => {
             )
             console.log("added pack");
         }
-        res.json(updateUuser);
+        res.json(updateUser);
 
 
     } catch (error) {
@@ -180,12 +180,27 @@ router.post("/update_credits_and_data", async (req, res) => {
     }
 })  
 
-router.post("/update_pack_and_data", (req, res) => {
+router.post("/update_pack_and_data", async (req, res) => {
     try{
-        const {username, pack_id, amount} = req.body;
+        const db = await connectToDatabase(); 
+        const {username, pack_id, amount, cards} = req.body;
         console.log("username", username);
         console.log("pack_id", pack_id);
         console.log("amount", amount);
+        // console.log("cards", cards);
+
+        // const updateUser = await db.collection("users_list").findOneAndUpdate(
+        //     {
+        //         username: username,
+        //         "items.id": pack_id
+        //     },
+        //     {
+        //         $inc: {
+        //             "items.$.amount": - amount
+        //         }
+        //     },
+        //     {returnDocument: "after"}
+        // )
 
     } catch (error) {
         console.error("Error updating pack & data:", error);
