@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Homepage({userData, BACKUP}) {
+function Homepage({userData}) {
   return (
     <>
       <div className='main-container'>
@@ -10,10 +10,11 @@ function Homepage({userData, BACKUP}) {
 
           <div>
             <h4>Your cards: </h4>
-            <div>
+            <div className='image-div'>
               <a href='/card_album'>
-                <img className="homepage-img" alt={userData.cards[0].name} src={userData.cards[0].thumbnail.path + "." + userData.cards[0].thumbnail.extension}/>
-                <p>{userData.cards.description ? userData.cards.description : BACKUP.DESC}</p>
+                <p className='image-id'>{userData.cards[0].id}</p>
+                <img className="card-img" alt={userData.cards[0].name} src={userData.cards[0].thumbnail.path + "." + userData.cards[0].thumbnail.extension}/>
+                <p className='image-text' >{userData.cards[0].name}</p>
               </a>
             </div>
           </div>

@@ -1,12 +1,25 @@
 
 body {
-    background: rgb(2,0,36);
+    background: rgba(7, 4, 49, 0.94);
     background: linear-gradient(90deg, #070F2B 0%, #1B1A55 35%, #535C91 50.00%) 100%);
 }
 
-.main-div {
-    color: white;
+
+/* GENERAL */ 
+.main-container {
+    max-width: 1000px;
+    height: 80vh;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color:rgba(253, 253, 253, 0.13);
+    background-color:hsl(0, 0.00%, 100.00%);
+    opacity: 0.9;
+    overflow-y: auto;
 }
+
+
 
 /*USER REGISTER*/
 .register-container , .login-container{
@@ -185,35 +198,58 @@ body {
 }
   
 
-/* GENERAL */ 
-.main-container {
-    max-width: 1000px;
-    height: 80vh;
-    margin: 0 auto;
-    font-family: Arial, sans-serif;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color:rgba(253, 253, 253, 0.13);
-    background-color:hsl(0, 0.00%, 100.00%);
-    opacity: 0.9;
-    overflow-y: auto;
-}
-
 /* HOMEPAGE */ 
 .homepage-main-div{
-    border: 6px solid red;
+    /* border: 6px solid red; */
     display: flex;
     max-width: 100%;
     max-height: 80%;
 }
 
-.homepage-img{
-    height: auto; 
-    width: auto; 
-    max-width: 300px; 
-    max-height: 300px;
+.card-img{
+    margin: 0px 20px 20px 10px;
+    width: 200px;
+    height: 300px;
+    object-fit: cover;
+    box-shadow: 10px 10px 5px lightblue;
+    border-radius: 10px;
+
 }
 
+.image-div{
+    margin: 5px;
+    position: relative;
+    /* border: 1px solid black; */
+}
+
+.image-text{
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(40, 38, 51, 0.75);
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 5px;
+}
+
+/* USER PROFILE */
+.user-album-div {
+    display: flex;
+    flex-wrap:wrap;
+    max-width: 100%;
+    max-height: 80%;
+}
+.image-id{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(55, 31, 160, 0.51);
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 5px;
+}
 
 
 /* SHOP */
@@ -234,7 +270,33 @@ body {
     z-index: 1000; /* Ensures it stays on top */
 }
 
-/* USER PROFILE */
+.booter-pack-img {
+    margin: 0px 20px 10px 0px;
+    width: 250px;
+    height: 400px;
+    /* object-fit: cover; */
+    border-radius: 13px;
+}
+.one{
+    box-shadow: 10px 10px 5px rgba(2, 63, 155, 0.44);
+}
+
+.two{
+    box-shadow: 10px 10px 5px rgba(73, 2, 155, 0.44);
+}
+
+.three{
+    box-shadow: 10px 10px 5px rgba(155, 127, 2, 0.44);
+}
+
+.booster-pack-div{
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center; 
+    text-align: center; 
+}
+
+
 
 /* SETTINGS */
 .tab_settings {
@@ -244,6 +306,7 @@ body {
     /* border: 1px solid #ccc; */
     /* background-color: #f1f1f1; */
 }
+
 .tab_settings button {
     background-color: inherit;
     float: left;

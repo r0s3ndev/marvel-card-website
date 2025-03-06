@@ -11,18 +11,25 @@ function UserAlbum({userData, BACKUP}) {
     <>
         <div>
             <div className='main-container'>
-              <h1> Available cards </h1>
+              <button>select</button>
               {/* cardi list  */}
-              {sortedCards.map((c, i) => (
-                <div key={i++} style={{border: "solid"}}>
-                  <p>{c.id}</p>
-                  <p>{c.name}</p>
-                  <p>{c.desc ? c.desc : BACKUP.DESC}</p>
-                  <button onClick={()=>sellCard(c.id)}> Sell</button>
-                  <button > Trade</button>
+              <div>
+                <div className='user-album-div'>
+                  {sortedCards.map((c, i) => (
+                    <div key={i++}  className='image-div'>
+                      <p className='image-id'>{c.id}</p>
+                      <img className="card-img" alt={c.name} src={c.thumbnail.path + "." + c.thumbnail.extension}/>
+                      <p className='image-text'>
+                        {c.name.replace(/\s*\(.*$/, '')} <br/>
+                        
+                        {/* <button onClick={()=>sellCard(c.id)}> Sell</button>
+                        <button > Trade</button> */}
+                      </p>
+                      
+                    </div>
+                  ))}
                 </div>
-                
-              ))}
+              </div>
               
             </div>
         </div>
