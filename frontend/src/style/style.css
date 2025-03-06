@@ -1,3 +1,4 @@
+
 body {
     background: rgb(2,0,36);
     background: linear-gradient(90deg, #070F2B 0%, #1B1A55 35%, #535C91 50.00%) 100%);
@@ -187,7 +188,7 @@ body {
 /* GENERAL */ 
 .main-container {
     max-width: 1000px;
-    height: 90vh;
+    height: 80vh;
     margin: 0 auto;
     font-family: Arial, sans-serif;
     border: 1px solid #ddd;
@@ -195,7 +196,7 @@ body {
     background-color:rgba(253, 253, 253, 0.13);
     background-color:hsl(0, 0.00%, 100.00%);
     opacity: 0.9;
-    overflow: hidden;
+    overflow-y: auto;
 }
 
 /* HOMEPAGE */ 
@@ -216,7 +217,6 @@ body {
 
 
 /* SHOP */
-
 .booster-selection-div{
     display: flex;
 }
@@ -235,3 +235,44 @@ body {
 }
 
 /* USER PROFILE */
+
+/* SETTINGS */
+.tab_settings {
+    overflow: hidden;
+    width: 200px;
+    margin-top: 20px;
+    /* border: 1px solid #ccc; */
+    /* background-color: #f1f1f1; */
+}
+.tab_settings button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+    width: 200px;
+    text-align: left;
+}
+
+.tab_settings button:hover {
+    background-color: #ddd;
+}
+
+.tab_settings button.active {
+    background-color: #ccc;
+}
+
+.tab_content {
+    background: white;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.active {
+    font-weight: bold;
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+}

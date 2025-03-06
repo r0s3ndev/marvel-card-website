@@ -21,15 +21,21 @@ function UserProfile({items, userData, randomCharBooster }) {
                 </div>
                 <div>
                     {/* album section */}
-                    album
+                    <a href='/card_album'>
+                        album
+                    </a>
                 </div>
                 <div>
                     {/* sell &  trade */}
-                    trade & sell
+                    <a href='/trade_section'>
+                        trade
+                    </a>
                 </div>
                 <div>
                     {/* pefile settings */}
-                    prfile setting
+                    <a href='/user_settings'>
+                        prfile setting
+                    </a>
                 </div>
             </div>
         </div>

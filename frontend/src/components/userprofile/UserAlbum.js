@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 
-function UserAlbum({userData}) {
-  const [cards, setCards] = useState(userData.favoriteHeroCard);
+function UserAlbum({userData, BACKUP}) {
+  
+  const cards = userData.favoriteHeroCard;
   return (
     <>
         <div>
@@ -12,7 +13,7 @@ function UserAlbum({userData}) {
                 <div key={c.id} style={{border: "solid"}}>
                   <p>{c.id}</p>
                   <p>{c.name}</p>
-                  <p>{c.desc ? c.desc : "no desc"}</p>
+                  <p>{c.desc ? c.desc : BACKUP.DESC}</p>
                 </div>
                 
               ))}

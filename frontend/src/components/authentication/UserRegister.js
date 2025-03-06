@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router';
 
 
-function UserRegister({randomCharRegister, fetchCard, check_user_before_next_page, registerUser}) {
+function UserRegister({randomCharRegister, fetchCard, check_user_before_next_page, registerUser, BACKUP}) {
     const navitage = useNavigate();
     const [message, setMessage] = useState("");
     const [userChecked, setUserChecked] = useState(false);
@@ -127,7 +127,7 @@ function UserRegister({randomCharRegister, fetchCard, check_user_before_next_pag
                                         <p style={{textAlign: 'right', color: 'white', textDecoration: 'underline overline'}}>{card.id}</p>
                                         <div className='card-name-desc'>
                                             <h2 style={{textTransform: 'uppercase'}}>{card.name}</h2>
-                                            <p>{card.description ? card.description : "No description available"}</p>
+                                            <p>{card.description ? card.description : BACKUP.DESC}</p>
                                         </div>
                                     </div>
                                 ))}

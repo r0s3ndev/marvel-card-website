@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 function UserItems({userData, randomCharBooster, open_pack_and_update_data}) {
-    const items = userData.items;
+    const [localItems, setLocalItems] = useState(userData.items);
 
+    useEffect(()=>{
+        setLocalItems(userData.items);
+    }, [userData])
+    
     const openPack = (pack_id) => {
         open_pack_and_update_data(pack_id, 1);
     }
@@ -20,7 +24,7 @@ function UserItems({userData, randomCharBooster, open_pack_and_update_data}) {
                         </div>
                     </div>
                 )} */}
-                {items.map((i) => (
+                {localItems.map((i) => (
                     // when hovering must show "OPEN"
                     <div key={i.id} style={{border: "solid"}}>
                         <p>src: {i.src}</p>

@@ -14,7 +14,12 @@ import UserProfile from "./components/userprofile/UserProfile";
 import UserAlbum from "./components/userprofile/UserAlbum";
 import TradeSection from "./components/tradecenter/TradeSection";
 import UserItems from "./components/userprofile/UserItems";
+import UserSettings from "./components/userprofile/UserSettings";
+import { CardText } from "react-bootstrap";
 
+const BACKUP = {
+  DESC : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+}
 
 function App() {
   const [randomCharRegister, setRandomCharRegister] = useState();
@@ -53,7 +58,7 @@ function App() {
         }, "2000");
           
         if(userRes){
-          localStorage.setItem("userData", JSON.stringify({ ...userData, items: userRes.data.items }));
+          localStorage.setItem("userData", JSON.stringify({ ...userData, ...userRes.data}));
         }
 
       } catch(e) {
@@ -99,8 +104,8 @@ function App() {
     }
   }
 
-  const registerUser = async (userData) => {
-    const res = await axios.post("http://localhost:5000/users/register", userData);
+  const registerUser = async (registerData) => {
+    const res = await axios.post("http://localhost:5000/users/register", registerData);
     return res;
   }
 
@@ -129,8 +134,8 @@ function App() {
     try{
       const res = await axios.post("http://localhost:5000/users/update_credits_and_data", {username: userData.username, pack: pack, amount: i});
       setCredits(res.data.credits);
-      setUserData(prev => ({ ...prev, credits: res.data.credits}));
-      localStorage.setItem("userData", JSON.stringify({ ...userData, credits: res.data.credits }));
+      setUserData(prev => ({ ...prev, ...res.data}));
+      localStorage.setItem("userData", JSON.stringify({ ...userData, ...res.data }));
       //to add loading effect on cardPack component
       setUpdatedData(true);
       return res;
@@ -143,15 +148,13 @@ function App() {
 
   const open_pack_and_update_data = async (pack_id, i) => {
     try{
-      
-      console.log(userData.items[pack_id - 1].amount);
-      // const fetchRes = await fetchCard();
-      // if(fetchRes) {
-        
-      //   const res = await axios.post("http://localhost:5000/users/update_pack_and_data", {username: userData.username, pack_id: pack_id, amount: i, cards: fetchRes});
-      //   setUserData(prev => ({ ...prev, credits: res.data.credits}));
-      //   localStorage.setItem("userData", JSON.stringify({ ...userData, credits: res.data.credits }));
-      // }
+    
+      const fetchRes = await fetchCard();
+      if(fetchRes) {
+        const res = await axios.post("http://localhost:5000/users/update_pack_and_data", {username: userData.username, pack_id: pack_id, amount: i, cards: fetchRes});
+        setUserData(prev => ({ ...prev, ...res.data}));
+        localStorage.setItem("userData", JSON.stringify({ ...userData, ...res.data }));
+      }
       
       
     } catch (error) {
@@ -159,13 +162,31 @@ function App() {
     }
   }
 
+  const update_security = async (updateData) => {
+    const {oldPass, newPass} = updateData;
+    try{
+      const res = await axios.post("http://localhost:5000/users/update_security", {oldPass: oldPass, newPass: newPass, username: userData.username});
+      return res;
+    } catch(error) {
+      return error.response;
+    }
+  }
+
+  const delete_account = async () => {
+    try{
+      const res = await axios.delete("http://localhost:5000/users/delete_user", { data: {userData: userData}});
+      return res;
+    } catch(error) {
+      return error.response;
+    }
+  }
 
   return (
     <>
       <Router>
         <Routes>
             <Route path="/" element={<Main/>}/>
-            <Route path="/register" element={<UserRegister randomCharRegister={randomCharRegister} fetchCard={fetchCard} check_user_before_next_page={check_user_before_next_page} registerUser={registerUser}/>}/>
+            <Route path="/register" element={<UserRegister randomCharRegister={randomCharRegister} fetchCard={fetchCard} check_user_before_next_page={check_user_before_next_page} registerUser={registerUser} BACKUP={BACKUP}/>}/>
             <Route path="/login" element={<UserLogin loginUser={loginUser}/>}/>
           
           
@@ -173,8 +194,8 @@ function App() {
             
            <Route path="/homepage" element={
               // <ProtectedRoute>
-                <NavBarLayout credits={credits} userData={userData} logoutUser={logoutUser}> 
-                  <Homepage  userData={userData} />
+                <NavBarLayout userData={userData} logoutUser={logoutUser}> 
+                  <Homepage  userData={userData} BACKUP={BACKUP} />
                 </NavBarLayout>
               // </ProtectedRoute>
             }
@@ -182,7 +203,7 @@ function App() {
 
             <Route path="/shop" element={
               // <ProtectedRoute>
-                <NavBarLayout credits={credits} userData={userData} logoutUser={logoutUser}> 
+                <NavBarLayout userData={userData} logoutUser={logoutUser}> 
                   <CardPack updatedData={updatedData} update_credits_and_data={update_credits_and_data}/>
                 </NavBarLayout>
               // </ProtectedRoute>
@@ -191,7 +212,7 @@ function App() {
 
             <Route path="/profile" element={
               // <ProtectedRoute>
-                <NavBarLayout credits={credits} userData={userData} logoutUser={logoutUser}> 
+                <NavBarLayout userData={userData} logoutUser={logoutUser}> 
                   <UserProfile items={userData.items} userData={userData} randomCharBooster={randomCharBooster}/>
                 </NavBarLayout>
               // </ProtectedRoute>
@@ -200,8 +221,8 @@ function App() {
 
             <Route path="/card_album" element={
               // <ProtectedRoute>
-                <NavBarLayout credits={credits} userData={userData} logoutUser={logoutUser}> 
-                  <UserAlbum userData={userData}/>
+                <NavBarLayout userData={userData} logoutUser={logoutUser}> 
+                  <UserAlbum userData={userData} BACKUP={BACKUP}/>
                 </NavBarLayout>
               // </ProtectedRoute>
             }
@@ -209,7 +230,7 @@ function App() {
             
             <Route path="/trade_section" element={
               // <ProtectedRoute>
-                <NavBarLayout credits={credits} userData={userData} logoutUser={logoutUser}> 
+                <NavBarLayout userData={userData} logoutUser={logoutUser}> 
                   <TradeSection userData={userData}/>
                 </NavBarLayout>
               // </ProtectedRoute>
@@ -218,8 +239,17 @@ function App() {
 
             <Route path="/user_items" element={
               // <ProtectedRoute>
-                <NavBarLayout credits={credits} userData={userData} logoutUser={logoutUser}> 
+                <NavBarLayout userData={userData} logoutUser={logoutUser}> 
                   <UserItems userData={userData} randomCharBooster={randomCharBooster} open_pack_and_update_data={open_pack_and_update_data}/>
+                </NavBarLayout>
+              // </ProtectedRoute>
+            }
+            />
+
+            <Route path="/user_settings" element={
+              // <ProtectedRoute>
+                <NavBarLayout userData={userData} logoutUser={logoutUser}> 
+                  <UserSettings userData={userData} update_security={update_security} delete_account={delete_account}/>
                 </NavBarLayout>
               // </ProtectedRoute>
             }

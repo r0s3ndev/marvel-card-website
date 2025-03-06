@@ -83,7 +83,7 @@ router.post("/login", async (req, res) => {
 
         //check if user exists
         const check_if_username_exist = await db.collection("users_list").findOne({username});
-        if(check_if_username_exist && bcrypt.compare(password, check_if_username_exist.password)){
+        if(check_if_username_exist && await bcrypt.compare(password, check_if_username_exist.password)){
             //create session based authentication
             // const sessionId = generateSessionId();
             // const uid = check_if_username_exist._id.toString();
@@ -126,11 +126,34 @@ router.get("/check_user_session", (req, res) => {
     }
 })
 
-// router.get("/get-current-credits", async (req, res) => {
-//     const db = await connectToDatabase(); 
-//     const users = await db.collection('users_list').find({ username: req.body}).toArray();
-//     res.json(user); 
-// })
+router.post("/update_security", async (req, res) => {
+    try {
+        const db = await connectToDatabase(); 
+        const {oldPass, newPass, username} = req.body;
+        console.log("username", username);
+        console.log("oldPass", oldPass);
+        console.log("newPass", newPass);
+
+        const check_password = await db.collection("users_list").findOne({username});
+        if(check_password && await bcrypt.compare(oldPass, check_password.password)){
+            const newHashedPassword = await bcrypt.hash(newPass, 10);
+            await db.collection("users_list").updateOne(
+                { username: username }, 
+                { $set: { password: newHashedPassword } } 
+            );
+            
+            res.status(200).send({ message: 'password updated' });
+        } else {
+            res.status(406).send({ message: 'Old password do not match' });
+        }
+
+
+    } catch (error) {
+        console.error("Error updating security & data:", error);
+        return res.status(500).send("Error updating security & data");
+    }
+    
+})
 
 //update data on db
 router.post("/update_credits_and_data", async (req, res) => {
@@ -189,18 +212,44 @@ router.post("/update_pack_and_data", async (req, res) => {
         console.log("amount", amount);
         // console.log("cards", cards);
 
-        // const updateUser = await db.collection("users_list").findOneAndUpdate(
-        //     {
-        //         username: username,
-        //         "items.id": pack_id
-        //     },
-        //     {
-        //         $inc: {
-        //             "items.$.amount": - amount
-        //         }
-        //     },
-        //     {returnDocument: "after"}
-        // )
+        const updateUser = await db.collection("users_list").findOneAndUpdate(
+            {
+                username: username,
+                "items.id": pack_id
+            },
+            {
+                $inc: {
+                    "items.$.amount": - amount
+                },
+                $push :{
+                    favoriteHeroCard: cards[0]//{$each: cards}
+                }
+            },
+            {returnDocument: "after"}
+        )
+
+        res.json(updateUser);
+
+
+    } catch (error) {
+        console.error("Error updating pack & data:", error);
+        return res.status(500).send("Error updating pack & data");
+    }
+})
+
+router.delete("/delete_user", async (req, res) => {
+    try{
+        const db = await connectToDatabase(); 
+        const {userData} = req.body;
+        const username = userData.username;
+        
+        const result = await db.collection("users_list").deleteOne({ username });
+
+        if (result.deletedCount === 1) {
+            return res.status(200).send({ message: "User deleted successfully" });
+        } else {
+            return res.status(500).send({ message: "Failed to delete user" });
+        }
 
     } catch (error) {
         console.error("Error updating pack & data:", error);

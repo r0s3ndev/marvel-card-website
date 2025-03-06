@@ -1,6 +1,7 @@
 import React from 'react'
 
-function Homepage({userData}) {
+function Homepage({userData, BACKUP}) {
+  console.log(userData);
   return (
     <>
       <div className='main-container'>
@@ -13,7 +14,7 @@ function Homepage({userData}) {
             <div>
               <a href='/card_album'>
                 <img className="homepage-img" alt={userData.favoriteHeroCard[0].name} src={userData.favoriteHeroCard[0].thumbnail.path + "." + userData.favoriteHeroCard[0].thumbnail.extension}/>
-                <p>{userData.favoriteHeroCard.description ? userData.favoriteHeroCard.description : "no description available"}</p>
+                <p>{userData.favoriteHeroCard.description ? userData.favoriteHeroCard.description : BACKUP.DESC}</p>
               </a>
             </div>
           </div>
