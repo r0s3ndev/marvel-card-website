@@ -12,11 +12,10 @@ function UserRegister({randomCharRegister, fetchCard, check_user_before_next_pag
             username: "",
             email: "",
             password: "",
-            favoriteHeroCard: []
+            cards: []
         }
     );
     useEffect(()=>{
-        console.log(randomCharRegister);
         fetchCard();
     }, []);
 
@@ -60,7 +59,7 @@ function UserRegister({randomCharRegister, fetchCard, check_user_before_next_pag
     const handleSelectedCard = (card) => {
         setUserData((prevUserData) => ({
             ...prevUserData,
-            favoriteHeroCard: [...prevUserData.favoriteHeroCard, card]
+            cards: [...prevUserData.cards, card]
         }));
     }
     

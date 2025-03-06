@@ -64,8 +64,9 @@ router.post("/register", async (req, res) =>  {
             username: req.body.username,
             email: req.body.email,
             password: hashedPassword,
+            friends: [],
             items: [],
-            favoriteHeroCard: req.body.favoriteHeroCard
+            cards: req.body.cards
         } 
         // const userData = req.body;
         const result = await db.collection('users_list').insertOne(userData);
@@ -212,7 +213,8 @@ router.post("/update_pack_and_data", async (req, res) => {
         console.log("amount", amount);
         // console.log("cards", cards);
 
-        const updateUser = await db.collection("users_list").findOneAndUpdate(
+        
+        var updateUser = await db.collection("users_list").findOneAndUpdate(
             {
                 username: username,
                 "items.id": pack_id
@@ -222,15 +224,43 @@ router.post("/update_pack_and_data", async (req, res) => {
                     "items.$.amount": - amount
                 },
                 $push :{
-                    favoriteHeroCard: cards[0]//{$each: cards}
+                    cards: cards[0]//{$each: cards}
                 }
             },
             {returnDocument: "after"}
         )
 
-        res.json(updateUser);
+        const check_amount = await db.collection("users_list").findOne(
+            {
+                username: username,
+                "items.id": pack_id
+            },
+            {
+                projection: {
+                    _id: 0,
+                    items: { $elemMatch: {id: pack_id}}
+                }
+            }
+        );
 
+        if(check_amount.items[0].amount < 1){
+            await db.collection("users_list").updateOne(
+                { 
+                    username: username,
+                    "items.id": pack_id
+                },
+                {
+                    $pull: {
+                        items: { amount: { $lte: 0 } }
+                    }
+                }
+            );
+        } 
 
+        const get_recent_update = await db.collection("users_list").findOne({username});
+
+        res.json(get_recent_update);
+        
     } catch (error) {
         console.error("Error updating pack & data:", error);
         return res.status(500).send("Error updating pack & data");

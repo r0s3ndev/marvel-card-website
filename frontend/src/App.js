@@ -30,7 +30,6 @@ function App() {
     return storedData ? JSON.parse(storedData) : [];
   });
   const [updatedData, setUpdatedData] = useState(false);
-  const [credits, setCredits] = useState(userData.credits);
   const isFetchingUser = useRef(true);
 
   //randomize card
@@ -55,7 +54,7 @@ function App() {
         //simulate a loading effect
         setTimeout(() => {
           setUpdatedData(false);
-        }, "2000");
+        }, "1000");
           
         if(userRes){
           localStorage.setItem("userData", JSON.stringify({ ...userData, ...userRes.data}));
@@ -64,7 +63,8 @@ function App() {
       } catch(e) {
         console.error("Error fetching user data:", e);
       } finally {
-        isFetchingUser.current = true;
+        isFetchingUser.current = false;
+        console.log("done");
       }
     }
 
@@ -133,9 +133,16 @@ function App() {
   const update_credits_and_data = async (pack, i) => {
     try{
       const res = await axios.post("http://localhost:5000/users/update_credits_and_data", {username: userData.username, pack: pack, amount: i});
-      setCredits(res.data.credits);
       setUserData(prev => ({ ...prev, ...res.data}));
       localStorage.setItem("userData", JSON.stringify({ ...userData, ...res.data }));
+      // setUserData(prev => {
+      //   if (JSON.stringify(prev) === JSON.stringify(res.data)) {
+      //       return prev; // No update if data is the same
+      //   }
+      //   const updatedUser = { ...prev, ...res.data };
+      //   localStorage.setItem("userData", JSON.stringify(updatedUser));
+      //   return updatedUser;
+      // });
       //to add loading effect on cardPack component
       setUpdatedData(true);
       return res;
@@ -148,14 +155,24 @@ function App() {
 
   const open_pack_and_update_data = async (pack_id, i) => {
     try{
-    
+      
+      setUpdatedData(true);
       const fetchRes = await fetchCard();
       if(fetchRes) {
         const res = await axios.post("http://localhost:5000/users/update_pack_and_data", {username: userData.username, pack_id: pack_id, amount: i, cards: fetchRes});
         setUserData(prev => ({ ...prev, ...res.data}));
         localStorage.setItem("userData", JSON.stringify({ ...userData, ...res.data }));
+        // setUserData(prev => {
+        //   if (JSON.stringify(prev) === JSON.stringify(res.data)) {
+        //       return prev; // No update if data is the same
+        //   }
+        //   const updatedUser = { ...prev, ...res.data };
+        //   localStorage.setItem("userData", JSON.stringify(updatedUser));
+        //   return updatedUser;
+        // });
+        console.log(res);
       }
-      
+    
       
     } catch (error) {
       throw error;
@@ -240,7 +257,7 @@ function App() {
             <Route path="/user_items" element={
               // <ProtectedRoute>
                 <NavBarLayout userData={userData} logoutUser={logoutUser}> 
-                  <UserItems userData={userData} randomCharBooster={randomCharBooster} open_pack_and_update_data={open_pack_and_update_data}/>
+                  <UserItems updatedData={updatedData} userData={userData} open_pack_and_update_data={open_pack_and_update_data}/>
                 </NavBarLayout>
               // </ProtectedRoute>
             }

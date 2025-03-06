@@ -26,14 +26,13 @@ function NavBarLayout({userData, logoutUser, children }) {
                 <Nav className="me-auto">
                     <Nav.Link href="/homepage"> HOME</Nav.Link>
                     <Nav.Link href="/shop"> SHOP</Nav.Link>
+                    <Nav.Link href="/trade_section"> TRADE</Nav.Link>
                     {/* <Nav.Link href="/profile"> PROFILE</Nav.Link> */}
                     <NavDropdown title="PROFILE" id="basic-nav-dropdown">
-                        <NavDropdown.Item href="/profile">USER</NavDropdown.Item>
                         <NavDropdown.Item href="/user_items">
                             ITEMS
                         </NavDropdown.Item>
                         <NavDropdown.Item href="/card_album">ALBUM</NavDropdown.Item>
-                        <NavDropdown.Item href="/trade_section">TRADE</NavDropdown.Item>
                         <NavDropdown.Item href="/user_settings">SETTINGS</NavDropdown.Item>
                         <NavDropdown.Divider />
                         <NavDropdown.Item onClick={handleLogout}>

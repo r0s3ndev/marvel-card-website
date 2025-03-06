@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 function CardPack({updatedData, update_credits_and_data}) {
     const pack = {
         ONE : {id: 1, price: 10, src: "https://www.goblins.net/files/styles/zoom/public/images/game/bgg/marvel-champions-card-game-ant-man-hero-pack.png?itok=XR4CeWFH"},
