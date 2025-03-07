@@ -14,7 +14,9 @@ const auth = `?limit=10&ts=${time_stamp}&apikey=${public_key}&hash=${hash}`;
 
 router.get("/characters", async (req, res) => {
     try {
-        const apiUrl = url + `v1/public/characters` + auth;
+        const total = 1562;
+        const randomOffset = Math.floor(Math.random() * (total - 5) + 5);
+        const apiUrl = url + `v1/public/characters` + auth + `&offset=${randomOffset}`;
         // console.log(apiUrl);
         const response = await fetch(apiUrl);
         const json = await response.json();

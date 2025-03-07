@@ -214,7 +214,7 @@ router.post("/update_pack_and_data", async (req, res) => {
         // console.log("cards", cards);
 
         
-        var updateUser = await db.collection("users_list").findOneAndUpdate(
+        await db.collection("users_list").updateOne(
             {
                 username: username,
                 "items.id": pack_id
@@ -264,6 +264,36 @@ router.post("/update_pack_and_data", async (req, res) => {
     } catch (error) {
         console.error("Error updating pack & data:", error);
         return res.status(500).send("Error updating pack & data");
+    }
+})
+
+
+router.post("/sell_card", async (req, res) => {
+    try{
+        const db = await connectToDatabase(); 
+        const {c_id, username, amount} = req.body;
+        console.log(c_id);
+        var updateUser = await db.collection("users_list").findOneAndUpdate(
+            {
+                username: username,
+                "cards.id": c_id
+            },
+            {
+                
+                $inc: {
+                    credits: 10
+                },
+                $pull :{
+                    cards: {id: c_id}
+                }
+            },
+            { returnDocument: "after"}
+        )
+        res.json(updateUser);
+        
+    } catch (error) {
+        console.error("Error selling pack & updating data:", error);
+        return res.status(500).send("Error  selling pack & updating data");
     }
 })
 

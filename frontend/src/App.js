@@ -6,7 +6,7 @@ import Main from "./components/Main";
 import UserRegister from "./components/authentication/UserRegister";
 import UserLogin from "./components/authentication/UserLogin";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from "axios"
+import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import ProtectedRoute from "./components/custom/ProtectedRoute";
 import NavBarLayout from "./components/NavBarLayout";
@@ -78,7 +78,6 @@ function App() {
     try {
       const res = await axios.get("http://localhost:5000/api/characters");
       const characterData = res.data;
-      console.log("characterData ", characterData);
 
       //ramdomize character shown in the registration from
       const randomCharRegisterSelection = shuffleArray(characterData).slice(0, 3);
@@ -179,6 +178,17 @@ function App() {
     }
   }
 
+  const sell_card_for_credits = async (c_id) => {
+    try{
+      setUpdatedData(true);
+      const res = await axios.post("http://localhost:5000/users/sell_card", {c_id: c_id, username : userData.username, amount: 1});
+      setUserData(prev => ({ ...prev, ...res.data}));
+      localStorage.setItem("userData", JSON.stringify({ ...userData, ...res.data }));
+    } catch(error) {
+      return error.response;
+    }
+  } 
+
   const update_security = async (updateData) => {
     const {oldPass, newPass} = updateData;
     try{
@@ -212,7 +222,7 @@ function App() {
            <Route path="/homepage" element={
               // <ProtectedRoute>
                 <NavBarLayout userData={userData} logoutUser={logoutUser}> 
-                  <Homepage  userData={userData} BACKUP={BACKUP} />
+                  <Homepage  userData={userData} />
                 </NavBarLayout>
               // </ProtectedRoute>
             }
@@ -239,7 +249,7 @@ function App() {
             <Route path="/card_album" element={
               // <ProtectedRoute>
                 <NavBarLayout userData={userData} logoutUser={logoutUser}> 
-                  <UserAlbum userData={userData} BACKUP={BACKUP}/>
+                  <UserAlbum updatedData={updatedData} userData={userData} sell_card_for_credits={sell_card_for_credits}/>
                 </NavBarLayout>
               // </ProtectedRoute>
             }

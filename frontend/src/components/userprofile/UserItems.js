@@ -5,6 +5,7 @@ function UserItems({updatedData, userData, open_pack_and_update_data}) {
     const sortedItems = localItems.sort((a, b) => a.id - b.id);
     
     useEffect(()=>{
+        console.log("localItems", localItems);
         setLocalItems(userData.items);
     }, [userData])
     
@@ -19,7 +20,7 @@ function UserItems({updatedData, userData, open_pack_and_update_data}) {
                     <div>
                         <h2> Your items </h2>
                         <div className='booster-selection-div'>
-                            {updatedData && (
+                           {updatedData && (
                                 <div className='loading-overlay-cardPack'>
                                     <div className="loader">
                                         <div className="circle"></div>
@@ -29,18 +30,25 @@ function UserItems({updatedData, userData, open_pack_and_update_data}) {
                                     </div>
                                 </div>
                             )}
-                            
-                            {sortedItems.map((i) => (
-                                // when hovering must show "OPEN"
-                                <div key={i.id} className='booster-pack-div'>
-                                    <img className={i.id === 1 ? "booter-pack-img one" : i.id === 2 ?  "booter-pack-img two" : i.id === 3 ?  "booter-pack-img three" :  "booter-pack-img one" } alt={"booster_" + i.id} src= {i.src} />
+                            {localItems.length === 0 ?  
+                                (
+                                    <div> No item available. <a href='/shop'>BUY</a> some packs</div>
+                                ): 
+                                (
+                                    <div>
+                                        {sortedItems.map((i) => (
+                                            // when hovering must show "OPEN"
+                                            <div key={i.id} className='booster-pack-div'>
+                                                <img className={i.id === 1 ? "booter-pack-img one" : i.id === 2 ?  "booter-pack-img two" : i.id === 3 ?  "booter-pack-img three" :  "booter-pack-img one" } alt={"booster_" + i.id} src= {i.src} />
 
-                                    {/* <p>src: {i.src}</p> */}
-                                    <p>amount: {i.amount}</p>
-                                    <button onClick={() => openPack(i.id)}> OPEN </button>
-                                </div>
-                            ))}
-                        
+                                                {/* <p>src: {i.src}</p> */}
+                                                <p>amount: {i.amount}</p>
+                                                <button onClick={() => openPack(i.id)}> OPEN </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) 
+                            }
                         </div>
                     </div>
                 </div>
