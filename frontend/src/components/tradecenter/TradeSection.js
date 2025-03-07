@@ -5,6 +5,7 @@ function TradeSection() {
     <>
       <div>
         <div className="main-container">
+          <h1>Available Trade</h1>
           <a href='/card_album'> Select card</a>
         </div>
       </div>

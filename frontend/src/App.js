@@ -249,7 +249,7 @@ function App() {
             <Route path="/card_album" element={
               // <ProtectedRoute>
                 <NavBarLayout userData={userData} logoutUser={logoutUser}> 
-                  <UserAlbum updatedData={updatedData} userData={userData} sell_card_for_credits={sell_card_for_credits}/>
+                  <UserAlbum updatedData={updatedData} userData={userData} sell_card_for_credits={sell_card_for_credits} BACKUP={BACKUP}/>
                 </NavBarLayout>
               // </ProtectedRoute>
             }
