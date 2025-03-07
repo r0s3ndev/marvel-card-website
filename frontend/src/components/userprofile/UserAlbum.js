@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import CustomCardModal from '../custom/CustomCardModal';
-
-function UserAlbum({updatedData, userData, sell_card_for_credits, BACKUP}) {
+import { useNavigate } from 'react-router';
+function UserAlbum({create_trade, updatedData, userData, sell_card_for_credits, BACKUP}) {
+  const navigate = useNavigate();
   const [modalShow, setModalShow] = useState(false);
   const [modalCardInfo, setModalCardInfo] = useState();
   const [localCards, setlLcalCards] = useState(userData.cards);
@@ -15,12 +16,17 @@ function UserAlbum({updatedData, userData, sell_card_for_credits, BACKUP}) {
     setModalShow(true);
     setModalCardInfo(card);
   }
+
   const sellCard = (c_id) => {
     sell_card_for_credits(c_id);
   }
 
-  const tradeCard = (c_id) => {
-    console.log("trade card id", c_id)
+  const selected_card_to_trade = (card) => {
+    create_trade(card);
+
+    setTimeout(()=> {
+      navigate("/trade_section");
+    }, 1000)
   }
 
   return (
@@ -28,8 +34,6 @@ function UserAlbum({updatedData, userData, sell_card_for_credits, BACKUP}) {
         <div>
             <div className='main-container'>
               <h1>Your album:</h1>
-              <br/>
-              <button>select</button>
               {/* cardi list  */}
               {updatedData && (
                   <div className='loading-overlay-cardPack'>
@@ -44,8 +48,8 @@ function UserAlbum({updatedData, userData, sell_card_for_credits, BACKUP}) {
               <div>
                 <div className='user-album-div'>
                   {sortedCards.map((c, i) => (
-                    <div key={i++}  onClick={() => selected_card(c)}>
-                      <div className='image-div'>
+                    <div key={i++} >
+                      <div className='image-div' onClick={() => selected_card(c)}>
                         <p className='image-id'>{c.id}</p>
                         <img className="card-img" alt={c.name} src={c.thumbnail.path + "." + c.thumbnail.extension}/>
                         <p className='image-text'>
@@ -54,7 +58,7 @@ function UserAlbum({updatedData, userData, sell_card_for_credits, BACKUP}) {
                       </div>
 
                       <button onClick={()=>sellCard(c.id)}> Sell</button>
-                      <button onClick={()=>tradeCard(c.id)}> Trade</button>
+                      <button onClick={()=>selected_card_to_trade(c)}> Trade</button>
                     </div>
                   ))}
                 </div>

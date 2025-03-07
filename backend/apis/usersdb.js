@@ -279,7 +279,6 @@ router.post("/sell_card", async (req, res) => {
                 "cards.id": c_id
             },
             {
-                
                 $inc: {
                     credits: 10
                 },

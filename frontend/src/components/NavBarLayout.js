@@ -26,7 +26,7 @@ function NavBarLayout({userData, logoutUser, children }) {
                 <Nav className="me-auto">
                     <Nav.Link href="/homepage"> HOME</Nav.Link>
                     <Nav.Link href="/shop"> SHOP</Nav.Link>
-                    <Nav.Link href="/trade_section"> TRADE</Nav.Link>
+                    <Nav.Link href="/trade_list"> TRADE</Nav.Link>
                     {/* <Nav.Link href="/profile"> PROFILE</Nav.Link> */}
                     <NavDropdown title="PROFILE" id="basic-nav-dropdown">
                         <NavDropdown.Item href="/user_items">

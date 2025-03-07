@@ -1,6 +1,6 @@
 
 body {
-    background: rgba(31, 30, 51, 0.85);
+    background: rgb(3, 1, 43);
     background: linear-gradient(90deg, #070F2B 0%, #1B1A55 35%, #535C91 50.00%) 100%);
 }
 
@@ -346,4 +346,16 @@ body {
 .modal-container > div {
     flex-basis: 0;
     /* text-align: center; */
+}
+
+
+/* TRADE SECTION */
+
+.trade-main-div{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.trade-main-div > div{
+    
 }
