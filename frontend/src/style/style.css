@@ -388,6 +388,10 @@ body {
 }
 
 
+.selected-card {
+    background-color: #ddd;
+}
+
 
 
 

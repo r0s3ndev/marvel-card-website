@@ -1,9 +1,23 @@
 import React, { useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-function CustomTradeCardModal({show, onHide, modalCardInfo, userData}) {
+function CustomTradeCardModal({show, onHide, modalCardInfo, userData, setModalCardInfo}) {
     const [availableCards, setAvailableCards] = useState(userData.cards);
-    console.log(userData.cards);
+    const sortedCards = modalCardInfo.length > 0 ? [
+        ...availableCards.filter(card => card.name === modalCardInfo[0].name), // Extract the selected card
+        ...availableCards.filter(card => card.name !== modalCardInfo[0].name)  // Append the rest
+    ] : 
+    availableCards ;
+
+
+    const handleChecboxChange = (e, card) => {
+        setModalCardInfo((prev) => 
+            prev.some((i) => i.id === card.id) 
+                ? prev.filter((i) => i.id !== card.id)  // Remove if already selected
+                : [...prev, card]                      // Add if not selected
+        );
+    }
+
     return (
         <Modal
           show={show}
@@ -14,7 +28,7 @@ function CustomTradeCardModal({show, onHide, modalCardInfo, userData}) {
         >
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
-              Select more heroes (max: other 2)
+              Select more heroes
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -22,13 +36,13 @@ function CustomTradeCardModal({show, onHide, modalCardInfo, userData}) {
                 <div className='table-div'>
                     <table className='table-card'>
                         <tbody>
-                            {availableCards.map((card, i) => (
-                                <tr key={i++}>
+                            {sortedCards.map((card, i) => (
+                                <tr key={i} className={modalCardInfo[0].id === card.id ? "selected-card" : ""}>
                                     <td>{card.id}</td>
                                     <td>{card.name}</td>
                                     <td>
                                         <img className="modal-card-img" alt={card.name} src={card.thumbnail.path + "." + card.thumbnail.extension}/>
-                                        <input type='checkbox'/>
+                                        <input onChange={(e)=>handleChecboxChange(e, card)} type='checkbox' checked={modalCardInfo.some((c) => c.id === card.id ? "checked" : null)} disabled={modalCardInfo[0].id === card.id ? "disabled" : null}/>
                                     </td>
                                 </tr>
                             ))}
@@ -40,8 +54,7 @@ function CustomTradeCardModal({show, onHide, modalCardInfo, userData}) {
             
           </Modal.Body>
           <Modal.Footer>
-            <Button >Select</Button>
-            <Button onClick={onHide}>Close</Button>
+            <Button onClick={onHide}>Select</Button>
           </Modal.Footer>
         </Modal>
       );
