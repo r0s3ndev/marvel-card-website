@@ -5,7 +5,6 @@ function UserItems({updatedData, userData, open_pack_and_update_data}) {
     const sortedItems = localItems.sort((a, b) => a.id - b.id);
     
     useEffect(()=>{
-        console.log("localItems", localItems);
         setLocalItems(userData.items);
     }, [userData])
     
@@ -35,7 +34,7 @@ function UserItems({updatedData, userData, open_pack_and_update_data}) {
                                     <div> No item available. <a href='/shop'>BUY</a> some packs</div>
                                 ): 
                                 (
-                                    <div>
+                                    <>
                                         {sortedItems.map((i) => (
                                             // when hovering must show "OPEN"
                                             <div key={i.id} className='booster-pack-div'>
@@ -46,7 +45,7 @@ function UserItems({updatedData, userData, open_pack_and_update_data}) {
                                                 <button onClick={() => openPack(i.id)}> OPEN </button>
                                             </div>
                                         ))}
-                                    </div>
+                                    </>
                                 ) 
                             }
                         </div>

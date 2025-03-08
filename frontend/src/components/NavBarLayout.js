@@ -20,7 +20,7 @@ function NavBarLayout({userData, logoutUser, children }) {
     }
   return (
     <>
-        <Navbar bg="dark" data-bs-theme="dark" sticky="top">
+        <Navbar data-bs-theme="dark" sticky="top">
             <Container>
                 <Navbar.Brand href="#home">PWM-Project</Navbar.Brand>
                 <Nav className="me-auto">

@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router';
+import CustomTradeCardModal from '../custom/CustomTradeCardModal';
 
 function TradeSection({userData}) {
+  const [modalShow, setModalShow] = useState(false);
+  const [modalCardInfo, setModalCardInfo] = useState();
   const [card2Trade, setCard2Trade] = useState(() => {
     const cardData = localStorage.getItem("cardTrade");
     return cardData ? JSON.parse(cardData) : [];
   });
+
+  const selected_card = (card) => {
+    setModalShow(true);
+    setModalCardInfo(card);
+    console.log("card in the trade sec", card);
+  }
 
   return (
     <>
@@ -17,7 +26,7 @@ function TradeSection({userData}) {
           <h2> Card selected: </h2>
 
           <div className='trade-main-div'>
-            <div className='image-div' >
+            <div className='image-div' onClick={() => selected_card(card2Trade)}>
               <p className='image-id'> {card2Trade.id}</p>
               <img className="card-img" alt={card2Trade.name} src={card2Trade.thumbnail.path + "." + card2Trade.thumbnail?.extension}/>
               <p className='image-text'> 
@@ -35,6 +44,15 @@ function TradeSection({userData}) {
             </div>
           </div>
         </div>
+
+        {modalCardInfo && (  
+          <CustomTradeCardModal
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            modalCardInfo={modalCardInfo}
+            userData={userData}
+          />
+        )}
        
       </div>
        
