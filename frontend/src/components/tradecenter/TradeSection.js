@@ -1,28 +1,51 @@
-import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router';
+import React, { useState } from 'react';
 import CustomTradeCardModal from '../custom/CustomTradeCardModal';
 import { Badge } from 'react-bootstrap';
 
 function TradeSection({userData}) {
+  const [message, setMessage] = useState("");
   const [modalShow, setModalShow] = useState(false);
   const [card2Trade, setCard2Trade] = useState(() => {
     const cardData = localStorage.getItem("cardTrade");
     return cardData ? JSON.parse(cardData) : [];
   });
-  
   const [modalCardInfo, setModalCardInfo] = useState([card2Trade]);
+  const [tradeInfo, setTradeInfo] = useState({
+    userdata: userData,
+    request: "",
+    cards: []
+  })
 
+  const handleRequest = (e) => {
+    e.preventDefault();
+    const { name, value } = e.target;
+      setTradeInfo((prevState) => ({
+          ...prevState,
+          [name]: value,
+          cards: prevState.cards === modalCardInfo ? prevState.cards : modalCardInfo
+      }));
+  }
 
   const selected_card = () => {
     setModalShow(true);
-    console.log(modalCardInfo);
+    setTradeInfo((prevState) => ({
+      ...prevState,
+      request: ""
+  }));
+  }
+
+  const send_trade = () => {
+    if(tradeInfo.request === "") {
+      setMessage("Type \"none\" if you have no specific request!");
+    } else {
+      console.log(tradeInfo);
+    }
   }
 
   return (
     <>
       <div>
         <div className="main-container">
-          
           <h1>Create a trade</h1>
           <a href='/card_album'> Select more card</a>
           <h2> Card selected 
@@ -47,11 +70,12 @@ function TradeSection({userData}) {
 
             <div>
               <label htmlFor='request'> Request: </label><br/>
-              <input type='text'></input>
+              <input type='text' id="request" name="request" value={tradeInfo.request} onChange={handleRequest}></input>
+              <br/>{message && message}
             </div>
 
             <div>
-              <button>Post trade</button>
+              <button onClick={send_trade}>Post trade</button>
             </div>
           </div>
         </div>
