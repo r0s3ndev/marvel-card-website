@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import CustomCardModal from '../custom/CustomCardModal';
 import { useNavigate } from 'react-router';
-function UserAlbum({create_trade, updatedData, userData, sell_card_for_credits, BACKUP}) {
+function UserAlbum({select_card_to_trade, updatedData, userData, sell_card_for_credits, BACKUP}) {
   const navigate = useNavigate();
   const [modalShow, setModalShow] = useState(false);
   const [modalCardInfo, setModalCardInfo] = useState();
@@ -22,7 +22,7 @@ function UserAlbum({create_trade, updatedData, userData, sell_card_for_credits, 
   }
 
   const selected_card_to_trade = (card) => {
-    create_trade(card);
+    select_card_to_trade(card);
 
     setTimeout(()=> {
       navigate("/trade_section");

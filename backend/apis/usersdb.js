@@ -115,6 +115,33 @@ router.post("/logout", (req, res) => {
     });
 })
 
+//trade api
+
+router.post("/create_trade", async (req, res) => {
+    try{
+        const db = await connectToDatabase(); 
+        const {userdata, request, cards} = req.body;
+        console.log("userdata", userdata);
+        console.log("request", request);
+        console.log("cards", cards);
+        const trade_data = {
+            from_user1: userdata,
+            to_user2: Object,
+            user1_cards: cards,
+            user2_cards: [],
+            user1_request: request,
+            status: ""
+        } 
+
+        const result = await db.collection('trade_list').insertOne(trade_data);
+        return res.status(201).json({ message: 'Trade created successfully', userId: result.insertedId });
+
+    } catch (error) {
+        console.error("Error while creating a trade:", error);
+        return res.status(500).send("Error while creating a trade");
+    }
+})
+
 
 //check user session
 router.get("/check_user_session", (req, res) => {

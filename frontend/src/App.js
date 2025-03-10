@@ -21,7 +21,6 @@ import TradeList from "./components/tradecenter/TradeList";
 const BACKUP = {
   DESC : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 }
-
 function App() {
   const [randomCharRegister, setRandomCharRegister] = useState();
   const [randomCharBooster, setRandomCharBooster] = useState();
@@ -194,8 +193,7 @@ function App() {
     }
   } 
   
-  const create_trade = (selected_card) => {
-    console.log("card to trade", selected_card);
+  const select_card_to_trade = (selected_card) => {
     localStorage.setItem("cardTrade", JSON.stringify(selected_card));  
   }
 
@@ -217,6 +215,20 @@ function App() {
       return error.response;
     }
   }
+
+  const create_trade = async (trade_obj) => {
+    try{
+      console.log("creating trade", trade_obj);
+      const res = await axios.post("http://localhost:5000/users/create_trade", trade_obj);
+      console.log(res);
+
+    } catch(error) {
+      return error.response;
+    }
+   
+  }
+
+
 
   return (
     <>
@@ -259,7 +271,7 @@ function App() {
             <Route path="/card_album" element={
               // <ProtectedRoute>
                 <NavBarLayout userData={userData} logoutUser={logoutUser}> 
-                  <UserAlbum create_trade={create_trade} updatedData={updatedData} userData={userData} sell_card_for_credits={sell_card_for_credits} BACKUP={BACKUP}/>
+                  <UserAlbum select_card_to_trade={select_card_to_trade} updatedData={updatedData} userData={userData} sell_card_for_credits={sell_card_for_credits} BACKUP={BACKUP}/>
                 </NavBarLayout>
               // </ProtectedRoute>
             }
@@ -268,7 +280,7 @@ function App() {
             <Route path="/trade_section" element={
               // <ProtectedRoute>
                 <NavBarLayout userData={userData} logoutUser={logoutUser}> 
-                  <TradeSection userData={userData}/>
+                  <TradeSection userData={userData} create_trade={create_trade}/>
                 </NavBarLayout>
               // </ProtectedRoute>
             }

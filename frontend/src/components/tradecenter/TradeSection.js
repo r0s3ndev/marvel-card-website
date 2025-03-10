@@ -1,8 +1,13 @@
+// FIX THE MESSAGE in "send_trade".
+// FIX "send_trade": onChange must resmove the text error.
+
 import React, { useState } from 'react';
 import CustomTradeCardModal from '../custom/CustomTradeCardModal';
 import { Badge } from 'react-bootstrap';
+import { useNavigate } from 'react-router';
 
-function TradeSection({userData}) {
+function TradeSection({userData, create_trade}) {
+  const navigate = useNavigate();
   const [message, setMessage] = useState("");
   const [modalShow, setModalShow] = useState(false);
   const [card2Trade, setCard2Trade] = useState(() => {
@@ -38,7 +43,11 @@ function TradeSection({userData}) {
     if(tradeInfo.request === "") {
       setMessage("Type \"none\" if you have no specific request!");
     } else {
-      console.log(tradeInfo);
+      setMessage("")
+      create_trade(tradeInfo);
+      setTimeout(()=>{
+        navigate("/card_album");
+      }, 2000);
     }
   }
 

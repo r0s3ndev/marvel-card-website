@@ -33,8 +33,8 @@ app.use(
 
 app.use('/public', express.static(path.join(appRoot, 'src/public')));
 app.use(express.static(path.join(appRoot, 'src/views')));
-app.use(express.json());
-app.use(bodyParser.json());
+// app.use(express.json());
+app.use(bodyParser.json({limit: "50mb"}));
 app.use(cookies());
 
 // Use the API routes
