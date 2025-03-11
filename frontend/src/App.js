@@ -225,7 +225,16 @@ function App() {
     } catch(error) {
       return error.response;
     }
-   
+  }
+
+  const get_trade = async () => {
+    try{
+      const res = await axios.get("http://localhost:5000/users/get_trades");
+      return res;
+
+    } catch(error) {
+      return error.response;
+    }
   }
 
 
@@ -289,7 +298,7 @@ function App() {
             <Route path="/trade_list" element={
               // <ProtectedRoute>
                 <NavBarLayout userData={userData} logoutUser={logoutUser}> 
-                  <TradeList userData={userData} />
+                  <TradeList get_trade={get_trade}/>
                 </NavBarLayout>
               // </ProtectedRoute>
             }

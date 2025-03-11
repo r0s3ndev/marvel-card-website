@@ -116,7 +116,6 @@ router.post("/logout", (req, res) => {
 })
 
 //trade api
-
 router.post("/create_trade", async (req, res) => {
     try{
         const db = await connectToDatabase(); 
@@ -133,12 +132,27 @@ router.post("/create_trade", async (req, res) => {
             status: ""
         } 
 
+        console.log(request);
+
         const result = await db.collection('trade_list').insertOne(trade_data);
         return res.status(201).json({ message: 'Trade created successfully', userId: result.insertedId });
 
     } catch (error) {
         console.error("Error while creating a trade:", error);
         return res.status(500).send("Error while creating a trade");
+    }
+})
+
+router.get("/get_trades", async(req, res) => {
+    try{
+        console.log("fetching cards..");
+        const db = await connectToDatabase(); 
+        const trades = await db.collection('trade_list').find().toArray();
+        res.json(trades);
+
+    } catch (error) {
+        console.error("Error while fetching trade:", error);
+        return res.status(500).send("Error while fetching trad");
     }
 })
 
