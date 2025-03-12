@@ -20,7 +20,7 @@ function Homepage({userData}) {
           </div>
 
           <div>
-            <a href='/trade_section'>
+            <a href='/trade_list'>
               <div style={{backgroundColo:"blue", border: "1px solid black", width: "100%"}}>
                 TRADE section
               </div>

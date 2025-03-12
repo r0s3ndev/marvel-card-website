@@ -19,23 +19,31 @@ function TradeList({get_trade}) {
           <h1>Available Trade</h1>
           <a href='/card_album'> Select card</a>
 
-          <div className='user-album-div'>
-            {currentTradesAvailable && 
-              currentTradesAvailable.map((trade) => (
-                <div key={trade._id}>
-                  <p>trade from {trade.from_user1.username}</p>
-                  <div className='image-div'>
-                    <p className='image-id'>{trade.user1_cards[0].id}</p>
-                    <img className="card-img" alt={trade.user1_cards[0].name} src={trade.user1_cards[0].thumbnail.path + "." + trade.user1_cards[0].thumbnail.extension}/>
-                    <p className='image-text'>
-                      {trade.user1_cards[0].name.replace(/\s*\(.*$/, '')} <br/>
-                    </p>
-                  </div>
-                  <p>request: {trade.user1_request}</p>
-                  
-                </div>
-              ))
-            }
+          <div className='table-div'>
+            <table className='table-card'>
+            <tr>
+              <th>name</th>
+              <th>user</th>
+              <th>request</th>
+              <th>img</th>
+              <th>action</th>
+            </tr>
+              <tbody>
+                {currentTradesAvailable && 
+                  currentTradesAvailable.map((trade) => (
+                    <tr>
+                        <td>{trade.user1_cards[0].name}</td>
+                        <td>{trade.from_user1.username}</td>
+                        <td>{trade.user1_request}</td>
+                        <td>
+                          <img className="table-card-img" alt={trade.user1_cards[0].name} src={trade.user1_cards[0].thumbnail.path + "." + trade.user1_cards[0].thumbnail.extension}/>
+                        </td>
+                        <td><button>select</button></td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
           </div>
 
         </div>

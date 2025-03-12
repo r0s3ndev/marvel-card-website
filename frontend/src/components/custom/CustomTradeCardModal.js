@@ -44,7 +44,7 @@ function CustomTradeCardModal({show, onHide, modalCardInfo, userData, setModalCa
                                     <td>{card.id}</td>
                                     <td>{card.name}</td>
                                     <td>
-                                        <img className="modal-card-img" alt={card.name} src={card.thumbnail.path + "." + card.thumbnail.extension}/>
+                                        <img className="table-card-img" alt={card.name} src={card.thumbnail.path + "." + card.thumbnail.extension}/>
                                         <input onChange={(e)=>handleChecboxChange(e, card)} type='checkbox' checked={modalCardInfo.some((c) => c.id === card.id ? "checked" : null)} disabled={modalCardInfo[0].id === card.id ? "disabled" : null}/>
                                     </td>
                                 </tr>
