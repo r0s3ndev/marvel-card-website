@@ -156,7 +156,6 @@ router.get("/get_trades", async(req, res) => {
     }
 })
 
-
 //check user session
 router.get("/check_user_session", (req, res) => {
     if(req.session.userSession){
