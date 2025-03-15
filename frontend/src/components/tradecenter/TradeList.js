@@ -29,14 +29,13 @@ function TradeList({get_trade, BACKUP}) {
           <h1>Available Trade</h1>
           <a href='/card_album'> Select card</a>
 
-          <div className='table-div'>
             {currentTradesAvailable && 
               currentTradesAvailable.map((trade, i) => (
                 <Accordion defaultActiveKey="1" key={i}>
                   <Accordion.Item eventKey="0">
-                    <Accordion.Header>
-                      
-                          <p>{trade.user1_cards[0].name}</p>
+                      <Accordion.Header>
+                        {/* <div className='accordion-div'> */}
+                          <h5>{trade.user1_cards[0].name}</h5>
                           <p>{trade.from_user1.username}</p>
                           <p>{trade.user1_request}</p>
                           <p>
@@ -44,7 +43,7 @@ function TradeList({get_trade, BACKUP}) {
                             {trade.user1_cards.length}
                           </p>
                           <a href='£'>select</a>
-                     
+                        {/* </div>   */}
                     </Accordion.Header>
                       
                     
@@ -70,35 +69,7 @@ function TradeList({get_trade, BACKUP}) {
                 </Accordion>
               ))
             }
-          </div>
-
-          <Accordion defaultActiveKey="0">
-            <Accordion.Item eventKey="0">
-              <Accordion.Header>Accordion Item #1</Accordion.Header>
-              <Accordion.Body>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                aliquip ex ea commodo consequat. Duis aute irure dolor in
-                reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                culpa qui officia deserunt mollit anim id est laborum.
-              </Accordion.Body>
-            </Accordion.Item>
-            <Accordion.Item eventKey="1">
-              <Accordion.Header>Accordion Item #2</Accordion.Header>
-              <Accordion.Body>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                aliquip ex ea commodo consequat. Duis aute irure dolor in
-                reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                culpa qui officia deserunt mollit anim id est laborum.
-              </Accordion.Body>
-            </Accordion.Item>
-          </Accordion>
-
+      
         </div>
 
         {currentTradesAvailable && 

@@ -405,3 +405,9 @@ body {
 .trade-main-div > div{
     
 }
+
+
+.accordion-div{
+    display: flex;
+    gap: 100px;
+}
