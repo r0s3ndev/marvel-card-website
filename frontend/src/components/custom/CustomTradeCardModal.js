@@ -29,7 +29,7 @@ function CustomTradeCardModal({show, onHide, modalCardInfo, userData, setModalCa
         >
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
-              Select more heroes
+              Select more heroes 
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>

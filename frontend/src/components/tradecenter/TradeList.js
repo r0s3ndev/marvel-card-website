@@ -5,8 +5,6 @@ import Accordion from 'react-bootstrap/Accordion';
 
 function TradeList({get_trade, BACKUP}) {
   const [currentTradesAvailable, setCurrentTradesAvailable] = useState([]);
-  const [modalShow, setModalShow] = useState(false);
-  const [modalData, setModalData] = useState([]);
   
   useEffect(()=>{
     const getTrade = async () =>{
@@ -17,9 +15,8 @@ function TradeList({get_trade, BACKUP}) {
     getTrade()
   }, []);
 
-  const open_trade_modal = (data) => {
-    setModalShow(true)
-    setModalData([data]);
+  const open_trade_page = (data) => {
+    console.log(data)
   } 
   
   return (
@@ -39,10 +36,9 @@ function TradeList({get_trade, BACKUP}) {
                           <p>{trade.from_user1.username}</p>
                           <p>{trade.user1_request}</p>
                           <p>
-                            <img onClick={() => open_trade_modal(trade)} className="table-card-img" alt={trade.user1_cards[0].name} src={trade.user1_cards[0].thumbnail.path + "." + trade.user1_cards[0].thumbnail.extension}/>
+                            <img className="table-card-img" alt={trade.user1_cards[0].name} src={trade.user1_cards[0].thumbnail.path + "." + trade.user1_cards[0].thumbnail.extension}/>
                             {trade.user1_cards.length}
                           </p>
-                          <a href='£'>select</a>
                         {/* </div>   */}
                     </Accordion.Header>
                       
@@ -62,6 +58,8 @@ function TradeList({get_trade, BACKUP}) {
                               </div>
                             </div>
                           ))}
+                          
+                        <button onClick={() => open_trade_page(trade)}>select</button>
                         </Accordion.Body>
                             
                       
@@ -72,15 +70,7 @@ function TradeList({get_trade, BACKUP}) {
       
         </div>
 
-        {currentTradesAvailable && 
-        (
-          <CustomAvailableTrade
-            show={modalShow}
-            onHide={() => setModalShow(false)}
-            modalCardInfo={modalData}
-            BACKUP={BACKUP}
-          />
-        )}
+    
       </div>
        
     </>
