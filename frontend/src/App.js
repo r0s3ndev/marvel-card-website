@@ -239,6 +239,7 @@ function App() {
 
 
 
+
   return (
     <>
       <Router>
@@ -298,7 +299,7 @@ function App() {
             <Route path="/trade_list" element={
               // <ProtectedRoute>
                 <NavBarLayout userData={userData} logoutUser={logoutUser}> 
-                  <TradeList get_trade={get_trade} BACKUP={BACKUP}/>
+                  <TradeList get_trade={get_trade} userData={userData} BACKUP={BACKUP}/>
                 </NavBarLayout>
               // </ProtectedRoute>
             }

@@ -3,7 +3,9 @@ import CustomAvailableTrade from '../custom/CustomAvailableTrade';
 import Accordion from 'react-bootstrap/Accordion';
 
 
-function TradeList({get_trade, BACKUP}) {
+function TradeList({get_trade, userData, BACKUP}) {
+  const [modalCardInfo, setModalCardInfo] = useState();
+  const [modalShow, setModalShow] = useState(false);
   const [currentTradesAvailable, setCurrentTradesAvailable] = useState([]);
   
   useEffect(()=>{
@@ -16,7 +18,8 @@ function TradeList({get_trade, BACKUP}) {
   }, []);
 
   const open_trade_page = (data) => {
-    console.log(data)
+    setModalCardInfo(data);
+    setModalShow(true);
   } 
   
   return (
@@ -69,6 +72,16 @@ function TradeList({get_trade, BACKUP}) {
             }
       
         </div>
+
+        {modalCardInfo && (  
+              <CustomAvailableTrade
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+                userData={userData}
+                modalCardInfo={modalCardInfo}
+                BACKUP={BACKUP}
+              />
+            )}
 
     
       </div>

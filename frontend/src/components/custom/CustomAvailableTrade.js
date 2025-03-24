@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-function CustomAvailableTrade({show, onHide, modalCardInfo, userData, BACKUP}) {
+function CustomAvailableTrade({show, onHide, userData, modalCardInfo, BACKUP}) {
     const [currentUserCardList, setCurrentUserCardList] = useState(userData.cards);
 
-  
-    console.log(modalCardInfo);
+  console.log(modalCardInfo);
     return (
         <Modal
             show={show}
@@ -20,26 +19,20 @@ function CustomAvailableTrade({show, onHide, modalCardInfo, userData, BACKUP}) {
                     <p>Select card to trade </p>
                 </Modal.Title>
             </Modal.Header>
-                {/* {modalCardInfo && modalCardInfo.map((card, i) => (
-                
-                    <Modal.Body key={i}>
-                        <div>
-                            <div>
-                                {console.log(card)}
-                                
-                            </div>
-                            
-                        </div>
-                    </Modal.Body>
-                
-                ))} */}
-
             <Modal.Body>
                 <div>
-                    <div className='table-div'>
+                    <div style={{display: "flex"}}>
+
+                        <div>
+                        
+                            <p>{modalCardInfo.from_user1.toString()}</p>
+                            <p>{modalCardInfo.user1_request.toString()}</p>
+                        
+                        </div>
                         
                         <table className='table-card'>
-                            <tbody>
+                            <tbody >
+                    
                                 {currentUserCardList.map((card, i) => (
                                     
                                     <tr key={i}>
@@ -49,8 +42,9 @@ function CustomAvailableTrade({show, onHide, modalCardInfo, userData, BACKUP}) {
                                             <img className="table-card-img" alt={card.name} src={card.thumbnail.path + "." + card.thumbnail.extension}/>
                                             <input  type='checkbox' />
                                         </td>
-                                     </tr>
+                                    </tr>
                                 ))}
+                            
                             </tbody>
                         </table>
                         
