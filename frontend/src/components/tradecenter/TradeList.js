@@ -3,6 +3,8 @@ import CustomAvailableTrade from '../custom/CustomAvailableTrade';
 import Accordion from 'react-bootstrap/Accordion';
 
 
+
+
 function TradeList({get_trade, userData, BACKUP}) {
   const [modalCardInfo, setModalCardInfo] = useState();
   const [modalShow, setModalShow] = useState(false);
@@ -74,14 +76,17 @@ function TradeList({get_trade, userData, BACKUP}) {
         </div>
 
         {modalCardInfo && (  
-              <CustomAvailableTrade
-                show={modalShow}
-                onHide={() => setModalShow(false)}
-                userData={userData}
-                modalCardInfo={modalCardInfo}
-                BACKUP={BACKUP}
-              />
-            )}
+          <CustomAvailableTrade
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            userData={userData}
+            modalCardInfo={modalCardInfo}
+            setModalCardInfo={setModalCardInfo}
+            BACKUP={BACKUP}
+          />
+        )}
+
+
 
     
       </div>
