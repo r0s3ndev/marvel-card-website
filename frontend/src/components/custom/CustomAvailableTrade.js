@@ -3,12 +3,16 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 function CustomAvailableTrade({show, onHide, userData, modalCardInfo, BACKUP}) {
-    const [modalShow, setModalShow] = useState(false);
     const [currentUserCardList, setCurrentUserCardList] = useState(userData.cards);
     const [selectedCardInfo, setSelectedCardInfo] = useState(modalCardInfo.from_user1);
     const [selectedCardList, setSelectedCardList] = useState(modalCardInfo.user1_cards);
+    const [cardToTrade, setCardToTrade] = useState();
 
-  console.log(modalCardInfo);
+    const selectedCard = (data) => {
+        console.log(data);
+    }
+
+  console.log(cardToTrade);
     return (
         <>
             <Modal
@@ -31,14 +35,18 @@ function CustomAvailableTrade({show, onHide, userData, modalCardInfo, BACKUP}) {
                     </div>
 
                     <div>
-                        <button>Select card </button>
+                        <label htmlFor="cards">Select card </label><br/>
+                        <select name="cards" id="cards">
+                            {currentUserCardList.map((card, key) => (
+                                <option key={key} value={card} onChange={() => selectedCard(card)}>{card.name}</option>
+                            ))}
+                        </select>
+                        {cardToTrade}
+
+                        
                     </div>
                 </Modal.Body>
             </Modal>
-
-
-            
-
         </>
     )
 }
