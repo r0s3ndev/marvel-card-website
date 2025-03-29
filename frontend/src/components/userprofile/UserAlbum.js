@@ -25,7 +25,7 @@ function UserAlbum({select_card_to_trade, updatedData, userData, sell_card_for_c
     select_card_to_trade(card);
 
     setTimeout(()=> {
-      navigate("/trade_section");
+      navigate("/trade_create_section");
     }, 1000)
   }
 

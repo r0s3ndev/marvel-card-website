@@ -1,13 +1,13 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import CustomAvailableTrade from '../custom/CustomAvailableTrade';
 import Accordion from 'react-bootstrap/Accordion';
+import { useNavigate } from 'react-router';
 
 
 
 
-function TradeList({get_trade, userData, BACKUP}) {
-  const [modalCardInfo, setModalCardInfo] = useState();
-  const [modalShow, setModalShow] = useState(false);
+function TradeList({get_trade, setConfirmTradeData, BACKUP}) {
+  const navigate = useNavigate();
+
   const [currentTradesAvailable, setCurrentTradesAvailable] = useState([]);
   
   useEffect(()=>{
@@ -20,8 +20,10 @@ function TradeList({get_trade, userData, BACKUP}) {
   }, []);
 
   const open_trade_page = (data) => {
-    setModalCardInfo(data);
-    setModalShow(true);
+    setConfirmTradeData(data);
+    setTimeout(()=> {
+      navigate("/trade_confirm_section");
+    }, 1000);
   } 
   
   return (
@@ -74,21 +76,7 @@ function TradeList({get_trade, userData, BACKUP}) {
             }
       
         </div>
-
-        {modalCardInfo && (  
-          <CustomAvailableTrade
-            show={modalShow}
-            onHide={() => setModalShow(false)}
-            userData={userData}
-            modalCardInfo={modalCardInfo}
-            setModalCardInfo={setModalCardInfo}
-            BACKUP={BACKUP}
-          />
-        )}
-
-
-
-    
+  
       </div>
        
     </>

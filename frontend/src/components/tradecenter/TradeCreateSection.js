@@ -6,7 +6,7 @@ import CustomTradeCardModal from '../custom/CustomTradeCardModal';
 import { Badge } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
 
-function TradeSection({userData, create_trade}) {
+function TradeCreateSection({userData, create_trade}) {
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
   const [modalShow, setModalShow] = useState(false);
@@ -105,4 +105,4 @@ function TradeSection({userData, create_trade}) {
   )
 }
 
-export default TradeSection
+export default TradeCreateSection

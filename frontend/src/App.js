@@ -12,11 +12,12 @@ import ProtectedRoute from "./components/custom/ProtectedRoute";
 import NavBarLayout from "./components/NavBarLayout";
 import UserProfile from "./components/userprofile/UserProfile";
 import UserAlbum from "./components/userprofile/UserAlbum";
-import TradeSection from "./components/tradecenter/TradeSection";
+import TradeCreateSection from "./components/tradecenter/TradeCreateSection";
 import UserItems from "./components/userprofile/UserItems";
 import UserSettings from "./components/userprofile/UserSettings";
 import { CardText } from "react-bootstrap";
 import TradeList from "./components/tradecenter/TradeList";
+import TradeConfirmSection from "./components/tradecenter/TradeConfirmSection";
 
 const BACKUP = {
   DESC : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
@@ -31,7 +32,9 @@ function App() {
   });
   // const [cardTrade, setCardTrade] = useState([]);
   const [updatedData, setUpdatedData] = useState(false);
+  const [confirmTradeData, setConfirmTradeData] = useState();
   const isFetchingUser = useRef(true);
+
 
 
   //randomize card
@@ -237,6 +240,9 @@ function App() {
     }
   }
 
+  const get_trade_confirm_info = () => {
+
+  }
 
 
 
@@ -287,10 +293,19 @@ function App() {
             }
             />
             
-            <Route path="/trade_section" element={
+            <Route path="/trade_create_section" element={
               // <ProtectedRoute>
                 <NavBarLayout userData={userData} logoutUser={logoutUser}> 
-                  <TradeSection userData={userData} create_trade={create_trade}/>
+                  <TradeCreateSection userData={userData} create_trade={create_trade}/>
+                </NavBarLayout>
+              // </ProtectedRoute>
+            }
+            />
+
+            <Route path="/trade_confirm_section" element={
+              // <ProtectedRoute>
+                <NavBarLayout userData={userData} logoutUser={logoutUser}> 
+                  <TradeConfirmSection userData={userData} confirmTradeData={confirmTradeData} BACKUP={BACKUP}/>
                 </NavBarLayout>
               // </ProtectedRoute>
             }
@@ -299,7 +314,7 @@ function App() {
             <Route path="/trade_list" element={
               // <ProtectedRoute>
                 <NavBarLayout userData={userData} logoutUser={logoutUser}> 
-                  <TradeList get_trade={get_trade} userData={userData} BACKUP={BACKUP}/>
+                  <TradeList get_trade={get_trade} setConfirmTradeData={setConfirmTradeData} BACKUP={BACKUP}/>
                 </NavBarLayout>
               // </ProtectedRoute>
             }
