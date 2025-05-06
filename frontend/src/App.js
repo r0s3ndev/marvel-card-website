@@ -15,7 +15,6 @@ import UserAlbum from "./components/userprofile/UserAlbum";
 import TradeCreateSection from "./components/tradecenter/TradeCreateSection";
 import UserItems from "./components/userprofile/UserItems";
 import UserSettings from "./components/userprofile/UserSettings";
-import { CardText } from "react-bootstrap";
 import TradeList from "./components/tradecenter/TradeList";
 import TradeConfirmSection from "./components/tradecenter/TradeConfirmSection";
 
@@ -83,7 +82,7 @@ function App() {
   const fetchCard = async () => {
     console.log("isFetchingCard...");
     try {
-      const res = await axios.get("http://localhost:5000/api/characters");
+      const res = await axios.get("https://hp-api.onrender.com/api/characters");
       const characterData = res.data;
 
       //ramdomize character shown in the registration from
@@ -258,83 +257,83 @@ function App() {
            {/* to protect */}
             
            <Route path="/homepage" element={
-              // <ProtectedRoute>
+              <ProtectedRoute>
                 <NavBarLayout userData={userData} logoutUser={logoutUser}> 
                   <Homepage  userData={userData} />
                 </NavBarLayout>
-              // </ProtectedRoute>
+              </ProtectedRoute>
             }
             />
 
             <Route path="/shop" element={
-              // <ProtectedRoute>
+              <ProtectedRoute>
                 <NavBarLayout userData={userData} logoutUser={logoutUser}> 
                   <CardPack updatedData={updatedData} update_credits_and_data={update_credits_and_data}/>
                 </NavBarLayout>
-              // </ProtectedRoute>
+              </ProtectedRoute>
               }
             />
 
             <Route path="/profile" element={
-              // <ProtectedRoute>
+              <ProtectedRoute>
                 <NavBarLayout userData={userData} logoutUser={logoutUser}> 
                   <UserProfile items={userData.items} userData={userData} randomCharBooster={randomCharBooster}/>
                 </NavBarLayout>
-              // </ProtectedRoute>
+              </ProtectedRoute>
             }
             />
 
             <Route path="/card_album" element={
-              // <ProtectedRoute>
+              <ProtectedRoute>
                 <NavBarLayout userData={userData} logoutUser={logoutUser}> 
                   <UserAlbum select_card_to_trade={select_card_to_trade} updatedData={updatedData} userData={userData} sell_card_for_credits={sell_card_for_credits} BACKUP={BACKUP}/>
                 </NavBarLayout>
-              // </ProtectedRoute>
+              </ProtectedRoute>
             }
             />
             
             <Route path="/trade_create_section" element={
-              // <ProtectedRoute>
+              <ProtectedRoute>
                 <NavBarLayout userData={userData} logoutUser={logoutUser}> 
                   <TradeCreateSection userData={userData} create_trade={create_trade}/>
                 </NavBarLayout>
-              // </ProtectedRoute>
+              </ProtectedRoute>
             }
             />
 
             <Route path="/trade_confirm_section" element={
-              // <ProtectedRoute>
+              <ProtectedRoute>
                 <NavBarLayout userData={userData} logoutUser={logoutUser}> 
                   <TradeConfirmSection userData={userData} confirmTradeData={confirmTradeData} BACKUP={BACKUP}/>
                 </NavBarLayout>
-              // </ProtectedRoute>
+              </ProtectedRoute>
             }
             />
 
             <Route path="/trade_list" element={
-              // <ProtectedRoute>
+              <ProtectedRoute>
                 <NavBarLayout userData={userData} logoutUser={logoutUser}> 
                   <TradeList get_trade={get_trade} setConfirmTradeData={setConfirmTradeData} BACKUP={BACKUP}/>
                 </NavBarLayout>
-              // </ProtectedRoute>
+              </ProtectedRoute>
             }
             />
 
             <Route path="/user_items" element={
-              // <ProtectedRoute>
+              <ProtectedRoute>
                 <NavBarLayout userData={userData} logoutUser={logoutUser}> 
                   <UserItems updatedData={updatedData} userData={userData} open_pack_and_update_data={open_pack_and_update_data}/>
                 </NavBarLayout>
-              // </ProtectedRoute>
+              </ProtectedRoute>
             }
             />
 
             <Route path="/user_settings" element={
-              // <ProtectedRoute>
+              <ProtectedRoute>
                 <NavBarLayout userData={userData} logoutUser={logoutUser}> 
                   <UserSettings userData={userData} update_security={update_security} delete_account={delete_account}/>
                 </NavBarLayout>
-              // </ProtectedRoute>
+              </ProtectedRoute>
             }
             />
             <Route path="/test" element={<Testing/>}/>

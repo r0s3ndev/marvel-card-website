@@ -54,6 +54,16 @@ router.post("/check_user", async (req, res) =>  {
     }
 })
 
+//check user session
+router.get("/check_user_session", (req, res) => {
+    if(req.session.userSession){
+        return res.status(200).send({ message: "authenticated", userid: req.session.userid });
+    } else { 
+        console.log("not authenticated");
+        return res.status(401).send({ message: "unauthorized", loggedIn: false });
+    }
+})
+
 
 router.post("/register", async (req, res) =>  {
     try{
@@ -156,16 +166,6 @@ router.get("/get_trades", async(req, res) => {
     }
 })
 
-//check user session
-router.get("/check_user_session", (req, res) => {
-    if(req.session.userSession){
-        return res.status(200).send({ message: "authenticated", userid: req.session.userid });
-    } else {
-        
-        console.log("not auth");
-        return res.status(401).send({ message: "unauthorized", loggedIn: false });
-    }
-})
 
 router.post("/update_security", async (req, res) => {
     try {

@@ -15,7 +15,7 @@ function ProtectedRoute({ children }) {
 
         })
         .catch((err) => {
-            console.error("error: ", err);
+            console.error("ErrorException: Unauthorized,", err.message);
             setIsAuthenticated(false);
         })
     }, []);
