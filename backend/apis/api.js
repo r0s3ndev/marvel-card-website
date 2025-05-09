@@ -1,27 +1,25 @@
 const express = require('express');
-const crypto = require('crypto');
+// const crypto = require('crypto');
 require('dotenv').config();
 const router = express.Router();
 
-const public_key = process.env.PUBLIC_KEY;
-const private_key = process.env.PRIVATE_KEY;
-const url = "https://gateway.marvel.com/";
+// const public_key = process.env.PUBLIC_KEY;
+// const private_key = process.env.PRIVATE_KEY;
+const url = "https://hp-api.onrender.com/api/characters";
 
 //Endpoint configuration
-const time_stamp = new Date().getTime();
-const hash = crypto.createHash('md5').update(`${time_stamp}${private_key}${public_key}`).digest('hex');
-const auth = `?limit=10&ts=${time_stamp}&apikey=${public_key}&hash=${hash}`;
+// const time_stamp = new Date().getTime();
+// const hash = crypto.createHash('md5').update(`${time_stamp}${private_key}${public_key}`).digest('hex');
+// const auth = `?limit=10&ts=${time_stamp}&apikey=${public_key}&hash=${hash}`;
 
 router.get("/characters", async (req, res) => {
     try {
-        const total = 1562;
-        const randomOffset = Math.floor(Math.random() * (total - 5) + 5);
-        const apiUrl = url + `v1/public/characters` + auth + `&offset=${randomOffset}`;
+        // const apiUrl = url + `v1/public/characters` + auth + `&offset=${randomOffset}`;
         // console.log(apiUrl);
-        const response = await fetch(apiUrl);
+        const response = await fetch(url);
         const json = await response.json();
-        const data = json.data.results;
-        res.json(data);
+        console.log(json);
+        res.json(json);
     } catch (error) {
         console.error('Error fetching Marvel API data:', error);
         res.status(500).json({ error: 'Failed to fetch Marvel characters' });

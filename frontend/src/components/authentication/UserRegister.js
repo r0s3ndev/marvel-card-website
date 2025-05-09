@@ -117,7 +117,7 @@ function UserRegister({randomCharRegister, fetchCard, check_user_before_next_pag
                                     key={card.id} 
                                     className='card-register-div' 
                                     style={{ 
-                                        backgroundImage: `linear-gradient(rgba(184, 103, 103, 0), rgba(121, 17, 17, 0.53), rgba(58, 4, 4, 0.85)), url(${card.thumbnail.path}.${card.thumbnail.extension})`,
+                                        backgroundImage: `linear-gradient(rgba(184, 103, 103, 0), rgba(121, 17, 17, 0.53), rgba(58, 4, 4, 0.85)), url(${card.image ? card.image : BACKUP.IMG})`,
                                         backgroundSize: 'contain'
                                         }}
                                     onClick={()=> handleSelectedCard(card)}
@@ -126,7 +126,6 @@ function UserRegister({randomCharRegister, fetchCard, check_user_before_next_pag
                                         <p style={{textAlign: 'right', color: 'white', textDecoration: 'underline overline'}}>{card.id}</p>
                                         <div className='card-name-desc'>
                                             <h2 style={{textTransform: 'uppercase'}}>{card.name}</h2>
-                                            <p>{card.description ? card.description : BACKUP.DESC}</p>
                                         </div>
                                     </div>
                                 ))}

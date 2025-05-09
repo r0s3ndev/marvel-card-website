@@ -19,7 +19,8 @@ import TradeList from "./components/tradecenter/TradeList";
 import TradeConfirmSection from "./components/tradecenter/TradeConfirmSection";
 
 const BACKUP = {
-  DESC : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+  DESC : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  IMG : "https://images.desenio.com/zoom/wb0012-8harrypotter-hogwartscrest50x70-60944-71911.jpg"
 }
 function App() {
   const [randomCharRegister, setRandomCharRegister] = useState();
@@ -82,7 +83,7 @@ function App() {
   const fetchCard = async () => {
     console.log("isFetchingCard...");
     try {
-      const res = await axios.get("https://hp-api.onrender.com/api/characters");
+      const res = await axios.get("http://localhost:5000/api/characters");
       const characterData = res.data;
 
       //ramdomize character shown in the registration from
