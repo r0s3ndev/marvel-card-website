@@ -52,6 +52,7 @@ function TradeConfirmSection({userData, confirmTradeData, BACKUP}) {
                 modalCardInfo={modalCardInfo}
                 userData={userData}
                 setModalCardInfo={setModalCardInfo}
+                BACKUP = {BACKUP}
             />
           
         </div>

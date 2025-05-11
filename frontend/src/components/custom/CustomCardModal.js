@@ -12,13 +12,13 @@ function CustomCardModal({show, onHide, modalCardInfo, BACKUP}) {
         >
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
-              {modalCardInfo.id}
+              {modalCardInfo.species}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div className='modal-container'>
                 <div style={{flexGrow: 1}}>
-                    <img className="card-img" alt={modalCardInfo.name} src={modalCardInfo.thumbnail.path + "." + modalCardInfo.thumbnail.extension}/>
+                    <img className="card-img" alt={modalCardInfo.name} src={modalCardInfo.image ? modalCardInfo.image : BACKUP.IMG}/>
                 </div>
                 <div style={{flexGrow: 2, margin: "15px"}}>
                     <h4>{modalCardInfo.name}</h4>

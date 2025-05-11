@@ -7,7 +7,7 @@ import UserRegister from "./components/authentication/UserRegister";
 import UserLogin from "./components/authentication/UserLogin";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import ProtectedRoute from "./components/custom/ProtectedRoute";
 import NavBarLayout from "./components/NavBarLayout";
 import UserProfile from "./components/userprofile/UserProfile";
@@ -17,6 +17,7 @@ import UserItems from "./components/userprofile/UserItems";
 import UserSettings from "./components/userprofile/UserSettings";
 import TradeList from "./components/tradecenter/TradeList";
 import TradeConfirmSection from "./components/tradecenter/TradeConfirmSection";
+import { UserContext } from "./components/UserProvider";
 
 const BACKUP = {
   DESC : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
@@ -26,10 +27,11 @@ function App() {
   const [randomCharRegister, setRandomCharRegister] = useState();
   const [randomCharBooster, setRandomCharBooster] = useState();
   // const [userData, setUserData] = useState([]);
-  const [userData, setUserData] = useState(() => {
-    const storedData = localStorage.getItem("userData");
-    return storedData ? JSON.parse(storedData) : [];
-  });
+  const { userData, setUserData } = useContext(UserContext);
+  // const [userData, setUserData] = useState(() => {
+  //   const storedData = localStorage.getItem("userData");
+  //   return storedData ? JSON.parse(storedData) : [];
+  // });
   // const [cardTrade, setCardTrade] = useState([]);
   const [updatedData, setUpdatedData] = useState(false);
   const [confirmTradeData, setConfirmTradeData] = useState();
@@ -260,7 +262,7 @@ function App() {
            <Route path="/homepage" element={
               <ProtectedRoute>
                 <NavBarLayout userData={userData} logoutUser={logoutUser}> 
-                  <Homepage  userData={userData} />
+                  <Homepage  userData={userData} BACKUP={BACKUP} />
                 </NavBarLayout>
               </ProtectedRoute>
             }

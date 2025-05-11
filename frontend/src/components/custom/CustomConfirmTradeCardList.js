@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import { UserContext } from '../UserProvider';
 
 
-function CustomConfirmTradeCardList({show, onHide, modalCardInfo, userData, setModalCardInfo}) {
-    const [availableCards, setAvailableCards] = useState(userData.cards);
+function CustomConfirmTradeCardList({show, onHide, modalCardInfo, setModalCardInfo, BACKUP}) {
+    const { userData, setUserData } = useContext(UserContext);
+    const availableCards = userData.cards;
     const handleChecboxChange = (e, card) => {
         setModalCardInfo(prev => [...prev, card]);
     }
@@ -33,7 +35,7 @@ function CustomConfirmTradeCardList({show, onHide, modalCardInfo, userData, setM
                             <td>{card.id}</td>
                             <td>{card.name}</td>
                             <td>
-                                <img className="table-card-img" alt={card.name} src={card.thumbnail.path + "." + card.thumbnail.extension}/>
+                                <img className="table-card-img" alt={card.name} src={card.image ? card.image : BACKUP.IMG}/>
                                 <input onChange={(e)=>handleChecboxChange(e, card)} type='checkbox'/>
                             </td>
                         </tr>

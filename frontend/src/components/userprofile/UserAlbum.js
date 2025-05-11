@@ -1,16 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import CustomCardModal from '../custom/CustomCardModal';
 import { useNavigate } from 'react-router';
-function UserAlbum({select_card_to_trade, updatedData, userData, sell_card_for_credits, BACKUP}) {
+import { UserContext } from '../UserProvider';
+function UserAlbum({select_card_to_trade, updatedData, sell_card_for_credits, BACKUP}) {
   const navigate = useNavigate();
+  const { userData, setUserData } = useContext(UserContext);
   const [modalShow, setModalShow] = useState(false);
   const [modalCardInfo, setModalCardInfo] = useState();
-  const [localCards, setlLcalCards] = useState(userData.cards);
+  const localCards = userData.cards;
   const sortedCards = localCards.sort((a, b) => a.id - b.id);
 
-  useEffect(()=>{
-    setlLcalCards(userData.cards);
-  }, [userData])
+  console.log(sortedCards);
+
+  // useEffect(()=>{
+  //   setlLcalCards(userData.cards);
+  // }, [userData])
 
   const selected_card = (card) => {
     setModalShow(true);
@@ -50,8 +54,8 @@ function UserAlbum({select_card_to_trade, updatedData, userData, sell_card_for_c
                   {sortedCards.map((c, i) => (
                     <div key={i++} >
                       <div className='image-div' onClick={() => selected_card(c)}>
-                        <p className='image-id'>{c.id}</p>
-                        <img className="card-img" alt={c.name} src={c.thumbnail.path + "." + c.thumbnail.extension}/>
+                        <p className='image-id'>{c.species}</p>
+                        <img className="card-img" alt={c.name} src={c.image ? c.image : BACKUP.IMG}/>
                         <p className='image-text'>
                           {c.name.replace(/\s*\(.*$/, '')} <br/>
                         </p>

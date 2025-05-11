@@ -1,9 +1,9 @@
 import React from 'react'
 function CardPack({updatedData, update_credits_and_data}) {
     const pack = {
-        ONE : {id: 1, price: 10, src: "/img/pack1.png"},
-        TWO : {id: 2, price: 20, src: "/img/pack2.png"},
-        THREE: {id: 3, price: 40, src: "/img/pack3.png"}
+        ONE : {id: 1, price: 10, src: "https://images.desenio.com/zoom/wb0012-8harrypotter-hogwartscrest50x70-60944-71911.jpg"},
+        TWO : {id: 2, price: 20, src: "https://images.desenio.com/zoom/wb0012-8harrypotter-hogwartscrest50x70-60944-71911.jpg"},
+        THREE: {id: 3, price: 40, src: "https://images.desenio.com/zoom/wb0012-8harrypotter-hogwartscrest50x70-60944-71911.jpg"}
     }
 
     const buyPack = (pack) => {

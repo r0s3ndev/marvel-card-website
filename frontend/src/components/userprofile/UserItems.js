@@ -1,12 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext } from 'react'
+import { UserContext } from '../UserProvider';
 
-function UserItems({updatedData, userData, open_pack_and_update_data}) {
-    const [localItems, setLocalItems] = useState(userData.items);
+function UserItems({updatedData, open_pack_and_update_data}) {
+    // const [localItems, setLocalItems] = useState(userData.items);
+    const {userData} = useContext(UserContext);
+    const localItems = userData.items;
+    
+    console.log(localItems);
     const sortedItems = localItems.sort((a, b) => a.id - b.id);
     
-    useEffect(()=>{
-        setLocalItems(userData.items);
-    }, [userData])
+    // useEffect(()=>{
+    //     setLocalItems(userData.items);
+    // }, [userData])
     
     const openPack = async (pack_id) => {
         await open_pack_and_update_data(pack_id, 1);

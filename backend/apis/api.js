@@ -21,8 +21,8 @@ router.get("/characters", async (req, res) => {
         console.log(json);
         res.json(json);
     } catch (error) {
-        console.error('Error fetching Marvel API data:', error);
-        res.status(500).json({ error: 'Failed to fetch Marvel characters' });
+        console.error('Error fetching Harry Potter API data:', error);
+        res.status(500).json({ error: 'Failed to fetch Harry Potter characters' });
     }
 });
 
@@ -31,8 +31,8 @@ router.get("/characters/:id", async (req, res) => {
     console.log("Fetching character with ID:", characterId);
 
     try{
-        const apiUrl = url + `v1/public/characters/${characterId}` + auth;
-        const response = await fetch(apiUrl); 
+        // const apiUrl = url + `v1/public/characters/${characterId}` + auth;
+        const response = await fetch(url + "/${characterId}"); 
         const data = await response.json();
         res.json(data);
     } catch (error) {
