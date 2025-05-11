@@ -6,7 +6,7 @@ import CustomTradeCardModal from '../custom/CustomTradeCardModal';
 import { Badge } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
 
-function TradeCreateSection({userData, create_trade}) {
+function TradeCreateSection({userData, create_trade, BACKUP}) {
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
   const [modalShow, setModalShow] = useState(false);
@@ -70,8 +70,8 @@ function TradeCreateSection({userData, create_trade}) {
 
           <div className='trade-main-div'>
             <div className='image-div' onClick={() => selected_card()}>
-              <p className='image-id'> {card2Trade.id}</p>
-              <img className="card-img" alt={card2Trade.name} src={card2Trade.thumbnail.path + "." + card2Trade.thumbnail?.extension}/>
+              <p className='image-id'> {card2Trade.species}</p>
+              <img className="card-img" alt={card2Trade.name} src={card2Trade.image ? card2Trade.image : BACKUP.IMG}/>
               <p className='image-text'> 
                 {card2Trade.name.replace(/\s*\(.*$/, '')}<br/>
               </p>
@@ -96,6 +96,7 @@ function TradeCreateSection({userData, create_trade}) {
             modalCardInfo={modalCardInfo}
             userData={userData}
             setModalCardInfo={setModalCardInfo}
+            BACKUP={BACKUP}
           />
         )}
        

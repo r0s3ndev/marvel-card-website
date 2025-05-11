@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-function CustomTradeCardModal({show, onHide, modalCardInfo, userData, setModalCardInfo}) {
+function CustomTradeCardModal({show, onHide, modalCardInfo, userData, setModalCardInfo, BACKUP}) {
     const [availableCards, setAvailableCards] = useState(userData.cards);
     const [checkbox, setCheckbox] = useState(true);
     const sortedCards = modalCardInfo.length > 0 ? [
@@ -41,10 +41,10 @@ function CustomTradeCardModal({show, onHide, modalCardInfo, userData, setModalCa
                         <tbody>
                             {sortedCards.map((card, i) => (
                                 <tr key={i} className={modalCardInfo[0].id === card.id ? "selected-card" : ""}>
-                                    <td>{card.id}</td>
+                                    <td>{card.species}</td>
                                     <td>{card.name}</td>
                                     <td>
-                                        <img className="table-card-img" alt={card.name} src={card.thumbnail.path + "." + card.thumbnail.extension}/>
+                                        <img className="table-card-img" alt={card.name} src={card.image ? card.image : BACKUP.IMG}/>
                                         <input onChange={(e)=>handleChecboxChange(e, card)} type='checkbox' checked={modalCardInfo.some((c) => c.id === card.id ? "checked" : null)} disabled={modalCardInfo[0].id === card.id ? "disabled" : null}/>
                                     </td>
                                 </tr>

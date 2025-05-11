@@ -2,19 +2,12 @@ import React, { useContext, useEffect, useState } from 'react';
 import CustomCardModal from '../custom/CustomCardModal';
 import { useNavigate } from 'react-router';
 import { UserContext } from '../UserProvider';
-function UserAlbum({select_card_to_trade, updatedData, sell_card_for_credits, BACKUP}) {
+function UserAlbum({select_card_to_trade, updatedData, userData, sell_card_for_credits, BACKUP}) {
   const navigate = useNavigate();
-  const { userData, setUserData } = useContext(UserContext);
   const [modalShow, setModalShow] = useState(false);
   const [modalCardInfo, setModalCardInfo] = useState();
   const localCards = userData.cards;
   const sortedCards = localCards.sort((a, b) => a.id - b.id);
-
-  console.log(sortedCards);
-
-  // useEffect(()=>{
-  //   setlLcalCards(userData.cards);
-  // }, [userData])
 
   const selected_card = (card) => {
     setModalShow(true);

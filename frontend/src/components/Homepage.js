@@ -1,9 +1,4 @@
-import React, { useContext } from 'react'
-import { UserContext } from './UserProvider'
-
-function Homepage({BACKUP}) {
-  const {userData} = useContext(UserContext);
-
+function Homepage({userData, BACKUP}) {
   return (
     <>
       <div className='main-container'>

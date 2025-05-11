@@ -43,7 +43,7 @@ function TradeList({get_trade, setConfirmTradeData, BACKUP}) {
                           <p>{trade.from_user1.username}</p>
                           <p>{trade.user1_request}</p>
                           <p>
-                            <img className="table-card-img" alt={trade.user1_cards[0].name} src={trade.user1_cards[0].thumbnail.path + "." + trade.user1_cards[0].thumbnail.extension}/>
+                            <img className="table-card-img" alt={trade.user1_cards[0].name} src={trade.user1_cards[0].image ? trade.user1_cards[0].image : BACKUP.IMG}/>
                             {trade.user1_cards.length}
                           </p>
                         {/* </div>   */}
@@ -57,7 +57,7 @@ function TradeList({get_trade, setConfirmTradeData, BACKUP}) {
                                 <img
                                   className="card-img"
                                   alt={c.name}
-                                  src={`${c.thumbnail.path}.${c.thumbnail.extension}`}
+                                  src={`${c.image ? c.image : BACKUP.IMG}`}
                                 />
                               </div>
                               <div>

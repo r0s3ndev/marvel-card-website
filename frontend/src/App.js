@@ -7,7 +7,7 @@ import UserRegister from "./components/authentication/UserRegister";
 import UserLogin from "./components/authentication/UserLogin";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useState } from "react";
 import ProtectedRoute from "./components/custom/ProtectedRoute";
 import NavBarLayout from "./components/NavBarLayout";
 import UserProfile from "./components/userprofile/UserProfile";
@@ -26,16 +26,9 @@ const BACKUP = {
 function App() {
   const [randomCharRegister, setRandomCharRegister] = useState();
   const [randomCharBooster, setRandomCharBooster] = useState();
-  // const [userData, setUserData] = useState([]);
   const { userData, setUserData } = useContext(UserContext);
-  // const [userData, setUserData] = useState(() => {
-  //   const storedData = localStorage.getItem("userData");
-  //   return storedData ? JSON.parse(storedData) : [];
-  // });
-  // const [cardTrade, setCardTrade] = useState([]);
   const [updatedData, setUpdatedData] = useState(false);
   const [confirmTradeData, setConfirmTradeData] = useState();
-  const isFetchingUser = useRef(true);
 
 
 
@@ -47,39 +40,6 @@ function App() {
     }
     return array;
   }
-
-
-
-  useEffect(() => {
-    if (isFetchingUser.current) {
-      isFetchingUser.current = false;
-      return; // Skip first render
-    }
-    console.log("isFetchingUser...");
-
-    const fetchData = async () => {
-      try{
-        const userRes = userData ? await axios.post("http://localhost:5000/users/getUser", {username: userData.username}) : null;
-        //simulate a loading effect
-        setTimeout(() => {
-          setUpdatedData(false);
-        }, "1000");
-          
-        if(userRes){
-          localStorage.setItem("userData", JSON.stringify({ ...userData, ...userRes.data}));
-        }
-
-      } catch(e) {
-        console.error("Error fetching user data:", e);
-      } finally {
-        isFetchingUser.current = false;
-        console.log("done");
-      }
-    }
-
-    fetchData();
-  }, [userData]);
-
 
   //fetch available cards
   const fetchCard = async () => {
@@ -298,7 +258,7 @@ function App() {
             <Route path="/trade_create_section" element={
               <ProtectedRoute>
                 <NavBarLayout userData={userData} logoutUser={logoutUser}> 
-                  <TradeCreateSection userData={userData} create_trade={create_trade}/>
+                  <TradeCreateSection userData={userData} create_trade={create_trade} BACKUP={BACKUP}/>
                 </NavBarLayout>
               </ProtectedRoute>
             }
