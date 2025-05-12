@@ -118,8 +118,6 @@ router.post("/logout", (req, res) => {
         if (err) {
             return res.status(500).send({ message: "Logout failed!" });
         } 
-
-        res.clearCookie('PWM_sid');
         return res.status(200).send({ message: 'Logged out successfully.' });
         
     });

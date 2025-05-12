@@ -3,7 +3,7 @@ function Homepage({userData, BACKUP}) {
     <>
       <div className='main-container'>
         
-        <h1>Welcome {userData.username}</h1>
+        <h1>Welcome {userData?.username}</h1>
         <div className='homepage-main-div'>
 
           <div>

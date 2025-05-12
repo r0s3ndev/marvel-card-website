@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router';
+import axios from "axios";
 
 
-function UserRegister({randomCharRegister, fetchCard, check_user_before_next_page, registerUser, BACKUP}) {
+function UserRegister({randomCharRegister, fetchCard, BACKUP}) {
     const navitage = useNavigate();
     const [message, setMessage] = useState("");
     const [userChecked, setUserChecked] = useState(false);
@@ -15,6 +16,7 @@ function UserRegister({randomCharRegister, fetchCard, check_user_before_next_pag
             cards: []
         }
     );
+
     useEffect(()=>{
         fetchCard();
     }, []);
@@ -23,7 +25,8 @@ function UserRegister({randomCharRegister, fetchCard, check_user_before_next_pag
         e.preventDefault();
         if(!userChecked){
             try{
-                const res = await check_user_before_next_page(userData);
+                // const res = await check_user_before_next_page(userData);
+                const res = await axios.post("http://localhost:5000/users/check_user", userData);
                 if(res.status === 200){
                     setUserChecked(true);
                     setNextPage(!nextPage);
@@ -65,12 +68,15 @@ function UserRegister({randomCharRegister, fetchCard, check_user_before_next_pag
     
     const handleSubmit = async () => {
         try{
-            await registerUser(userData); 
-            setMessage("Loading...");
-            setTimeout(() => {
-                navitage('/login');
-                setUserChecked(false);
-            }, "3000");
+            // await registerUser(userData); 
+            const res = await axios.post("http://localhost:5000/users/register", userData);
+            if(res.status === 201){
+                setMessage("Loading...");
+                setTimeout(() => {
+                    navitage('/login');
+                    setUserChecked(false);
+                }, "3000");
+            }
         } 
         catch (error) {
             if(error.status === 409){

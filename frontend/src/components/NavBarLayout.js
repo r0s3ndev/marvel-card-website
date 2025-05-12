@@ -4,7 +4,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useNavigate } from 'react-router';
 function NavBarLayout({userData, logoutUser, children }) {
     const navigate = useNavigate();
-    const [localCredits, setLocalCredits] = useState(userData.credits);
+    const [localCredits, setLocalCredits] = useState(userData?.credits || []);
 
     useEffect(()=> {
         setLocalCredits(userData.credits);
@@ -17,6 +17,7 @@ function NavBarLayout({userData, logoutUser, children }) {
             navigate('/login');
             }, "3000");
         }
+
     }
   return (
     <>

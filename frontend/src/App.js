@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, useNavigate } from "react-router-dom";
 import CardPack from "./components/boostershop/CardPack";
 import Homepage from "./components/Homepage";
 import Testing from "./components/Testing";
@@ -62,33 +62,19 @@ function App() {
     }
   }
 
-  //Sign-in & sing-up API
-  const check_user_before_next_page = async (userData) => {
-    try{
-      const res = await axios.post("http://localhost:5000/users/check_user", userData);
-      return res;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  const registerUser = async (registerData) => {
-    const res = await axios.post("http://localhost:5000/users/register", registerData);
-    return res;
-  }
-
   const loginUser = async (loginData) => {
     const res = await axios.post("http://localhost:5000/users/login", loginData, {
       withCredentials: true
     });
+
     setUserData(res.data.user);
-    localStorage.setItem("userData", JSON.stringify(res.data.user));
     return res;
   }
 
   const logoutUser = async () => {
     try{
       const res = await axios.post("http://localhost:5000/users/logout", {}, {withCredentials: true});
+      setUserData();
       return res;
     } catch (error) {
       throw error;
@@ -213,7 +199,7 @@ function App() {
       <Router>
         <Routes>
             <Route path="/" element={<Main/>}/>
-            <Route path="/register" element={<UserRegister randomCharRegister={randomCharRegister} fetchCard={fetchCard} check_user_before_next_page={check_user_before_next_page} registerUser={registerUser} BACKUP={BACKUP}/>}/>
+            <Route path="/register" element={<UserRegister randomCharRegister={randomCharRegister} fetchCard={fetchCard} BACKUP={BACKUP}/>}/>
             <Route path="/login" element={<UserLogin loginUser={loginUser}/>}/>
           
           
@@ -240,7 +226,7 @@ function App() {
             <Route path="/profile" element={
               <ProtectedRoute>
                 <NavBarLayout userData={userData} logoutUser={logoutUser}> 
-                  <UserProfile items={userData.items} userData={userData} randomCharBooster={randomCharBooster}/>
+                  <UserProfile items={userData?.items || []} userData={userData} randomCharBooster={randomCharBooster}/>
                 </NavBarLayout>
               </ProtectedRoute>
             }
