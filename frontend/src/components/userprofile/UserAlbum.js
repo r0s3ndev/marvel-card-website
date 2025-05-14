@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import CustomCardModal from '../custom/CustomCardModal';
 import { useNavigate } from 'react-router';
-import { UserContext } from '../UserProvider';
-function UserAlbum({select_card_to_trade, updatedData, userData, sell_card_for_credits, BACKUP}) {
+import axios from 'axios';
+function UserAlbum({select_card_to_trade, userData, setUserData, BACKUP}) {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [modalShow, setModalShow] = useState(false);
   const [modalCardInfo, setModalCardInfo] = useState();
   const localCards = userData.cards;
@@ -14,8 +15,20 @@ function UserAlbum({select_card_to_trade, updatedData, userData, sell_card_for_c
     setModalCardInfo(card);
   }
 
-  const sellCard = (c_id) => {
-    sell_card_for_credits(c_id);
+  const sellCard = async (c_id) => {
+    setLoading(true);
+    try{
+      const res = await axios.post("http://localhost:5000/users/sell_card", {c_id: c_id, username : userData.username, amount: 1});
+      if(res.status === 200){
+        setUserData(prev => ({ ...prev, ...res.data.updatedData}));
+        setTimeout(()=>{
+            setLoading(false);
+            console.log(res.data.message);
+        }, 1000);
+      }
+    } catch (error) {
+        console.error("Error while selling card; Exception: " + error);
+    }
   }
 
   const selected_card_to_trade = (card) => {
@@ -32,7 +45,7 @@ function UserAlbum({select_card_to_trade, updatedData, userData, sell_card_for_c
             <div className='main-container'>
               <h1>Your album:</h1>
               {/* cardi list  */}
-              {updatedData && (
+              {loading && (
                   <div className='loading-overlay-cardPack'>
                       <div className="loader">
                           <div className="circle"></div>

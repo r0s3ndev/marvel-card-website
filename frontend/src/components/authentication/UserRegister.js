@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router';
 import axios from "axios";
 
 
-function UserRegister({randomCharRegister, fetchCard, BACKUP}) {
+function UserRegister({fetchCard, BACKUP}) {
     const navitage = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [cardlist, setCardList] = useState([]);
     const [message, setMessage] = useState("");
     const [userChecked, setUserChecked] = useState(false);
     const [nextPage, setNextPage] = useState(true);
@@ -18,7 +20,13 @@ function UserRegister({randomCharRegister, fetchCard, BACKUP}) {
     );
 
     useEffect(()=>{
-        fetchCard();
+        async function fetchData() {
+            const res = await fetchCard("register");
+            console.log(res);
+            setCardList(res);
+        }
+
+        fetchData();
     }, []);
 
     const handleUserCheckAndToggle = async (e) => {
@@ -31,7 +39,11 @@ function UserRegister({randomCharRegister, fetchCard, BACKUP}) {
                     setUserChecked(true);
                     setNextPage(!nextPage);
                     setMessage("");
+                    setTimeout(()=>{
+                        setLoading(true);
+                    }, 1000);
                 }
+                setLoading(false);
             } 
             catch (error) {
                 if(error.status && error.response.status === 409){
@@ -106,7 +118,7 @@ function UserRegister({randomCharRegister, fetchCard, BACKUP}) {
                         <p> Already have an account? <a href='/login'>login</a> here.</p>
                     </div>
                     
-                    {!randomCharRegister ? (
+                    {!loading ? (
                         <div className="loader">
                             <div className="circle"></div>
                             <div className="circle"></div>
@@ -118,7 +130,7 @@ function UserRegister({randomCharRegister, fetchCard, BACKUP}) {
                             <h1>Select a card...</h1>
                             <p style={{color: "orange"}}>{message}</p>
                             <div className='card-div'>
-                                {randomCharRegister.map((card) => (
+                                {cardlist.map((card) => (
                                     <div 
                                     key={card.id} 
                                     className='card-register-div' 

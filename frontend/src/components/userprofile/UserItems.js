@@ -1,20 +1,28 @@
-import React, { useContext } from 'react'
-import { UserContext } from '../UserProvider';
+import { useState } from 'react';
+import axios from 'axios';
 
-function UserItems({updatedData, open_pack_and_update_data}) {
-    // const [localItems, setLocalItems] = useState(userData.items);
-    const {userData} = useContext(UserContext);
+function UserItems({userData, setUserData, fetchCard}) {
+    const [loading, setLoading] = useState(false);
     const localItems = userData.items;
-    
-    console.log(localItems);
     const sortedItems = localItems.sort((a, b) => a.id - b.id);
     
-    // useEffect(()=>{
-    //     setLocalItems(userData.items);
-    // }, [userData])
-    
     const openPack = async (pack_id) => {
-        await open_pack_and_update_data(pack_id, 1);
+        setLoading(true);
+        try{
+            const fetchedCard = await fetchCard("user_item");
+            if(fetchedCard) {
+                const res = await axios.post("http://localhost:5000/users/open_pack", {username: userData.username, pack_id: pack_id, amount: 1, cards: fetchedCard});
+                if(res.status ===  200){
+                    setUserData(prev => ({ ...prev, ...res.data.updatedData}));
+                    setTimeout(()=>{
+                        setLoading(false);
+                        console.log(res.data.message);
+                    }, 1000);
+                }
+            }
+        } catch (error) {
+            console.error("Error while opening packs; Exception: " + error);
+        }
     }
 
     return (
@@ -24,7 +32,7 @@ function UserItems({updatedData, open_pack_and_update_data}) {
                     <div>
                         <h2> Your items </h2>
                         <div className='booster-selection-div'>
-                           {updatedData && (
+                           {loading && (
                                 <div className='loading-overlay-cardPack'>
                                     <div className="loader">
                                         <div className="circle"></div>

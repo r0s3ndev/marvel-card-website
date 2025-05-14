@@ -1,5 +1,4 @@
-import { BrowserRouter as Router, Route, Routes, useNavigate } from "react-router-dom";
-import CardPack from "./components/boostershop/CardPack";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Homepage from "./components/Homepage";
 import Testing from "./components/Testing";
 import Main from "./components/Main";
@@ -18,14 +17,13 @@ import UserSettings from "./components/userprofile/UserSettings";
 import TradeList from "./components/tradecenter/TradeList";
 import TradeConfirmSection from "./components/tradecenter/TradeConfirmSection";
 import { UserContext } from "./components/UserProvider";
+import CardsShop from "./components/shop/CardsShop";
 
 const BACKUP = {
   DESC : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
   IMG : "https://images.desenio.com/zoom/wb0012-8harrypotter-hogwartscrest50x70-60944-71911.jpg"
 }
 function App() {
-  const [randomCharRegister, setRandomCharRegister] = useState();
-  const [randomCharBooster, setRandomCharBooster] = useState();
   const { userData, setUserData } = useContext(UserContext);
   const [updatedData, setUpdatedData] = useState(false);
   const [confirmTradeData, setConfirmTradeData] = useState();
@@ -42,21 +40,24 @@ function App() {
   }
 
   //fetch available cards
-  const fetchCard = async () => {
+  const fetchCard = async (mode) => {
     console.log("isFetchingCard...");
     try {
       const res = await axios.get("http://localhost:5000/api/characters");
       const characterData = res.data;
 
-      //ramdomize character shown in the registration from
-      const randomCharRegisterSelection = shuffleArray(characterData).slice(0, 3);
-      setRandomCharRegister(randomCharRegisterSelection);
+      if(mode === "register"){
+        //ramdomize character shown in the registration from
+        const randomCharRegisterSelection = shuffleArray(characterData).slice(0, 3);
+        return randomCharRegisterSelection;
+      }
 
+      if(mode === "user_item"){
       //randomize character that will show during opening pack
-      const randomCharBoosterSelection = shuffleArray(characterData).slice(0, 5);
-      setRandomCharBooster(randomCharBoosterSelection);
+        const randomCharBoosterSelection = shuffleArray(characterData).slice(0, 5);
+        return randomCharBoosterSelection;
+      }
 
-      return randomCharBoosterSelection;
     } catch (error) {
       throw error;
     }
@@ -74,64 +75,11 @@ function App() {
   const logoutUser = async () => {
     try{
       const res = await axios.post("http://localhost:5000/users/logout", {}, {withCredentials: true});
-      setUserData();
       return res;
     } catch (error) {
       throw error;
     }
   } 
-
-
-
-  //update data in the DB
-  const update_credits_and_data = async (pack, i) => {
-    try{
-      const res = await axios.post("http://localhost:5000/users/update_credits_and_data", {username: userData.username, pack: pack, amount: i});
-      setUserData(prev => ({ ...prev, ...res.data}));
-      localStorage.setItem("userData", JSON.stringify({ ...userData, ...res.data }));
-      // setUserData(prev => {
-      //   if (JSON.stringify(prev) === JSON.stringify(res.data)) {
-      //       return prev; // No update if data is the same
-      //   }
-      //   const updatedUser = { ...prev, ...res.data };
-      //   localStorage.setItem("userData", JSON.stringify(updatedUser));
-      //   return updatedUser;
-      // });
-      //to add loading effect on cardPack component
-      setUpdatedData(true);
-      return res;
-      
-    } catch (error) {
-      throw error;
-    }
-  }
-
-
-  const open_pack_and_update_data = async (pack_id, i) => {
-    try{
-      
-      setUpdatedData(true);
-      const fetchRes = await fetchCard();
-      if(fetchRes) {
-        const res = await axios.post("http://localhost:5000/users/update_pack_and_data", {username: userData.username, pack_id: pack_id, amount: i, cards: fetchRes});
-        setUserData(prev => ({ ...prev, ...res.data}));
-        localStorage.setItem("userData", JSON.stringify({ ...userData, ...res.data }));
-        // setUserData(prev => {
-        //   if (JSON.stringify(prev) === JSON.stringify(res.data)) {
-        //       return prev; // No update if data is the same
-        //   }
-        //   const updatedUser = { ...prev, ...res.data };
-        //   localStorage.setItem("userData", JSON.stringify(updatedUser));
-        //   return updatedUser;
-        // });
-        console.log(res);
-      }
-    
-      
-    } catch (error) {
-      throw error;
-    }
-  }
 
   const sell_card_for_credits = async (c_id) => {
     try{
@@ -199,7 +147,7 @@ function App() {
       <Router>
         <Routes>
             <Route path="/" element={<Main/>}/>
-            <Route path="/register" element={<UserRegister randomCharRegister={randomCharRegister} fetchCard={fetchCard} BACKUP={BACKUP}/>}/>
+            <Route path="/register" element={<UserRegister fetchCard={fetchCard} BACKUP={BACKUP}/>}/>
             <Route path="/login" element={<UserLogin loginUser={loginUser}/>}/>
           
           
@@ -217,7 +165,7 @@ function App() {
             <Route path="/shop" element={
               <ProtectedRoute>
                 <NavBarLayout userData={userData} logoutUser={logoutUser}> 
-                  <CardPack updatedData={updatedData} update_credits_and_data={update_credits_and_data}/>
+                  <CardsShop userData={userData} setUserData={setUserData}/>
                 </NavBarLayout>
               </ProtectedRoute>
               }
@@ -226,7 +174,7 @@ function App() {
             <Route path="/profile" element={
               <ProtectedRoute>
                 <NavBarLayout userData={userData} logoutUser={logoutUser}> 
-                  <UserProfile items={userData?.items || []} userData={userData} randomCharBooster={randomCharBooster}/>
+                  <UserProfile items={userData?.items || []} userData={userData}/>
                 </NavBarLayout>
               </ProtectedRoute>
             }
@@ -235,7 +183,7 @@ function App() {
             <Route path="/card_album" element={
               <ProtectedRoute>
                 <NavBarLayout userData={userData} logoutUser={logoutUser}> 
-                  <UserAlbum select_card_to_trade={select_card_to_trade} updatedData={updatedData} userData={userData} sell_card_for_credits={sell_card_for_credits} BACKUP={BACKUP}/>
+                  <UserAlbum select_card_to_trade={select_card_to_trade} userData={userData} setUserData={setUserData} BACKUP={BACKUP}/>
                 </NavBarLayout>
               </ProtectedRoute>
             }
@@ -271,7 +219,7 @@ function App() {
             <Route path="/user_items" element={
               <ProtectedRoute>
                 <NavBarLayout userData={userData} logoutUser={logoutUser}> 
-                  <UserItems updatedData={updatedData} userData={userData} open_pack_and_update_data={open_pack_and_update_data}/>
+                  <UserItems userData={userData} setUserData={setUserData} fetchCard={fetchCard}/>
                 </NavBarLayout>
               </ProtectedRoute>
             }

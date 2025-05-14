@@ -194,8 +194,8 @@ router.post("/update_security", async (req, res) => {
     
 })
 
-//update data on db
-router.post("/update_credits_and_data", async (req, res) => {
+//buy packs in the shop
+router.post("/single_pack_purchase", async (req, res) => {
     try{
         const db = await connectToDatabase(); 
         const {username, pack, amount} = req.body;
@@ -231,9 +231,12 @@ router.post("/update_credits_and_data", async (req, res) => {
                 },
                 {returnDocument: "after"}
             )
-            console.log("added pack");
+            console.log("purchase successfully");
         }
-        res.json(updateUser);
+        return res.status(200).json({
+            message: "Purchase successfully",
+            user: updateUser
+        });
 
 
     } catch (error) {
@@ -242,7 +245,7 @@ router.post("/update_credits_and_data", async (req, res) => {
     }
 })  
 
-router.post("/update_pack_and_data", async (req, res) => {
+router.post("/open_pack", async (req, res) => {
     try{
         const db = await connectToDatabase(); 
         const {username, pack_id, amount, cards} = req.body;
@@ -297,7 +300,10 @@ router.post("/update_pack_and_data", async (req, res) => {
 
         const get_recent_update = await db.collection("users_list").findOne({username});
 
-        res.json(get_recent_update);
+        res.status(200).json({
+            message: "pack opened successfully",
+            updatedData: get_recent_update
+        });
         
     } catch (error) {
         console.error("Error updating pack & data:", error);
@@ -326,7 +332,9 @@ router.post("/sell_card", async (req, res) => {
             },
             { returnDocument: "after"}
         )
-        res.json(updateUser);
+        res.status(200).json({
+            message: "card sold successfully",
+            updatedData: updateUser});
         
     } catch (error) {
         console.error("Error selling pack & updating data:", error);

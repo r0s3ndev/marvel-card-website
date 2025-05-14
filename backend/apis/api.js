@@ -18,7 +18,6 @@ router.get("/characters", async (req, res) => {
         // console.log(apiUrl);
         const response = await fetch(url);
         const json = await response.json();
-        console.log(json);
         res.json(json);
     } catch (error) {
         console.error('Error fetching Harry Potter API data:', error);
