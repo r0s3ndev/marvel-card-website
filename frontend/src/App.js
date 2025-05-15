@@ -24,12 +24,9 @@ const BACKUP = {
   IMG : "https://images.desenio.com/zoom/wb0012-8harrypotter-hogwartscrest50x70-60944-71911.jpg"
 }
 function App() {
-  const { userData, setUserData } = useContext(UserContext);
-  const [updatedData, setUpdatedData] = useState(false);
+  const { userData, setUserData, tradeData, setTradeData } = useContext(UserContext);
   const [confirmTradeData, setConfirmTradeData] = useState();
-
-
-
+  
   //randomize card
   function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -62,59 +59,7 @@ function App() {
       throw error;
     }
   }
-
-  const loginUser = async (loginData) => {
-    const res = await axios.post("http://localhost:5000/users/login", loginData, {
-      withCredentials: true
-    });
-
-    setUserData(res.data.user);
-    return res;
-  }
-
-  const logoutUser = async () => {
-    try{
-      const res = await axios.post("http://localhost:5000/users/logout", {}, {withCredentials: true});
-      return res;
-    } catch (error) {
-      throw error;
-    }
-  } 
-
-  const sell_card_for_credits = async (c_id) => {
-    try{
-      setUpdatedData(true);
-      const res = await axios.post("http://localhost:5000/users/sell_card", {c_id: c_id, username : userData.username, amount: 1});
-      setUserData(prev => ({ ...prev, ...res.data}));
-      localStorage.setItem("userData", JSON.stringify({ ...userData, ...res.data }));
-    } catch(error) {
-      return error.response;
-    }
-  } 
   
-  const select_card_to_trade = (selected_card) => {
-    localStorage.setItem("cardTrade", JSON.stringify(selected_card));  
-  }
-
-  const update_security = async (updateData) => {
-    const {oldPass, newPass} = updateData;
-    try{
-      const res = await axios.post("http://localhost:5000/users/update_security", {oldPass: oldPass, newPass: newPass, username: userData.username});
-      return res;
-    } catch(error) {
-      return error.response;
-    }
-  }
-
-  const delete_account = async () => {
-    try{
-      const res = await axios.delete("http://localhost:5000/users/delete_user", { data: {userData: userData}});
-      return res;
-    } catch(error) {
-      return error.response;
-    }
-  }
-
   const create_trade = async (trade_obj) => {
     try{
       console.log("creating trade", trade_obj);
@@ -148,14 +93,14 @@ function App() {
         <Routes>
             <Route path="/" element={<Main/>}/>
             <Route path="/register" element={<UserRegister fetchCard={fetchCard} BACKUP={BACKUP}/>}/>
-            <Route path="/login" element={<UserLogin loginUser={loginUser}/>}/>
+            <Route path="/login" element={<UserLogin setUserData={setUserData}/>}/>
           
           
            {/* to protect */}
             
            <Route path="/homepage" element={
               <ProtectedRoute>
-                <NavBarLayout userData={userData} logoutUser={logoutUser}> 
+                <NavBarLayout> 
                   <Homepage  userData={userData} BACKUP={BACKUP} />
                 </NavBarLayout>
               </ProtectedRoute>
@@ -164,7 +109,7 @@ function App() {
 
             <Route path="/shop" element={
               <ProtectedRoute>
-                <NavBarLayout userData={userData} logoutUser={logoutUser}> 
+                <NavBarLayout> 
                   <CardsShop userData={userData} setUserData={setUserData}/>
                 </NavBarLayout>
               </ProtectedRoute>
@@ -173,7 +118,7 @@ function App() {
 
             <Route path="/profile" element={
               <ProtectedRoute>
-                <NavBarLayout userData={userData} logoutUser={logoutUser}> 
+                <NavBarLayout> 
                   <UserProfile items={userData?.items || []} userData={userData}/>
                 </NavBarLayout>
               </ProtectedRoute>
@@ -182,8 +127,8 @@ function App() {
 
             <Route path="/card_album" element={
               <ProtectedRoute>
-                <NavBarLayout userData={userData} logoutUser={logoutUser}> 
-                  <UserAlbum select_card_to_trade={select_card_to_trade} userData={userData} setUserData={setUserData} BACKUP={BACKUP}/>
+                <NavBarLayout> 
+                  <UserAlbum userData={userData} setUserData={setUserData} setTradeDat={setTradeData} BACKUP={BACKUP}/>
                 </NavBarLayout>
               </ProtectedRoute>
             }
@@ -191,7 +136,7 @@ function App() {
             
             <Route path="/trade_create_section" element={
               <ProtectedRoute>
-                <NavBarLayout userData={userData} logoutUser={logoutUser}> 
+                <NavBarLayout> 
                   <TradeCreateSection userData={userData} create_trade={create_trade} BACKUP={BACKUP}/>
                 </NavBarLayout>
               </ProtectedRoute>
@@ -200,7 +145,7 @@ function App() {
 
             <Route path="/trade_confirm_section" element={
               <ProtectedRoute>
-                <NavBarLayout userData={userData} logoutUser={logoutUser}> 
+                <NavBarLayout> 
                   <TradeConfirmSection userData={userData} confirmTradeData={confirmTradeData} BACKUP={BACKUP}/>
                 </NavBarLayout>
               </ProtectedRoute>
@@ -209,7 +154,7 @@ function App() {
 
             <Route path="/trade_list" element={
               <ProtectedRoute>
-                <NavBarLayout userData={userData} logoutUser={logoutUser}> 
+                <NavBarLayout> 
                   <TradeList get_trade={get_trade} setConfirmTradeData={setConfirmTradeData} BACKUP={BACKUP}/>
                 </NavBarLayout>
               </ProtectedRoute>
@@ -218,7 +163,7 @@ function App() {
 
             <Route path="/user_items" element={
               <ProtectedRoute>
-                <NavBarLayout userData={userData} logoutUser={logoutUser}> 
+                <NavBarLayout> 
                   <UserItems userData={userData} setUserData={setUserData} fetchCard={fetchCard}/>
                 </NavBarLayout>
               </ProtectedRoute>
@@ -227,8 +172,8 @@ function App() {
 
             <Route path="/user_settings" element={
               <ProtectedRoute>
-                <NavBarLayout userData={userData} logoutUser={logoutUser}> 
-                  <UserSettings userData={userData} update_security={update_security} delete_account={delete_account}/>
+                <NavBarLayout> 
+                  <UserSettings userData={userData}/>
                 </NavBarLayout>
               </ProtectedRoute>
             }

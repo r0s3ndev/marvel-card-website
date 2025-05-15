@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useState } from 'react';
 import CustomCardModal from '../custom/CustomCardModal';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
-function UserAlbum({select_card_to_trade, userData, setUserData, BACKUP}) {
+function UserAlbum({userData, setUserData, setTradeData, BACKUP}) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [modalShow, setModalShow] = useState(false);
@@ -32,7 +32,7 @@ function UserAlbum({select_card_to_trade, userData, setUserData, BACKUP}) {
   }
 
   const selected_card_to_trade = (card) => {
-    select_card_to_trade(card);
+    setTradeData(card);
 
     setTimeout(()=> {
       navigate("/trade_create_section");

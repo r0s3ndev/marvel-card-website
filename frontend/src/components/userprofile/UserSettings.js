@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import axios from 'axios';
 
-function UserSettings({userData, update_security, delete_account}) {
+function UserSettings({userData}) {
   const [activeTab, setActiveTab] = useState("general");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
@@ -14,11 +15,15 @@ function UserSettings({userData, update_security, delete_account}) {
     if(dataToUpdate.oldPass === "" || dataToUpdate.newPass === ""){
       setMessage("Please fill the fields");
     }
-    const res = await update_security(dataToUpdate);
-    if(res.status === 406){
-      setMessage(res.data.message);
-    } else if(res.status === 200){
-      setMessage(res.data.message);;
+    try{
+      const res = await axios.post("http://localhost:5000/users/update_security", {oldPass: dataToUpdate.oldPass, newPass: dataToUpdate.newPass, username: userData.username});
+      if(res.status === 406){
+        setMessage(res.data.message);
+      } else if(res.status === 200){
+        setMessage(res.data.message);;
+      }
+    } catch (error) {
+        console.error("Error while updating password; Exception: " + error);
     }
   }
 
@@ -35,14 +40,17 @@ function UserSettings({userData, update_security, delete_account}) {
 
 
   const deleteProfile = async () => {
-    const res = await delete_account();
-    if(res.status === 200){
-      setTimeout(() => {
-      navigate('/login');
-      alert(res.data.message + " click OK to redirect to the login page");
-      }, "3000");
-    } 
-    
+    try{
+      const res = await axios.delete("http://localhost:5000/users/delete_user", { data: {userData: userData}});
+      if(res.status === 200){
+        setTimeout(() => {
+          navigate('/login');
+          alert(res.data.message + " click OK to redirect to the login page");
+        }, "3000");
+      } 
+    } catch (error) {
+        console.error("Error while deleting profile; Exception: " + error);
+    }
   }
   
   return (

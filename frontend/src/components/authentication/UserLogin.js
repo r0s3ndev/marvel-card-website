@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router';
+import axios from 'axios';
 
-function UserLogin({loginUser}) {
+function UserLogin({setUserData}) {
   const navigate  = useNavigate();
   const [message, setMessage] = useState("");
   const [loginData, setLoginData] = useState({
@@ -21,8 +22,12 @@ function UserLogin({loginUser}) {
 
   const handleLogin = async () => {
     try{
-      const res = await loginUser(loginData);
+      const res = await axios.post("http://localhost:5000/users/login", loginData, {
+        withCredentials: true
+      });
+
       if(res.status === 200){
+        setUserData(res.data.user);
         setMessage(res.data.message);
         setTimeout(() => {
             navigate('/homepage');

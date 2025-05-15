@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Navbar, Container, Nav, Button } from 'react-bootstrap';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useNavigate } from 'react-router';
-function NavBarLayout({userData, logoutUser, children }) {
+import axios from 'axios';
+import { UserContext } from './UserProvider';
+function NavBarLayout({children }) {
+    const { userData } = useContext(UserContext);
     const navigate = useNavigate();
     const [localCredits, setLocalCredits] = useState(userData?.credits || []);
 
@@ -11,11 +14,15 @@ function NavBarLayout({userData, logoutUser, children }) {
     }, [userData]);
 
     const handleLogout = async () => {
-        const res = await logoutUser();
-        if(res.status === 200){
-            setTimeout(() => {
-            navigate('/login');
-            }, "3000");
+        try{
+            const res = await axios.post("http://localhost:5000/users/logout", {}, {withCredentials: true});
+            if(res.status === 200){
+                setTimeout(() => {
+                navigate('/login');
+                }, "3000");
+            }
+        } catch (error) {
+            console.error("Error while loggin out; Exception: " + error);
         }
 
     }
