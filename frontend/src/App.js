@@ -24,7 +24,8 @@ const BACKUP = {
   IMG : "https://images.desenio.com/zoom/wb0012-8harrypotter-hogwartscrest50x70-60944-71911.jpg"
 }
 function App() {
-  const { userData, setUserData, tradeData, setTradeData } = useContext(UserContext);
+  const { userData, setUserData } = useContext(UserContext);
+  const { tradeData, setTradeData } = useContext(UserContext);
   const [confirmTradeData, setConfirmTradeData] = useState();
   
   //randomize card
@@ -57,17 +58,6 @@ function App() {
 
     } catch (error) {
       throw error;
-    }
-  }
-  
-  const create_trade = async (trade_obj) => {
-    try{
-      console.log("creating trade", trade_obj);
-      const res = await axios.post("http://localhost:5000/users/create_trade", trade_obj);
-      console.log(res);
-
-    } catch(error) {
-      return error.response;
     }
   }
 
@@ -128,7 +118,7 @@ function App() {
             <Route path="/card_album" element={
               <ProtectedRoute>
                 <NavBarLayout> 
-                  <UserAlbum userData={userData} setUserData={setUserData} setTradeDat={setTradeData} BACKUP={BACKUP}/>
+                  <UserAlbum userData={userData} setUserData={setUserData} setTradeData={setTradeData} BACKUP={BACKUP}/>
                 </NavBarLayout>
               </ProtectedRoute>
             }
@@ -137,7 +127,7 @@ function App() {
             <Route path="/trade_create_section" element={
               <ProtectedRoute>
                 <NavBarLayout> 
-                  <TradeCreateSection userData={userData} create_trade={create_trade} BACKUP={BACKUP}/>
+                  <TradeCreateSection userData={userData} tradeData={tradeData} BACKUP={BACKUP}/>
                 </NavBarLayout>
               </ProtectedRoute>
             }

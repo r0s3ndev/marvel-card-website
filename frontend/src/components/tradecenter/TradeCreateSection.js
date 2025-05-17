@@ -1,20 +1,14 @@
-// FIX THE MESSAGE in "send_trade".
-// FIX "send_trade": onChange must resmove the text error.
-
-import React, { useState } from 'react';
+import axios from 'axios';
+import { useState } from 'react';
 import CustomTradeCardModal from '../custom/CustomTradeCardModal';
 import { Badge } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
 
-function TradeCreateSection({userData, create_trade, BACKUP}) {
+function TradeCreateSection({userData, tradeData, BACKUP}) {
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
   const [modalShow, setModalShow] = useState(false);
-  const [card2Trade, setCard2Trade] = useState(() => {
-    const cardData = localStorage.getItem("cardTrade");
-    return cardData ? JSON.parse(cardData) : [];
-  });
-  const [modalCardInfo, setModalCardInfo] = useState([card2Trade]);
+  const [modalCardInfo, setModalCardInfo] = useState([tradeData]);
   const [tradeInfo, setTradeInfo] = useState({
     userdata: userData,
     request: "",
@@ -39,15 +33,21 @@ function TradeCreateSection({userData, create_trade, BACKUP}) {
   }));
   }
 
-  const send_trade = () => {
+  const send_trade = async () => {
     if(tradeInfo.request === "") {
       setMessage("Type \"none\" if you have no specific request!");
     } else {
-      setMessage("")
-      create_trade(tradeInfo);
-      setTimeout(()=>{
-        navigate("/card_album");
-      }, 2000);
+      setMessage("");
+      try{
+        const res = await axios.post("http://localhost:5000/users/create_trade", tradeInfo);
+        if(res.status === 201){
+          setTimeout(()=>{
+            navigate("/card_album");
+          }, 2000);
+        }
+      } catch (error) {
+        console.error("Error while creating the trade; Exception: " + error);
+      }
     }
   }
 
@@ -70,10 +70,10 @@ function TradeCreateSection({userData, create_trade, BACKUP}) {
 
           <div className='trade-main-div'>
             <div className='image-div' onClick={() => selected_card()}>
-              <p className='image-id'> {card2Trade.species}</p>
-              <img className="card-img" alt={card2Trade.name} src={card2Trade.image ? card2Trade.image : BACKUP.IMG}/>
+              <p className='image-id'> {tradeData.species}</p>
+              <img className="card-img" alt={tradeData.name} src={tradeData.image ? tradeData.image : BACKUP.IMG}/>
               <p className='image-text'> 
-                {card2Trade.name.replace(/\s*\(.*$/, '')}<br/>
+                {tradeData.name}<br/>
               </p>
             </div>
 
@@ -89,7 +89,7 @@ function TradeCreateSection({userData, create_trade, BACKUP}) {
           </div>
         </div>
 
-        {card2Trade && (  
+        {tradeData && (  
           <CustomTradeCardModal
             show={modalShow}
             onHide={() => setModalShow(false)}

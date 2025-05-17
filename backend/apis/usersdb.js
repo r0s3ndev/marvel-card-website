@@ -74,7 +74,7 @@ router.post("/register", async (req, res) =>  {
             username: req.body.username,
             email: req.body.email,
             password: hashedPassword,
-            friends: [],
+            activeTrade: [],
             items: [],
             cards: req.body.cards
         } 
@@ -137,12 +137,22 @@ router.post("/create_trade", async (req, res) => {
             user1_cards: cards,
             user2_cards: [],
             user1_request: request,
-            status: ""
-        } 
-
-        console.log(request);
+            status: "pending"
+        };
 
         const result = await db.collection('trade_list').insertOne(trade_data);
+
+        await db.collection('users_list').findOneAndUpdate(
+            {
+                username: userdata.username
+            },
+            {
+                $push: {
+                    activeTrade : trade_data
+                },
+            },
+            {returnDocument: "after"}
+        );
         return res.status(201).json({ message: 'Trade created successfully', userId: result.insertedId });
 
     } catch (error) {
@@ -156,7 +166,7 @@ router.get("/get_trades", async(req, res) => {
         console.log("fetching cards..");
         const db = await connectToDatabase(); 
         const trades = await db.collection('trade_list').find().toArray();
-        res.json(trades);
+        res.status(200).json({message: "fetching trades successfully", item: trades});
 
     } catch (error) {
         console.error("Error while fetching trade:", error);
