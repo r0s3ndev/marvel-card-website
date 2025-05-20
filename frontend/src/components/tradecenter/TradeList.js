@@ -5,20 +5,9 @@ import { useNavigate } from 'react-router';
 
 
 
-function TradeList({get_trade, setConfirmTradeData, BACKUP}) {
+function TradeList({ tradeData, setTradeData, setConfirmTradeData, BACKUP}) {
   const navigate = useNavigate();
-
-  const [currentTradesAvailable, setCurrentTradesAvailable] = useState([]);
   
-  useEffect(()=>{
-    const getTrade = async () =>{
-      const res = await get_trade();
-      setCurrentTradesAvailable(res.data);
-    }
-
-    getTrade()
-  }, []);
-
   const open_trade_page = (data) => {
     setConfirmTradeData(data);
     setTimeout(()=> {
@@ -33,12 +22,12 @@ function TradeList({get_trade, setConfirmTradeData, BACKUP}) {
           <h1>Available Trade</h1>
           <a href='/card_album'> Select card</a>
 
-            {currentTradesAvailable && 
-              currentTradesAvailable.map((trade, i) => (
+            {tradeData && 
+              tradeData.item.map((trade, i) => (
                 <Accordion defaultActiveKey="1" key={i}>
                   <Accordion.Item eventKey="0">
                       <Accordion.Header>
-                        {/* <div className='accordion-div'> */}
+                        <div className='accordion-div'>
                           <h5>{trade.user1_cards[0].name}</h5>
                           <p>{trade.from_user1.username}</p>
                           <p>{trade.user1_request}</p>
@@ -46,7 +35,7 @@ function TradeList({get_trade, setConfirmTradeData, BACKUP}) {
                             <img className="table-card-img" alt={trade.user1_cards[0].name} src={trade.user1_cards[0].image ? trade.user1_cards[0].image : BACKUP.IMG}/>
                             {trade.user1_cards.length}
                           </p>
-                        {/* </div>   */}
+                        </div>  
                     </Accordion.Header>
                       
                     

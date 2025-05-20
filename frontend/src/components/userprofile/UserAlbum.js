@@ -43,7 +43,7 @@ function UserAlbum({userData, setUserData, setTradeData, BACKUP}) {
   }
 
   const selected_card_to_trade = (card) => {
-    setTradeData(card);
+    setTradeData(prev => ({...prev, ...card}));
 
     setTimeout(()=> {
       navigate("/trade_create_section");

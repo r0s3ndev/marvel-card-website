@@ -6,7 +6,7 @@ import UserRegister from "./components/authentication/UserRegister";
 import UserLogin from "./components/authentication/UserLogin";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ProtectedRoute from "./components/custom/ProtectedRoute";
 import NavBarLayout from "./components/NavBarLayout";
 import UserProfile from "./components/userprofile/UserProfile";
@@ -27,6 +27,22 @@ function App() {
   const { userData, setUserData } = useContext(UserContext);
   const { tradeData, setTradeData } = useContext(UserContext);
   const [confirmTradeData, setConfirmTradeData] = useState();
+  
+    //fetch most recent data 
+  useEffect(()=>{
+    const getTrade = async () =>{
+      const res = await axios.get("http://localhost:5000/users/get_trades");
+      setTradeData(res.data);
+    }
+    console.log(userData.username);
+    const getUserData = async () =>{
+      const res = await axios.get("http://localhost:5000/users/getUser", {username: userData.username},{withCredentials: true});
+      console.log("res " + res);
+    }
+
+    getTrade();
+    getUserData();
+  }, []);
   
   //randomize card
   function shuffleArray(array) {
@@ -61,22 +77,6 @@ function App() {
     }
   }
 
-  const get_trade = async () => {
-    try{
-      const res = await axios.get("http://localhost:5000/users/get_trades");
-      return res;
-
-    } catch(error) {
-      return error.response;
-    }
-  }
-
-  const get_trade_confirm_info = () => {
-
-  }
-
-
-
   return (
     <>
       <Router>
@@ -109,7 +109,7 @@ function App() {
             <Route path="/profile" element={
               <ProtectedRoute>
                 <NavBarLayout> 
-                  <UserProfile items={userData?.items || []} userData={userData}/>
+                  <UserProfile items={userData} userData={userData}/>
                 </NavBarLayout>
               </ProtectedRoute>
             }
@@ -145,7 +145,7 @@ function App() {
             <Route path="/trade_list" element={
               <ProtectedRoute>
                 <NavBarLayout> 
-                  <TradeList get_trade={get_trade} setConfirmTradeData={setConfirmTradeData} BACKUP={BACKUP}/>
+                  <TradeList tradeData={tradeData} setTradeData={setTradeData} setConfirmTradeData={setConfirmTradeData} BACKUP={BACKUP}/>
                 </NavBarLayout>
               </ProtectedRoute>
             }

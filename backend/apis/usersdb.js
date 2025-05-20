@@ -9,12 +9,14 @@ function generateSessionId() {
     return crypto.randomBytes(16).toString('hex');
 }
 
-router.post("/getUser", async (req, res) => {
+router.get("/getUser", async (req, res) => {
     try {
         const {username} = req.body;
+        console.log(username);
         const db = await connectToDatabase(); 
         const user = await db.collection('users_list').findOne({ username: username});
-        res.json(user); 
+        console.log(user);
+        res.status(200).json(user); 
     } catch (error) {
         console.error("Error fetching users:", error);
         res.status(500).send("Error fetching users.");
