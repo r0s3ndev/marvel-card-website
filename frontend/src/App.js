@@ -145,7 +145,7 @@ function App() {
             <Route path="/trade_list" element={
               <ProtectedRoute>
                 <NavBarLayout> 
-                  <TradeList tradeData={tradeData} setTradeData={setTradeData} setConfirmTradeData={setConfirmTradeData} BACKUP={BACKUP}/>
+                  <TradeList userData={userData} tradeData={tradeData} setTradeData={setTradeData} setConfirmTradeData={setConfirmTradeData} BACKUP={BACKUP}/>
                 </NavBarLayout>
               </ProtectedRoute>
             }

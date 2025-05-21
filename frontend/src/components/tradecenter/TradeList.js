@@ -5,8 +5,9 @@ import { useNavigate } from 'react-router';
 
 
 
-function TradeList({ tradeData, setTradeData, setConfirmTradeData, BACKUP}) {
+function TradeList({userData, tradeData, setTradeData, setConfirmTradeData, BACKUP}) {
   const navigate = useNavigate();
+  const currentUser = userData.username;
   
   const open_trade_page = (data) => {
     setConfirmTradeData(data);
@@ -14,6 +15,14 @@ function TradeList({ tradeData, setTradeData, setConfirmTradeData, BACKUP}) {
       navigate("/trade_confirm_section");
     }, 1000);
   } 
+
+  console.log(userData.username);
+
+  // userData.cards.map(card => console.log("usercArd", card.id));
+  
+  // tradeData.item.map(trade => trade.user1_cards.map(c => console.log("tradecard ", c.id)));
+
+  // tradeData.item.map((trade) => userData.cards.map(card => trade.user1_cards.map(tradeCard => console.log("card.id " + card.id  + " tradeCard.id " + tradeCard.id))));
   
   return (
     <>
@@ -21,10 +30,10 @@ function TradeList({ tradeData, setTradeData, setConfirmTradeData, BACKUP}) {
         <div className="main-container">
           <h1>Available Trade</h1>
           <a href='/card_album'> Select card</a>
-
+{/* userData.activeTrade.some(trade => trade.user1_cards.some(card => card.id === c.id)) */}
             {tradeData && 
-              tradeData.item.map((trade, i) => (
-                <Accordion defaultActiveKey="1" key={i}>
+              tradeData.item.filter(trade => trade.from_user1.username !== currentUser).map(trade => (
+                <Accordion defaultActiveKey="1" key={trade._id}>
                   <Accordion.Item eventKey="0">
                       <Accordion.Header>
                         <div className='accordion-div'>
