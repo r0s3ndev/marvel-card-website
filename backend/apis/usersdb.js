@@ -11,11 +11,9 @@ function generateSessionId() {
 
 router.get("/getUser", async (req, res) => {
     try {
-        const {username} = req.body;
-        console.log(username);
+        const {username} = req.query;
         const db = await connectToDatabase(); 
         const user = await db.collection('users_list').findOne({ username: username});
-        console.log(user);
         res.status(200).json(user); 
     } catch (error) {
         console.error("Error fetching users:", error);

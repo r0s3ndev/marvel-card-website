@@ -8,7 +8,11 @@ function CustomConfirmTradeCardList({show, onHide, modalCardInfo, setModalCardIn
     const { userData, setUserData } = useContext(UserContext);
     const availableCards = userData.cards;
     const handleChecboxChange = (e, card) => {
-        setModalCardInfo(prev => [...prev, card]);
+        setModalCardInfo((prev) => 
+          prev.some((i) => i.id === card.id) 
+            ? prev.filter((i) => i.id !== card.id)
+            : [...prev, card]
+        );
     }
 
   return (
@@ -36,7 +40,7 @@ function CustomConfirmTradeCardList({show, onHide, modalCardInfo, setModalCardIn
                             <td>{card.name}</td>
                             <td>
                                 <img className="table-card-img" alt={card.name} src={card.image ? card.image : BACKUP.IMG}/>
-                                <input onChange={(e)=>handleChecboxChange(e, card)} type='checkbox'/>
+                                <input onChange={(e)=>handleChecboxChange(e, card)} type='checkbox' checked={modalCardInfo.some((c) => c.id === card.id ? "checked" : null)}/>
                             </td>
                         </tr>
                     ))}

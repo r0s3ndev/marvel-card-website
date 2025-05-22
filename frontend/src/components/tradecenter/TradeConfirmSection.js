@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
-import CustomTradeCardModal from '../custom/CustomTradeCardModal';
+import { useState } from 'react'
 import CustomConfirmTradeCardList from '../custom/CustomConfirmTradeCardList';
 
-function TradeConfirmSection({userData, confirmTradeData, BACKUP}) {
-    const [currentData, setCurrentData] = useState(confirmTradeData);
+function TradeConfirmSection({userData, tradeData, BACKUP}) {
+    const currentData = JSON.parse(localStorage.getItem("currentTradeData"));
     const [modalShow, setModalShow] = useState(false);
     const [modalCardInfo, setModalCardInfo] = useState([])//no data   
     const [tradeInfo, setTradeInfo] = useState({
@@ -28,14 +27,14 @@ function TradeConfirmSection({userData, confirmTradeData, BACKUP}) {
                 <p>TradeConfirmSection</p>
                 <div>
                     <div>
-                        <p>User: {confirmTradeData.from_user1.username}</p>
-                        <div>Cards:{confirmTradeData.user1_cards.map((c, k)=> (
+                        <p>User: {currentData.from_user1.username}</p>
+                        <div>Cards:{currentData.user1_cards.map((c, k)=> (
                             <div key={k}>
                                 <h3>{c.name}</h3>
                             </div>
                             ))}
                         </div>
-                        <p>Request: {confirmTradeData.user1_request}</p>
+                        <p>Request: {currentData.user1_request}</p>
                     </div>
 
                     <div>

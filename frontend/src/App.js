@@ -26,7 +26,6 @@ const BACKUP = {
 function App() {
   const { userData, setUserData } = useContext(UserContext);
   const { tradeData, setTradeData } = useContext(UserContext);
-  const [confirmTradeData, setConfirmTradeData] = useState();
   
     //fetch most recent data 
   useEffect(()=>{
@@ -34,10 +33,12 @@ function App() {
       const res = await axios.get("http://localhost:5000/users/get_trades");
       setTradeData(res.data);
     }
-    console.log(userData.username);
     const getUserData = async () =>{
-      const res = await axios.get("http://localhost:5000/users/getUser", {username: userData.username},{withCredentials: true});
-      console.log("res " + res);
+      const res = await axios.get("http://localhost:5000/users/getUser", {
+        params: {username: userData.username},
+        withCredentials: true
+      });
+      setUserData(res.data);
     }
 
     getTrade();
@@ -136,7 +137,7 @@ function App() {
             <Route path="/trade_confirm_section" element={
               <ProtectedRoute>
                 <NavBarLayout> 
-                  <TradeConfirmSection userData={userData} confirmTradeData={confirmTradeData} BACKUP={BACKUP}/>
+                  <TradeConfirmSection userData={userData} tradeData={tradeData} BACKUP={BACKUP}/>
                 </NavBarLayout>
               </ProtectedRoute>
             }
@@ -145,7 +146,7 @@ function App() {
             <Route path="/trade_list" element={
               <ProtectedRoute>
                 <NavBarLayout> 
-                  <TradeList userData={userData} tradeData={tradeData} setTradeData={setTradeData} setConfirmTradeData={setConfirmTradeData} BACKUP={BACKUP}/>
+                  <TradeList userData={userData} tradeData={tradeData} BACKUP={BACKUP}/>
                 </NavBarLayout>
               </ProtectedRoute>
             }
