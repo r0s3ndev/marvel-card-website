@@ -19,7 +19,6 @@ function TradeConfirmSection({userData, tradeData, BACKUP}) {
         }));
     }
 
-
   return (
     <>
         <div>
@@ -36,9 +35,16 @@ function TradeConfirmSection({userData, tradeData, BACKUP}) {
                         </div>
                         <p>Request: {currentData.user1_request}</p>
                     </div>
-
+                    <hr/>
                     <div>
-                        {modalCardInfo.length}
+                        <p>Selected Card: {modalCardInfo.length} </p>
+                        <div> Cards: {modalCardInfo.map((c, k) => (
+                            <div key={k}>
+                                <h3>{c.name}</h3>
+                            </div>
+                        ))}
+
+                        </div>
                         <button onClick={() => selected_card()}> select card </button>
                     </div>
 

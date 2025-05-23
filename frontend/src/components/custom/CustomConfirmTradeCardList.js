@@ -7,6 +7,11 @@ import { UserContext } from '../UserProvider';
 function CustomConfirmTradeCardList({show, onHide, modalCardInfo, setModalCardInfo, BACKUP}) {
     const { userData, setUserData } = useContext(UserContext);
     const availableCards = userData.cards;
+
+    const excludeTradedCard = userData.activeTrade.flatMap(c => c.user1_cards.map(tc => tc.name));
+    const sortedCards = availableCards.filter(card => !excludeTradedCard.includes(card.name));
+  
+    // console.log(sortedCards);
     const handleChecboxChange = (e, card) => {
         setModalCardInfo((prev) => 
           prev.some((i) => i.id === card.id) 
@@ -34,9 +39,9 @@ function CustomConfirmTradeCardList({show, onHide, modalCardInfo, setModalCardIn
 
             <table className='table-card'>
                 <tbody>
-                    {availableCards.map((card, i) => (
+                    {sortedCards.map((card, i) => (
                         <tr key={i} >
-                            <td>{card.id}</td>
+                            <td>{card.species}</td>
                             <td>{card.name}</td>
                             <td>
                                 <img className="table-card-img" alt={card.name} src={card.image ? card.image : BACKUP.IMG}/>

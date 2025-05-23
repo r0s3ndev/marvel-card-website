@@ -56,7 +56,7 @@ function TradeCreateSection({userData, tradeData, BACKUP}) {
       <div>
         <div className="main-container">
           <h1>Create a trade</h1>
-          <a href='/card_album'> Select more card</a>
+          <a href='/card_album'> Change card</a>
           <h2> Card selected 
             {modalCardInfo.length > 1 && 
               (<>
@@ -95,6 +95,7 @@ function TradeCreateSection({userData, tradeData, BACKUP}) {
             onHide={() => setModalShow(false)}
             modalCardInfo={modalCardInfo}
             userData={userData}
+            tradeData={tradeData}
             setModalCardInfo={setModalCardInfo}
             BACKUP={BACKUP}
           />
