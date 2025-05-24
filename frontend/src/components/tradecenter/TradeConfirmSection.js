@@ -1,22 +1,35 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import CustomConfirmTradeCardList from '../custom/CustomConfirmTradeCardList';
 
 function TradeConfirmSection({userData, tradeData, BACKUP}) {
     const currentData = JSON.parse(localStorage.getItem("currentTradeData"));
+    const [errorMessage, setErrorMessage] = useState("");
     const [modalShow, setModalShow] = useState(false);
     const [modalCardInfo, setModalCardInfo] = useState([])//no data   
     const [tradeInfo, setTradeInfo] = useState({
         userdata: userData,
-        request: "",
         cards: []
     })
 
-    const selected_card = () => {
-        setModalShow(true);
+    useEffect(()=> {
         setTradeInfo((prevState) => ({
             ...prevState,
-            request: ""
+            cards: prevState.cards === modalCardInfo ? prevState.cards : modalCardInfo
         }));
+    }, [modalCardInfo]);
+
+    const open_modal = () => {
+        setErrorMessage("");
+        setModalShow(true);
+    }
+
+    const send_request_trade = () => {
+        if(tradeInfo.cards.length < 1){
+            setErrorMessage("Cannot send the trade request: Missing card");
+        } else {
+            alert("You sure you want to send the request?");
+            console.log(tradeInfo);
+        }
     }
 
   return (
@@ -43,9 +56,10 @@ function TradeConfirmSection({userData, tradeData, BACKUP}) {
                                 <h3>{c.name}</h3>
                             </div>
                         ))}
-
                         </div>
-                        <button onClick={() => selected_card()}> select card </button>
+                        <p>{errorMessage}</p>
+                        <button onClick={() => open_modal()}> select card </button>
+                        <button onClick={() => send_request_trade()}>send request trade</button>
                     </div>
 
                 </div>
@@ -55,7 +69,6 @@ function TradeConfirmSection({userData, tradeData, BACKUP}) {
                 show={modalShow}
                 onHide={() => setModalShow(false)}
                 modalCardInfo={modalCardInfo}
-                userData={userData}
                 setModalCardInfo={setModalCardInfo}
                 BACKUP = {BACKUP}
             />
