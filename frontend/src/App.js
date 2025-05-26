@@ -119,7 +119,7 @@ function App() {
             <Route path="/card_album" element={
               <ProtectedRoute>
                 <NavBarLayout> 
-                  <UserAlbum userData={userData} setUserData={setUserData} setTradeData={setTradeData} BACKUP={BACKUP}/>
+                  <UserAlbum userData={userData} setUserData={setUserData} tradeData={tradeData} setTradeData={setTradeData} BACKUP={BACKUP}/>
                 </NavBarLayout>
               </ProtectedRoute>
             }

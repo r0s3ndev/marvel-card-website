@@ -2,24 +2,16 @@ import { useEffect, useState } from 'react';
 import CustomCardModal from '../custom/CustomCardModal';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
-function UserAlbum({userData, setUserData, setTradeData, BACKUP}) {
+function UserAlbum({userData, setUserData, tradeData, setTradeData, BACKUP}) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [modalShow, setModalShow] = useState(false);
-  // const [isTradable, setIsTradable] = useState(true);
-  // const [activeTrades, setActiveTrades] = useState([]);
   const [modalCardInfo, setModalCardInfo] = useState();
-  const localCards = userData.cards;
-  const sortedCards = localCards.sort((a, b) => a.id - b.id);
+  const trades = tradeData.item;
+  const userCards = userData.cards;
+  const sortedCards = userCards.sort((a, b) => a.id - b.id);
 
-  //check traded card from db
-  // useEffect(()=> {
-  //   axios.get("http://localhost:5000/users/get_trades")
-  //   .then(res => setActiveTrades(res.data.item))
-  //   .catch(err => console.error("error fetching card in userAlbum component", err));
-
-  //   // console.log(activeTrades[0].from_user1);
-  // },[]);
+  console.log(trades)
 
   const selected_card = (card) => {
     setModalShow(true);
@@ -79,7 +71,7 @@ function UserAlbum({userData, setUserData, setTradeData, BACKUP}) {
                       </div>
 
                       <button onClick={()=>sellCard(c.id)}> Sell</button>
-                      <button disabled={userData.activeTrade.some(trade => trade.user1_cards.some(card => card.id === c.id))} onClick={()=>selected_card_to_trade(c)}> Trade</button>
+                      <button disabled={trades.some(trade => trade.listing_owner.card.some(card =>  card.id === c.id))} onClick={()=>selected_card_to_trade(c)}> Trade</button>
                     </div>
                   ))}
                 </div>

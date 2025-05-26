@@ -132,15 +132,21 @@ router.post("/create_trade", async (req, res) => {
         console.log("request", request);
         console.log("cards", cards);
         const trade_data = {
-            from_user1: userdata,
-            to_user2: Object,
-            user1_cards: cards,
-            user2_cards: [],
-            user1_request: request,
-            status: "pending"
+            listing_owner: {
+                uid : userdata._id,
+                card: cards,
+                request: ""
+            },
+            bidder_user: {
+                uid: Object,
+                offer: []
+            },
+            status: "active"
         };
 
         const result = await db.collection('trade_list').insertOne(trade_data);
+
+        const tradeId = result.insertedId.toString();
 
         await db.collection('users_list').findOneAndUpdate(
             {
@@ -148,7 +154,7 @@ router.post("/create_trade", async (req, res) => {
             },
             {
                 $push: {
-                    activeTrade : trade_data
+                    activeTrade : tradeId
                 },
             },
             {returnDocument: "after"}
