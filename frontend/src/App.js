@@ -31,8 +31,7 @@ function App() {
     return storedData ? JSON.parse(storedData) : [];
   });
 
-  
-  console.log("Check data for creating a trade", onCreateTradeData);
+  console.log("Check data for creating a trade ", onCreateTradeData );
   //initialize the variable in localstorage 
   useEffect(()=> {
     const setCreateTradeData = () => {

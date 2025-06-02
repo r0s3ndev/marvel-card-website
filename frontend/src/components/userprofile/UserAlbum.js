@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CustomCardModal from '../custom/CustomCardModal';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
@@ -10,6 +10,9 @@ function UserAlbum({userData, setUserData, tradeData, setOnCreateTradeData, BACK
   const userCards = userData.cards;
   const sortedCards = userCards.sort((a, b) => a.id - b.id);
 
+  useEffect(()=>{
+    localStorage.removeItem("onCreateTradeData");
+  }, []);
 
   const selected_card = (card) => {
     setModalShow(true);
@@ -33,7 +36,7 @@ function UserAlbum({userData, setUserData, tradeData, setOnCreateTradeData, BACK
   }
 
   const selected_card_to_trade = (card) => {
-    setOnCreateTradeData(prev => ({...prev, ...card}));
+    setOnCreateTradeData([card]);
 
     setTimeout(()=> {
       navigate("/trade_create_section");

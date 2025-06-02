@@ -14,7 +14,6 @@ function TradeCreateSection({userData, tradeData, onCreateTradeData, setOnCreate
     request: "",
     cards: []
   })
-
   const handleRequest = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
@@ -50,7 +49,6 @@ function TradeCreateSection({userData, tradeData, onCreateTradeData, setOnCreate
       }
     }
   }
-  console.log("tradeCreateSection", onCreateTradeData);
 
   return (
     <>
@@ -72,9 +70,9 @@ function TradeCreateSection({userData, tradeData, onCreateTradeData, setOnCreate
           <div className='trade-main-div'>
             <div className='image-div' onClick={() => selected_card()}>
               <p className='image-id'> {onCreateTradeData[0].species}</p>
-              <img className="card-img" alt={onCreateTradeData.name} src={onCreateTradeData.image ? onCreateTradeData[0].image : BACKUP.IMG}/>
+              <img className="card-img" alt={onCreateTradeData[0].name} src={onCreateTradeData[0].image ? onCreateTradeData[0].image : BACKUP.IMG}/>
               <p className='image-text'> 
-                {onCreateTradeData.name}<br/>
+                {onCreateTradeData[0].name}<br/>
               </p>
             </div>
 
