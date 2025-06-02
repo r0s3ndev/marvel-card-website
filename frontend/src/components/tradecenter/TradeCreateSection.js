@@ -4,7 +4,7 @@ import CustomTradeCardModal from '../custom/CustomTradeCardModal';
 import { Badge } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
 
-function TradeCreateSection({userData, tradeData, BACKUP}) {
+function TradeCreateSection({userData, tradeData, onCreateTradeData, setOnCreateTradeData, BACKUP}) {
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
   const [modalShow, setModalShow] = useState(false);
@@ -50,6 +50,7 @@ function TradeCreateSection({userData, tradeData, BACKUP}) {
       }
     }
   }
+  console.log("tradeCreateSection", onCreateTradeData);
 
   return (
     <>
@@ -70,10 +71,10 @@ function TradeCreateSection({userData, tradeData, BACKUP}) {
 
           <div className='trade-main-div'>
             <div className='image-div' onClick={() => selected_card()}>
-              <p className='image-id'> {tradeData.species}</p>
-              <img className="card-img" alt={tradeData.name} src={tradeData.image ? tradeData.image : BACKUP.IMG}/>
+              <p className='image-id'> {onCreateTradeData[0].species}</p>
+              <img className="card-img" alt={onCreateTradeData.name} src={onCreateTradeData.image ? onCreateTradeData[0].image : BACKUP.IMG}/>
               <p className='image-text'> 
-                {tradeData.name}<br/>
+                {onCreateTradeData.name}<br/>
               </p>
             </div>
 
@@ -96,6 +97,8 @@ function TradeCreateSection({userData, tradeData, BACKUP}) {
             modalCardInfo={modalCardInfo}
             userData={userData}
             tradeData={tradeData}
+            onCreateTradeData={onCreateTradeData}
+            setOnCreateTradeData={setOnCreateTradeData}
             setModalCardInfo={setModalCardInfo}
             BACKUP={BACKUP}
           />

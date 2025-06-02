@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 
 function TradeList({userData, tradeData, BACKUP}) {
   const navigate = useNavigate();
-  const currentUser = userData.username;
+  const currentUserId = userData._id;
   
   const open_trade_page = (data) => {
     localStorage.setItem("currentTradeData", JSON.stringify(data));
@@ -20,7 +20,7 @@ function TradeList({userData, tradeData, BACKUP}) {
           <h1>Available Trade</h1>
           <a href='/card_album'> Select card</a>
             {tradeData && 
-              tradeData.item.filter(trade => trade.from_user1.username !== currentUser).map(trade => (
+              tradeData.filter(trade => trade.listing_owner.id !== currentUserId).map(trade => (
                 <Accordion defaultActiveKey="1" key={trade._id}>
                   <Accordion.Item eventKey="0">
                       <Accordion.Header>

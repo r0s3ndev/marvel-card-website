@@ -1,17 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import CustomCardModal from '../custom/CustomCardModal';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
-function UserAlbum({userData, setUserData, tradeData, setTradeData, BACKUP}) {
+function UserAlbum({userData, setUserData, tradeData, setOnCreateTradeData, BACKUP}) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [modalShow, setModalShow] = useState(false);
   const [modalCardInfo, setModalCardInfo] = useState();
-  const trades = tradeData.item;
   const userCards = userData.cards;
   const sortedCards = userCards.sort((a, b) => a.id - b.id);
 
-  console.log(trades)
 
   const selected_card = (card) => {
     setModalShow(true);
@@ -35,7 +33,7 @@ function UserAlbum({userData, setUserData, tradeData, setTradeData, BACKUP}) {
   }
 
   const selected_card_to_trade = (card) => {
-    setTradeData(prev => ({...prev, ...card}));
+    setOnCreateTradeData(prev => ({...prev, ...card}));
 
     setTimeout(()=> {
       navigate("/trade_create_section");
@@ -71,7 +69,8 @@ function UserAlbum({userData, setUserData, tradeData, setTradeData, BACKUP}) {
                       </div>
 
                       <button onClick={()=>sellCard(c.id)}> Sell</button>
-                      <button disabled={trades.some(trade => trade.listing_owner.card.some(card =>  card.id === c.id))} onClick={()=>selected_card_to_trade(c)}> Trade</button>
+                      {/* for disabled button --> tradeData.forEach(trade => trade.listing_owner.card.some(card =>  card.id === c.id)) */}
+                      <button onClick={()=>selected_card_to_trade(c)} disabled={false}> Trade</button>
                     </div>
                   ))}
                 </div>

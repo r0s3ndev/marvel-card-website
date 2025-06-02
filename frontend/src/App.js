@@ -26,12 +26,26 @@ const BACKUP = {
 function App() {
   const { userData, setUserData } = useContext(UserContext);
   const { tradeData, setTradeData } = useContext(UserContext);
+  const [onCreateTradeData, setOnCreateTradeData] = useState(() => {
+    const storedData = localStorage.getItem("onCreateTradeData");
+    return storedData ? JSON.parse(storedData) : [];
+  });
+
   
-    //fetch most recent data 
+  console.log("Check data for creating a trade", onCreateTradeData);
+  //initialize the variable in localstorage 
+  useEffect(()=> {
+    const setCreateTradeData = () => {
+      localStorage.setItem("onCreateTradeData", JSON.stringify(onCreateTradeData));
+    }
+    setCreateTradeData();
+  }, [onCreateTradeData]);
+  
+  //fetch most recent data 
   useEffect(()=>{
     const getTrade = async () =>{
       const res = await axios.get("http://localhost:5000/users/get_trades");
-      setTradeData(res.data);
+      setTradeData(res.data.item);
     }
     const getUserData = async () =>{
       const res = await axios.get("http://localhost:5000/users/getUser", {
@@ -44,6 +58,7 @@ function App() {
     getTrade();
     getUserData();
   }, []);
+
   
   //randomize card
   function shuffleArray(array) {
@@ -119,7 +134,7 @@ function App() {
             <Route path="/card_album" element={
               <ProtectedRoute>
                 <NavBarLayout> 
-                  <UserAlbum userData={userData} setUserData={setUserData} tradeData={tradeData} setTradeData={setTradeData} BACKUP={BACKUP}/>
+                  <UserAlbum userData={userData} setUserData={setUserData} tradeData={tradeData} setOnCreateTradeData={setOnCreateTradeData} BACKUP={BACKUP}/>
                 </NavBarLayout>
               </ProtectedRoute>
             }
@@ -128,7 +143,7 @@ function App() {
             <Route path="/trade_create_section" element={
               <ProtectedRoute>
                 <NavBarLayout> 
-                  <TradeCreateSection userData={userData} tradeData={tradeData} BACKUP={BACKUP}/>
+                  <TradeCreateSection userData={userData} tradeData={tradeData} onCreateTradeData={onCreateTradeData} setOnCreateTradeData={setOnCreateTradeData} BACKUP={BACKUP}/>
                 </NavBarLayout>
               </ProtectedRoute>
             }

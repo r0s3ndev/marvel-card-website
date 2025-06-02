@@ -1,26 +1,25 @@
 import React, { useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-function CustomTradeCardModal({show, onHide, modalCardInfo, userData, tradeData, setModalCardInfo, BACKUP}) {
+function CustomTradeCardModal({show, onHide, modalCardInfo, userData, tradeData, onCreateTradeData, setOnCreateTradeData, setModalCardInfo, BACKUP}) {
     const [availableCards, setAvailableCards] = useState(userData.cards);
-    const [checkbox, setCheckbox] = useState(true);
-    const excludeTradedCard = userData.activeTrade.flatMap(c => c.user1_cards.map(tc => tc.name));
-    const sortedCards = modalCardInfo.length > 0 ? [
+
+    const userTradesIds = userData.activeTrade.map(userTrades => console.log("test"));
+    // const excludeTradedCard = userData.activeTrade.flatMap(c => c.user1_cards.map(tc => tc.name));
+    const sortedCards = onCreateTradeData ? [
         ...availableCards.filter(card => card.name === modalCardInfo[0].name), // Extract the selected card
-        ...availableCards.filter(card => card.name !== modalCardInfo[0].name && !excludeTradedCard.includes(card.name))  // Append the rest
-    ] : 
+        // ...availableCards.filter(card => card.name !== modalCardInfo[0].name && !excludeTradedCard.includes(card.name))  // Append the rest
+        ...availableCards.filter(card => card.name !== modalCardInfo[0].name)
+      ] : 
     availableCards ;
 
-    // userData.activeTrade.some(c => console.log(c.user1_cards.map(tc => tc.name)));
-// c.from_user1.username === userData.username
     const handleChecboxChange = (e, card) => {
-      setModalCardInfo((prev) => 
+      setOnCreateTradeData((prev) => 
           prev.some((i) => i.id === card.id) 
             ? prev.filter((i) => i.id !== card.id)
             : [...prev, card]
       );
     }
-
 
     return (
         <Modal
@@ -39,7 +38,7 @@ function CustomTradeCardModal({show, onHide, modalCardInfo, userData, tradeData,
             <div>
                 <div className='table-div'>
                     
-                {modalCardInfo.length}
+                {onCreateTradeData.length}
                     <table className='table-card'>
                         <tbody>
                             {sortedCards.map((card, i) => (
