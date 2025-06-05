@@ -20,40 +20,40 @@ function TradeList({userData, tradeData, BACKUP}) {
           <h1>Available Trade</h1>
           <a href='/card_album'> Select card</a>
             {tradeData && 
-              tradeData.filter(trade => trade.listing_owner.id !== currentUserId).map(trade => (
+              tradeData.filter(trade => trade.listing_owner.user._id !== currentUserId).map(trade => (
                 <Accordion defaultActiveKey="1" key={trade._id}>
                   <Accordion.Item eventKey="0">
                       <Accordion.Header>
                         <div className='accordion-div'>
-                          <h5>{trade.user1_cards[0].name}</h5>
-                          <p>{trade.from_user1.username}</p>
-                          <p>{trade.user1_request}</p>
+                          <h5>{trade.listing_owner.card[0].name}</h5>
+                          <p>{trade.listing_owner.user.username}</p>
+                          <p>{trade.listing_owner.request}</p>
                           <p>
-                            <img className="table-card-img" alt={trade.user1_cards[0].name} src={trade.user1_cards[0].image ? trade.user1_cards[0].image : BACKUP.IMG}/>
-                            {trade.user1_cards.length}
+                            <img className="table-card-img" alt={trade.listing_owner.card[0].name} src={trade.listing_owner.card[0].image ? trade.listing_owner.card[0].image : BACKUP.IMG}/>
+                            {trade.listing_owner.card.length}
                           </p>
                         </div>  
                     </Accordion.Header>
                       
                     
-                        <Accordion.Body>
-                          {trade.user1_cards.map((c, j) => (
-                            <div key={j}>
-                              <div>
-                                <img
-                                  className="card-img"
-                                  alt={c.name}
-                                  src={`${c.image ? c.image : BACKUP.IMG}`}
-                                />
-                              </div>
-                              <div>
-                                <p>{c.description ? c.description : BACKUP.DESC}</p>
-                              </div>
-                            </div>
-                          ))}
-                          
-                        <button onClick={() => open_trade_page(trade)}>select</button>
-                        </Accordion.Body>
+                    <Accordion.Body>
+                      {trade.listing_owner.card.map((c, j) => (
+                        <div key={j}>
+                          <div>
+                            <img
+                              className="card-img"
+                              alt={c.name}
+                              src={`${c.image ? c.image : BACKUP.IMG}`}
+                            />
+                          </div>
+                          <div>
+                            <p>{c.description ? c.description : BACKUP.DESC}</p>
+                          </div>
+                        </div>
+                      ))}
+                      
+                      <button onClick={() => open_trade_page(trade)}>select</button>
+                    </Accordion.Body>
                             
                       
                   </Accordion.Item>

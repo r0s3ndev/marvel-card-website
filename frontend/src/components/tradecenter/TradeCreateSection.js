@@ -14,13 +14,16 @@ function TradeCreateSection({userData, tradeData, onCreateTradeData, setOnCreate
     request: "",
     cards: []
   })
+
+  console.log(onCreateTradeData)
+
   const handleRequest = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
       setTradeInfo((prevState) => ({
           ...prevState,
           [name]: value,
-          cards: prevState.cards === modalCardInfo ? prevState.cards : modalCardInfo
+          cards: prevState.cards === onCreateTradeData ? prevState.cards : onCreateTradeData
       }));
   }
 
@@ -57,10 +60,10 @@ function TradeCreateSection({userData, tradeData, onCreateTradeData, setOnCreate
           <h1>Create a trade</h1>
           <a href='/card_album'> Change card</a>
           <h2> Card selected 
-            {modalCardInfo.length > 1 && 
+            {onCreateTradeData.length > 1 && 
               (<>
                 <Badge pill bg="danger">
-                  {modalCardInfo.length }
+                  {onCreateTradeData.length}
                 </Badge>
               </>)
             }
@@ -94,10 +97,8 @@ function TradeCreateSection({userData, tradeData, onCreateTradeData, setOnCreate
             onHide={() => setModalShow(false)}
             modalCardInfo={modalCardInfo}
             userData={userData}
-            tradeData={tradeData}
             onCreateTradeData={onCreateTradeData}
             setOnCreateTradeData={setOnCreateTradeData}
-            setModalCardInfo={setModalCardInfo}
             BACKUP={BACKUP}
           />
         )}

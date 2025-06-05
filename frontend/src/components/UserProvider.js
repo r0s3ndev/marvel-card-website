@@ -8,19 +8,24 @@ function UserProvider({children}) {
     const [tradeData, setTradeData] = useState(
         JSON.parse(localStorage.getItem("tradeData")) || []
     );
+    const [onCreateTradeData , setOnCreateTradeData] = useState(
+        JSON.parse(localStorage.getItem("onCreateTradeData")) || []
+    );
 
     useEffect(()=> {
         if(userData){
             localStorage.setItem("userData", JSON.stringify(userData));
             localStorage.setItem("tradeData", JSON.stringify(tradeData));
+            localStorage.setItem("tradeData", JSON.stringify(onCreateTradeData));
+
         } else {
             console.log("clearing localstorage");
             localStorage.clear();
         }
-    }, [userData, tradeData]);
+    }, [userData, tradeData, onCreateTradeData]);
 
     return (
-        <UserContext.Provider value={{userData, setUserData, tradeData, setTradeData}}>
+        <UserContext.Provider value={{userData, setUserData, tradeData, setTradeData, onCreateTradeData, setOnCreateTradeData}}>
             {children}
         </UserContext.Provider>
     )

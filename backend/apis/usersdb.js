@@ -133,9 +133,9 @@ router.post("/create_trade", async (req, res) => {
         console.log("cards", cards);
         const trade_data = {
             listing_owner: {
-                uid : userdata._id,
+                user : userdata,
                 card: cards,
-                request: ""
+                request: request
             },
             bidder_user: {
                 uid: Object,
@@ -154,7 +154,10 @@ router.post("/create_trade", async (req, res) => {
             },
             {
                 $push: {
-                    activeTrade : tradeId
+                    activeTrade : {
+                        trade_id : tradeId,
+                        cards : cards
+                    }
                 },
             },
             {returnDocument: "after"}

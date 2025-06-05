@@ -6,7 +6,7 @@ import UserRegister from "./components/authentication/UserRegister";
 import UserLogin from "./components/authentication/UserLogin";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import ProtectedRoute from "./components/custom/ProtectedRoute";
 import NavBarLayout from "./components/NavBarLayout";
 import UserProfile from "./components/userprofile/UserProfile";
@@ -26,20 +26,8 @@ const BACKUP = {
 function App() {
   const { userData, setUserData } = useContext(UserContext);
   const { tradeData, setTradeData } = useContext(UserContext);
-  const [onCreateTradeData, setOnCreateTradeData] = useState(() => {
-    const storedData = localStorage.getItem("onCreateTradeData");
-    return storedData ? JSON.parse(storedData) : [];
-  });
+  const { onCreateTradeData, setOnCreateTradeData } = useContext(UserContext);
 
-  console.log("Check data for creating a trade ", onCreateTradeData );
-  //initialize the variable in localstorage 
-  useEffect(()=> {
-    const setCreateTradeData = () => {
-      localStorage.setItem("onCreateTradeData", JSON.stringify(onCreateTradeData));
-    }
-    setCreateTradeData();
-  }, [onCreateTradeData]);
-  
   //fetch most recent data 
   useEffect(()=>{
     const getTrade = async () =>{
@@ -133,7 +121,7 @@ function App() {
             <Route path="/card_album" element={
               <ProtectedRoute>
                 <NavBarLayout> 
-                  <UserAlbum userData={userData} setUserData={setUserData} tradeData={tradeData} setOnCreateTradeData={setOnCreateTradeData} BACKUP={BACKUP}/>
+                  <UserAlbum userData={userData} setUserData={setUserData} tradeData={tradeData} onCreateTradeData={onCreateTradeData} setOnCreateTradeData={setOnCreateTradeData} BACKUP={BACKUP}/>
                 </NavBarLayout>
               </ProtectedRoute>
             }
