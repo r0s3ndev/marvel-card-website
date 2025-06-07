@@ -3,12 +3,14 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 function CustomTradeCardModal({show, onHide, modalCardInfo, userData, onCreateTradeData, setOnCreateTradeData, BACKUP}) {
     const [availableCards, setAvailableCards] = useState(userData.cards);
-    const excludeTradedCard = userData.activeTrade.flatMap(c => c.user1_cards.map(tc => tc.name));
+    const excludeTradedCard = userData.activeTrade.flatMap(c => c.cards.map(tc => tc.name));
     const sortedCards = onCreateTradeData.length > 0 ? [
         ...availableCards.filter(card => card.name === onCreateTradeData[0].name), // Extract the selected card
         ...availableCards.filter(card => card.name !== onCreateTradeData[0].name && !excludeTradedCard.includes(card.name)),  // Append the rest
       ] : 
     availableCards ;
+
+    console.log("onCreateTradeData ", onCreateTradeData);
 
 
     const handleChecboxChange = (e, card) => {

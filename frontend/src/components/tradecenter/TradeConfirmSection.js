@@ -39,14 +39,14 @@ function TradeConfirmSection({userData, tradeData, BACKUP}) {
                 <p>TradeConfirmSection</p>
                 <div>
                     <div>
-                        <p>User: {currentData.from_user1.username}</p>
-                        <div>Cards:{currentData.user1_cards.map((c, k)=> (
+                        <p>User: {currentData.listing_owner.user.username}</p>
+                        <div>Cards:{currentData.listing_owner.card.map((c, k)=> (
                             <div key={k}>
                                 <h3>{c.name}</h3>
                             </div>
                             ))}
                         </div>
-                        <p>Request: {currentData.user1_request}</p>
+                        <p>Request: {currentData.listing_owner.request}</p>
                     </div>
                     <hr/>
                     <div>
@@ -69,6 +69,7 @@ function TradeConfirmSection({userData, tradeData, BACKUP}) {
                 show={modalShow}
                 onHide={() => setModalShow(false)}
                 modalCardInfo={modalCardInfo}
+                userData={userData}
                 setModalCardInfo={setModalCardInfo}
                 BACKUP = {BACKUP}
             />

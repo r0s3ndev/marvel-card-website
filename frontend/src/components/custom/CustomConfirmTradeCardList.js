@@ -4,14 +4,11 @@ import Button from 'react-bootstrap/Button';
 import { UserContext } from '../UserProvider';
 
 
-function CustomConfirmTradeCardList({show, onHide, modalCardInfo, setModalCardInfo, BACKUP}) {
-    const { userData, setUserData } = useContext(UserContext);
+function CustomConfirmTradeCardList({show, onHide, modalCardInfo, userData, setModalCardInfo, BACKUP}) {
     const availableCards = userData.cards;
-
-    const excludeTradedCard = userData.activeTrade.flatMap(c => c.user1_cards.map(tc => tc.name));
+    const excludeTradedCard = userData.activeTrade.flatMap(t => t.cards.map(ut => ut.name));
     const sortedCards = availableCards.filter(card => !excludeTradedCard.includes(card.name));
-  
-    // console.log(sortedCards);
+
     const handleChecboxChange = (e, card) => {
         setModalCardInfo((prev) => 
           prev.some((i) => i.id === card.id) 

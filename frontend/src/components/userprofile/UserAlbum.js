@@ -38,6 +38,7 @@ function UserAlbum({userData, setUserData, tradeData, onCreateTradeData, setOnCr
   }
 
   const selected_card_to_trade = (card) => {
+    localStorage.setItem("onCreateTradeData", JSON.stringify([card]));
     setOnCreateTradeData([card]);
 
     setTimeout(()=> {
