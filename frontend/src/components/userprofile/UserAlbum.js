@@ -50,6 +50,8 @@ function UserAlbum({userData, setUserData, tradeData, onCreateTradeData, setOnCr
     <>
         <div>
             <div className='main-container'>
+              <a href='/user_trade'> Your Active Trade</a>
+
               <h1>Your album:</h1>
               {/* cardi list  */}
               {loading && (

@@ -138,7 +138,7 @@ router.post("/create_trade", async (req, res) => {
                 request: request
             },
             bidder_user: {
-                uid: Object,
+                user: Object,
                 offer: []
             },
             status: "active"
@@ -176,6 +176,44 @@ router.get("/get_trades", async(req, res) => {
         const db = await connectToDatabase(); 
         const trades = await db.collection('trade_list').find().toArray();
         res.status(200).json({message: "fetching trades successfully", item: trades});
+
+    } catch (error) {
+        console.error("Error while fetching trade:", error);
+        return res.status(500).send("Error while fetching trad");
+    }
+})
+
+router.post("/delete_active_trade", async(req, res) => {
+    try{
+        const db = await connectToDatabase(); 
+        const {userdata, trade} = req.body;
+        const trade_id = trade._id;
+        console.log(trade_id);
+
+        const tradeExists = await db.collection("trade_list").findOne({ _id: trade_id });
+        if(tradeExists){
+            await db.collection('users_list').findOneAndUpdate(
+                {
+                    username: userdata
+                },
+                {
+                    $pull: {
+                        activeTrade : {
+                            _id : trade_id,
+                        }
+                    }
+                },
+                {returnDocument: "after"}
+            );
+
+
+            await db.collection("trade_list").deleteOne({ "_id" : trade_id });
+        } else {
+            return res.status(404).json({ message: "Trade not found" });
+        }
+
+        return res.status(200).json({ message: 'Delete created successfully'});
+
 
     } catch (error) {
         console.error("Error while fetching trade:", error);
@@ -263,6 +301,37 @@ router.post("/single_pack_purchase", async (req, res) => {
         return res.status(500).send("Error updating credits & data");
     }
 })  
+
+router.post("/buy_credit", async (req, res) => {
+    try{
+        const db = await connectToDatabase(); 
+        const {username} = req.body;
+        
+        var updateUser = await db.collection('users_list').findOneAndUpdate(
+            {
+                username: username,
+            },
+            {
+                $inc: {
+                    credits : 250
+                },
+            },
+            {returnDocument: "after"}
+        );
+
+        return res.status(200).json({
+            message: "Purchase credit successfully",
+            user: updateUser
+        });
+
+
+    } catch (error) {
+        console.error("Error credits purchase:", error);
+        return res.status(500).send("Error credits purchase");
+    }
+
+})
+
 
 router.post("/open_pack", async (req, res) => {
     try{
@@ -380,7 +449,5 @@ router.delete("/delete_user", async (req, res) => {
         return res.status(500).send("Error updating pack & data");
     }
 })
-
-router.post("/update_data")
 
 module.exports = router;

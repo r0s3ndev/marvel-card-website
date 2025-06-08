@@ -19,6 +19,8 @@ function TradeList({userData, tradeData, BACKUP}) {
         <div className="main-container">
           <h1>Available Trade</h1>
           <a href='/card_album'> Select card</a>
+          <a href='/user_trade'> Your Active Trade</a>
+
             {tradeData && 
               tradeData.filter(trade => trade.listing_owner.user._id !== currentUserId).map(trade => (
                 <Accordion defaultActiveKey="1" key={trade._id}>

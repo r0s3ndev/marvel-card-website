@@ -18,6 +18,7 @@ import TradeList from "./components/tradecenter/TradeList";
 import TradeConfirmSection from "./components/tradecenter/TradeConfirmSection";
 import { UserContext } from "./components/UserProvider";
 import CardsShop from "./components/shop/CardsShop";
+import UserActiveTrade from "./components/tradecenter/UserActiveTrade";
 
 const BACKUP = {
   DESC : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
@@ -149,6 +150,15 @@ function App() {
               <ProtectedRoute>
                 <NavBarLayout> 
                   <TradeList userData={userData} tradeData={tradeData} BACKUP={BACKUP}/>
+                </NavBarLayout>
+              </ProtectedRoute>
+            }
+            />
+
+            <Route path="/user_trade" element={
+              <ProtectedRoute>
+                <NavBarLayout> 
+                  <UserActiveTrade userData={userData} tradeData={tradeData} setUserData={setUserData} BACKUP={BACKUP}/>
                 </NavBarLayout>
               </ProtectedRoute>
             }

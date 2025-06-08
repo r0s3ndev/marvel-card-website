@@ -18,18 +18,33 @@ function CardsShop({userData, setUserData}) {
                 setUserData(prev => ({ ...prev, ...res.data.user}));
                 setTimeout(()=>{
                     setLoading(false);
-                    console.log(res.data.m);
                 }, 1000);
             }
         } catch (error) {
             console.error("Error while buying packs; Exception: " + error);
         }
     };
+
+    const buyCredit = async()=> {
+        setLoading(true);
+        try{
+            const res = await axios.post("http://localhost:5000/users/buy_credit", {username: userData.username});
+            if(res.status === 200){
+                setUserData(prev => ({ ...prev, ...res.data.user}));
+                setTimeout(()=>{
+                    setLoading(false);
+                }, 1000);
+            }
+        } catch (error) {
+            console.error("Error while buying packs; Exception: " + error);
+        }
+    }
     
     return (
         <>
             <div>
                 <div className='main-container'>
+                    <button onClick={() => buyCredit()}> Buy 250 Credit </button>
                     <h1>shop</h1>
                     <div>
                         <h2> buys packs</h2>
