@@ -4,6 +4,7 @@ const express = require('express');
 const bcrypt = require("bcrypt");
 const router = express.Router();
 const {checkLoggedIn} = require("../middleware/checkUserSession");
+const { ObjectId } = require("bson");
 
 function generateSessionId() {
     return crypto.randomBytes(16).toString('hex');
@@ -186,34 +187,33 @@ router.get("/get_trades", async(req, res) => {
 router.post("/delete_active_trade", async(req, res) => {
     try{
         const db = await connectToDatabase(); 
-        const {userdata, trade} = req.body;
-        const trade_id = trade._id;
-        console.log(trade_id);
+        const {username, trade} = req.body;
+        const _id = trade._id;
+        var oid = new ObjectId(trade._id)
 
-        const tradeExists = await db.collection("trade_list").findOne({ _id: trade_id });
+        console.log(_id);
+
+        const tradeExists = await db.collection("trade_list").findOne({_id : oid});
+
         if(tradeExists){
-            await db.collection('users_list').findOneAndUpdate(
+            await db.collection('users_list').updateOne(
                 {
-                    username: userdata
+                    username: username
                 },
                 {
                     $pull: {
                         activeTrade : {
-                            _id : trade_id,
+                            trade_id : trade._id
                         }
                     }
                 },
                 {returnDocument: "after"}
             );
-
-
-            await db.collection("trade_list").deleteOne({ "_id" : trade_id });
+            await db.collection("trade_list").deleteOne({ _id : oid });
         } else {
             return res.status(404).json({ message: "Trade not found" });
         }
-
         return res.status(200).json({ message: 'Delete created successfully'});
-
 
     } catch (error) {
         console.error("Error while fetching trade:", error);

@@ -1,8 +1,10 @@
 import { useState } from "react";
 import axios from 'axios';
+import { useNavigate } from "react-router";
 
 
 function UserActiveTrade({userData, tradeData, setUserData, BAKCUP}) {
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const userActiveTrade = tradeData.filter(m => m.listing_owner.user._id === userData._id);
 
@@ -17,6 +19,7 @@ function UserActiveTrade({userData, tradeData, setUserData, BAKCUP}) {
                 // setUserData(prev => ({ ...prev, ...res.data.user}));
                 setTimeout(()=>{
                     setLoading(false);
+                    navigate("/user_trade");
                 }, 1000);
             } else {
                 console.log(res);
