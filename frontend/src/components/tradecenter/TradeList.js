@@ -12,6 +12,7 @@ function TradeList({userData, tradeData, BACKUP}) {
     }, 1000);
   };
 
+  console.log("TradeList tradeData issue -->", tradeData);
 
   return (
     <>

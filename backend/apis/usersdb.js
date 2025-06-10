@@ -138,10 +138,7 @@ router.post("/create_trade", async (req, res) => {
                 card: cards,
                 request: request
             },
-            bidder_user: {
-                user: Object,
-                offer: []
-            },
+            bidder_user: [],
             status: "active"
         };
 
@@ -181,6 +178,20 @@ router.get("/get_trades", async(req, res) => {
     } catch (error) {
         console.error("Error while fetching trade:", error);
         return res.status(500).send("Error while fetching trad");
+    }
+})
+
+router.post("/send_trade_offer", async(req, res) => {
+    try{
+        const db = await connectToDatabase(); 
+        const {trade_id, userdata, cards} = req.body;
+        console.log(trade_id);
+        console.log(cards);
+        
+        
+    } catch (error) {
+        console.error("Error sending your offer trade:", error);
+        return res.status(500).send("EError sending your offer trade:");
     }
 })
 

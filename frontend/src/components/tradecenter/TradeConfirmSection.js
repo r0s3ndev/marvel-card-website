@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import CustomConfirmTradeCardList from '../custom/CustomConfirmTradeCardList';
+import axios from 'axios';
 
 function TradeConfirmSection({userData, tradeData, BACKUP}) {
     const currentData = JSON.parse(localStorage.getItem("currentTradeData"));
@@ -7,6 +8,7 @@ function TradeConfirmSection({userData, tradeData, BACKUP}) {
     const [modalShow, setModalShow] = useState(false);
     const [modalCardInfo, setModalCardInfo] = useState([])//no data   
     const [tradeInfo, setTradeInfo] = useState({
+        trade_id: currentData._id,
         userdata: userData,
         cards: []
     })
@@ -23,12 +25,12 @@ function TradeConfirmSection({userData, tradeData, BACKUP}) {
         setModalShow(true);
     }
 
-    const send_request_trade = () => {
+    const send_request_trade = async() => {
         if(tradeInfo.cards.length < 1){
             setErrorMessage("Cannot send the trade request: Missing card");
         } else {
             alert("You sure you want to send the request?");
-            console.log(tradeInfo);
+            const res = await axios.post("http://localhost:5000/users/send_trade_offer", tradeInfo);
         }
     }
 

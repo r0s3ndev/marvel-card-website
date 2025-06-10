@@ -8,6 +8,8 @@ function UserActiveTrade({userData, tradeData, setUserData, BAKCUP}) {
     const [loading, setLoading] = useState(false);
     const userActiveTrade = tradeData.filter(m => m.listing_owner.user._id === userData._id);
 
+    
+  console.log("UserActiveTrade tradeData issue -->", tradeData);
 
     const deleteTrade = async (trade) => {
         console.log(trade);
