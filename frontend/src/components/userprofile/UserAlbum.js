@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import axios from 'axios';
 function UserAlbum({userData, setUserData, tradeData, onCreateTradeData, setOnCreateTradeData, BACKUP}) {
   const navigate = useNavigate();
+  const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
   const [modalShow, setModalShow] = useState(false);
   const [modalCardInfo, setModalCardInfo] = useState();
@@ -11,7 +12,6 @@ function UserAlbum({userData, setUserData, tradeData, onCreateTradeData, setOnCr
   const currentUserId = userData._id;
   const sortedCards = userCards.sort((a, b) => a.id - b.id);
 
-  console.log(currentUserId);
   useEffect(()=>{
     localStorage.removeItem("onCreateTradeData");
   }, []);
@@ -21,17 +21,28 @@ function UserAlbum({userData, setUserData, tradeData, onCreateTradeData, setOnCr
     setModalCardInfo(card);
   }
 
+
+
   const sellCard = async (c_id) => {
     setLoading(true);
     try{
-      const res = await axios.post("http://localhost:5000/users/sell_card", {c_id: c_id, username : userData.username, amount: 1});
-      if(res.status === 200){
-        setUserData(prev => ({ ...prev, ...res.data.updatedData}));
-        setTimeout(()=>{
-            setLoading(false);
-            console.log(res.data.message);
-        }, 1000);
+      const isCardBeingBidded = tradeData.some(trade => trade.bidder_user.some(user => user.cards.some(card => card.id === c_id && user.userdata._id === currentUserId)));
+      const isCardBeingTraded = tradeData.some(trade => trade.listing_owner.card.some(card => card.id === c_id && trade.listing_owner.user._id === currentUserId));
+      if(isCardBeingBidded || isCardBeingTraded){
+        const userConfirm = window.confirm("The card is being traded, by selling it, it will remove the trade. Continue?");
+        if(userConfirm){
+          const res = await axios.post("http://localhost:5000/users/sell_card", {c_id: c_id, username : userData.username, isCardTraded:"true"});
+          if(res.status === 200){
+            setUserData(prev => ({ ...prev, ...res.data.updatedData}));
+          }
+        } else {
+          console.log("not confirmed");
+        }
       }
+      setTimeout(()=>{
+          setLoading(false);
+      }, 1000); 
+
     } catch (error) {
         console.error("Error while selling card; Exception: " + error);
     }
@@ -53,6 +64,7 @@ function UserAlbum({userData, setUserData, tradeData, onCreateTradeData, setOnCr
               <a href='/user_trade'> Your Active Trade</a>
 
               <h1>Your album:</h1>
+              <p>{errorMsg}</p>
               {/* cardi list  */}
               {loading && (
                   <div className='loading-overlay-cardPack'>

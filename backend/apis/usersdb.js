@@ -185,9 +185,25 @@ router.post("/send_trade_offer", async(req, res) => {
     try{
         const db = await connectToDatabase(); 
         const {trade_id, userdata, cards} = req.body;
-        console.log(trade_id);
-        console.log(cards);
+        var tid = new ObjectId(trade_id);
         
+        const res = await db.collection('trade_list').findOneAndUpdate(
+            {
+                _id: tid
+            },
+            {
+                $push: {
+                    bidder_user : {
+                        trade_id: "cards.0.id",
+                        userdata,
+                        cards
+                    }
+                },
+            },
+            {returnDocument: "after"}
+        );
+        
+        return res.status(200).json({ message: 'Sent successfully'});
         
     } catch (error) {
         console.error("Error sending your offer trade:", error);
@@ -414,23 +430,71 @@ router.post("/open_pack", async (req, res) => {
 router.post("/sell_card", async (req, res) => {
     try{
         const db = await connectToDatabase(); 
-        const {c_id, username, amount} = req.body;
-        console.log(c_id);
-        var updateUser = await db.collection("users_list").findOneAndUpdate(
-            {
-                username: username,
-                "cards.id": c_id
-            },
-            {
-                $inc: {
-                    credits: 10
-                },
-                $pull :{
-                    cards: {id: c_id}
-                }
-            },
-            { returnDocument: "after"}
-        )
+        const {c_id, username, isCardTraded} = req.body;
+        var updateUser;
+
+        if(isCardTraded){
+            const cardTraded = await db.collection("trade_list").findOne({ "listing_owner.card.id" : c_id});
+            const cardBidded = await db.collection("trade_list").findOne({ "bidder_user.cards.id" : c_id});
+            
+            if(cardTraded != null){
+                const oid = new ObjectId(cardTraded._id);
+                updateUser = await db.collection('users_list').updateOne(
+                    {
+                        username: username
+                    },
+                    {
+                        $pull: {
+                            activeTrade : {
+                                trade_id : cardTraded._id
+                            }
+                        },
+                        $inc: {
+                            credits: 10
+                        },
+                        $pull :{
+                            cards: {id: c_id}
+                        }
+                    },
+                    { returnDocument: "after"}
+                );
+                await db.collection("trade_list").deleteOne({ _id : oid });
+            }
+
+            if(cardBidded != null){
+               
+                await db.collection("trade_list").findOne(
+                    { 
+                        "bidder_user.cards.id" : c_id
+                    },
+                    {
+                        $pull: {
+                            bidder_user: {
+                                "cards.id": c_id
+                            }
+                        }
+                    },
+                    { returnDocument: "after"}
+                );
+
+                updateUser = await db.collection("users_list").findOneAndUpdate(
+                    {
+                        username: username,
+                        "cards.id": c_id
+                    },
+                    {
+                        $inc: {
+                            credits: 10
+                        },
+                        $pull :{
+                            cards: {id: c_id}
+                        }
+                    },
+                    { returnDocument: "after"}
+                )
+            }
+        }
+
         res.status(200).json({
             message: "card sold successfully",
             updatedData: updateUser});

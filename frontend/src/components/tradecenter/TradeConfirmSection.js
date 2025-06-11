@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import CustomConfirmTradeCardList from '../custom/CustomConfirmTradeCardList';
 import axios from 'axios';
+import { useNavigate } from 'react-router';
 
 function TradeConfirmSection({userData, tradeData, BACKUP}) {
+    const navigate = useNavigate();
     const currentData = JSON.parse(localStorage.getItem("currentTradeData"));
     const [errorMessage, setErrorMessage] = useState("");
     const [modalShow, setModalShow] = useState(false);
@@ -31,6 +33,11 @@ function TradeConfirmSection({userData, tradeData, BACKUP}) {
         } else {
             alert("You sure you want to send the request?");
             const res = await axios.post("http://localhost:5000/users/send_trade_offer", tradeInfo);
+            if(res === 200){
+                 setTimeout(()=>{
+                    navigate("/trade_list");
+                }, 2000);
+            }
         }
     }
 
