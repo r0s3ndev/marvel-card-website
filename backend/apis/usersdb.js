@@ -187,14 +187,14 @@ router.post("/send_trade_offer", async(req, res) => {
         const {trade_id, userdata, cards} = req.body;
         var tid = new ObjectId(trade_id);
         
-        const res = await db.collection('trade_list').findOneAndUpdate(
+        await db.collection('trade_list').findOneAndUpdate(
             {
                 _id: tid
             },
             {
                 $push: {
                     bidder_user : {
-                        trade_id: "cards.0.id",
+                        trade_id: cards[0].id + userdata.username,
                         userdata,
                         cards
                     }
@@ -207,7 +207,81 @@ router.post("/send_trade_offer", async(req, res) => {
         
     } catch (error) {
         console.error("Error sending your offer trade:", error);
-        return res.status(500).send("EError sending your offer trade:");
+        return res.status(500).send("Error sending your offer trade:");
+    }
+})
+
+router.post("/accept_trade_offer", async(req, res) => {
+    try{
+        const db = await connectToDatabase(); 
+        const {bidderTradeId, trade} = req.body;
+        const tradeId = trade._id;
+        var oid = new ObjectId(tradeId)
+        //listing owner data
+        const listing_owner = trade.listing_owner.user;
+        const listing_card = trade.listing_owner.card;
+        const listingCardIds = listing_card.map(card => card.id);
+        const userId = listing_owner._id;
+
+        //bidder data
+        const bidder = trade.bidder_user;
+        const bidder_users = bidder.map(user => user.userdata.username);
+        const bidderCards = bidder.find(card => card.trade_id === bidderTradeId);
+        const bidder_user = bidder_users.find(user => bidderTradeId.includes(user));
+
+        // console.log(bidderCards.cards);
+        console.log(tradeId);
+
+      
+        
+        // await db.collection('users_list').findOneAndUpdate(
+        //     {
+        //         _id: userId
+        //     },
+        //     {
+        //         $push: {
+        //             cards : bidderCards.cards
+        //         },
+        //         $pull: {
+        //             cards : { 
+        //                 id: { 
+        //                     $in: listingCardIds
+        //                 }
+        //             },
+        //             activeTrade : {
+        //                 trade_id : tradeId
+        //             }
+        //         }
+        
+        //     },
+        // );
+        
+        // await db.collection('users_list').findOneAndUpdate(
+        //     {
+        //         username: bidder_user
+        //     },
+        //     {
+        //         $push: {
+        //             cards : listing_card
+        //         },
+        //           $pull: {
+        //             cards : { 
+        //                 id: { 
+        //                     $in: bidderCards.cards
+        //                 }
+        //             }
+        //         }
+        //     },
+        //     {returnDocument: "after"}
+        // );
+ 
+        // await db.collection("trade_list").deleteOne({ _id : oid });
+
+        // return res.status(200).json({ message: 'Sent successfully'});
+        
+    } catch (error) {
+        console.error("Error sending your offer trade:", error);
+        return res.status(500).send("Error sending your offer trade:");
     }
 })
 

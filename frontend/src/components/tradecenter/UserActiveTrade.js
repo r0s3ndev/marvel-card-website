@@ -7,6 +7,11 @@ function UserActiveTrade({userData, tradeData, setUserData, BAKCUP}) {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const userActiveTrade = tradeData.filter(m => m.listing_owner.user._id === userData._id);
+    const [tradeInfo, setTradeInfo] = useState({
+    userdata: userData,
+    request: "",
+    cards: []
+  })
 
     const deleteTrade = async (trade) => {
         console.log(trade);
@@ -28,8 +33,19 @@ function UserActiveTrade({userData, tradeData, setUserData, BAKCUP}) {
         }
     }
 
-    const acceptTrade = async (trade) => {
-        console.log("Accepted trade", trade);
+    const acceptTrade = async (bidderTradeId, trade) => {
+        try{
+            const res = await axios.post("http://localhost:5000/users/accept_trade_offer", {bidderTradeId: bidderTradeId, trade: trade});
+            if(res.status === 200){
+                console.log("done");
+                setTimeout(()=>{
+                    setLoading(false);
+                    navigate("/user_trade");
+                }, 1000);
+            }
+        } catch (error) {
+            console.error("Error while buying packs; Exception: " + error);
+        }
     }
 
   return (
@@ -65,8 +81,17 @@ function UserActiveTrade({userData, tradeData, setUserData, BAKCUP}) {
                         <div key={i}>
                             <hr/>
                             <h2>Bidder: {info.userdata.username}</h2>
-                            <h2>Offer: {info.cards.map(card => card.name)}</h2>
-                            <button onClick={() => acceptTrade(trade)}> accept </button>
+                            Offer:
+                            <div> {info.cards.map((card, j) => 
+                                <div key={j}>
+                                    <h2>{card.name}</h2>
+                                </div>
+                            )}
+                            <button onClick={() => acceptTrade(info.trade_id, trade)}> accept </button>
+                            
+
+                            </div>
+                           
                         </div>
                     ))}
                     

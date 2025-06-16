@@ -16,7 +16,7 @@ function UserProvider({children}) {
         if(userData){
             localStorage.setItem("userData", JSON.stringify(userData));
             localStorage.setItem("tradeData", JSON.stringify(tradeData));
-            localStorage.setItem("tradeData", JSON.stringify(onCreateTradeData));
+            localStorage.setItem("onCreateTradeData", JSON.stringify(onCreateTradeData));
 
         } else {
             console.log("clearing localstorage");

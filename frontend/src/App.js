@@ -156,11 +156,11 @@ function App() {
             />
 
             <Route path="/user_trade" element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <NavBarLayout> 
                   <UserActiveTrade userData={userData} tradeData={tradeData} setUserData={setUserData} BACKUP={BACKUP}/>
                 </NavBarLayout>
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
             />
 
