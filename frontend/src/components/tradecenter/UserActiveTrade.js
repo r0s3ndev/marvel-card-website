@@ -26,10 +26,10 @@ function UserActiveTrade({userData, tradeData, setUserData, BAKCUP}) {
                     navigate("/user_trade");
                 }, 1000);
             } else {
-                console.log(res);
+                console.error(res);
             }
         } catch (error) {
-            console.error("Error while buying packs; Exception: " + error);
+            console.error("Error deleting card: Exception: " + error);
         }
     }
 
@@ -44,7 +44,7 @@ function UserActiveTrade({userData, tradeData, setUserData, BAKCUP}) {
                 }, 1000);
             }
         } catch (error) {
-            console.error("Error while buying packs; Exception: " + error);
+            console.error("Error while accepting the offer: Exception: " + error);
         }
     }
 
