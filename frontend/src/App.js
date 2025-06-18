@@ -93,65 +93,65 @@ function App() {
            {/* to protect */}
             
            <Route path="/homepage" element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <NavBarLayout> 
                   <Homepage  userData={userData} BACKUP={BACKUP} />
                 </NavBarLayout>
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
             />
 
             <Route path="/shop" element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <NavBarLayout> 
                   <CardsShop userData={userData} setUserData={setUserData}/>
                 </NavBarLayout>
-              </ProtectedRoute>
+              // </ProtectedRoute>
               }
             />
 
             <Route path="/profile" element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <NavBarLayout> 
                   <UserProfile items={userData} userData={userData}/>
                 </NavBarLayout>
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
             />
 
             <Route path="/card_album" element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <NavBarLayout> 
                   <UserAlbum userData={userData} setUserData={setUserData} tradeData={tradeData} onCreateTradeData={onCreateTradeData} setOnCreateTradeData={setOnCreateTradeData} BACKUP={BACKUP}/>
                 </NavBarLayout>
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
             />
             
             <Route path="/trade_create_section" element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <NavBarLayout> 
                   <TradeCreateSection userData={userData} tradeData={tradeData} onCreateTradeData={onCreateTradeData} setOnCreateTradeData={setOnCreateTradeData} BACKUP={BACKUP}/>
                 </NavBarLayout>
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
             />
 
             <Route path="/trade_confirm_section" element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <NavBarLayout> 
                   <TradeConfirmSection userData={userData} tradeData={tradeData} BACKUP={BACKUP}/>
                 </NavBarLayout>
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
             />
 
             <Route path="/trade_list" element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <NavBarLayout> 
                   <TradeList userData={userData} tradeData={tradeData} BACKUP={BACKUP}/>
                 </NavBarLayout>
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
             />
 
@@ -165,20 +165,20 @@ function App() {
             />
 
             <Route path="/user_items" element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <NavBarLayout> 
                   <UserItems userData={userData} setUserData={setUserData} fetchCard={fetchCard}/>
                 </NavBarLayout>
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
             />
 
             <Route path="/user_settings" element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <NavBarLayout> 
                   <UserSettings userData={userData}/>
                 </NavBarLayout>
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
             />
             <Route path="/test" element={<Testing/>}/>

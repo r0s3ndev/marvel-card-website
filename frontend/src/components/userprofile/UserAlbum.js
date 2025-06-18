@@ -31,13 +31,19 @@ function UserAlbum({userData, setUserData, tradeData, onCreateTradeData, setOnCr
       if(isCardBeingBidded || isCardBeingTraded){
         const userConfirm = window.confirm("The card is being traded, by selling it, it will remove the trade. Continue?");
         if(userConfirm){
-          const res = await axios.post("http://localhost:5000/users/sell_card", {c_id: c_id, username : userData.username, isCardTraded:"true"});
+          const res = await axios.post("http://localhost:5000/users/sell_card", {c_id: c_id, username : userData.username, isCardTraded:true});
           if(res.status === 200){
             setUserData(prev => ({ ...prev, ...res.data.updatedData}));
           }
         } else {
           console.log("not confirmed");
         }
+      } else {
+        console.log("selling");
+          const res = await axios.post("http://localhost:5000/users/sell_card", {c_id: c_id, username : userData.username, isCardTraded:false});
+          if(res.status === 200){
+            setUserData(prev => ({ ...prev, ...res.data.updatedData}));
+          }
       }
       setTimeout(()=>{
           setLoading(false);

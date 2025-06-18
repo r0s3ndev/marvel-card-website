@@ -3,12 +3,8 @@ const { connectToDatabase } = require('../config/mongdbconfig');
 const express = require('express');
 const bcrypt = require("bcrypt");
 const router = express.Router();
-const {checkLoggedIn} = require("../middleware/checkUserSession");
 const { ObjectId } = require("bson");
 
-function generateSessionId() {
-    return crypto.randomBytes(16).toString('hex');
-}
 
 router.get("/getUser", async (req, res) => {
     try {
@@ -41,8 +37,6 @@ router.post("/check_user", async (req, res) =>  {
         }).toArray();
 
         if(checkUser.length > 0){
-            const isUsernameTaken = checkUser.some(user => user.username === username);
-            const isEmailTaken = checkUser.some(user => user.email === email);
             let message = "The following are already taken: username or email";
             return res.status(409).json({ message });      
         } 
@@ -79,7 +73,7 @@ router.post("/register", async (req, res) =>  {
             items: [],
             cards: req.body.cards
         } 
-        // const userData = req.body;
+
         const result = await db.collection('users_list').insertOne(userData);
         return res.status(201).json({ message: 'User created successfully', userId: result.insertedId });
     } catch (error) {
@@ -96,12 +90,7 @@ router.post("/login", async (req, res) => {
         //check if user exists
         const check_if_username_exist = await db.collection("users_list").findOne({username});
         if(check_if_username_exist && await bcrypt.compare(password, check_if_username_exist.password)){
-            //create session based authentication
-            // const sessionId = generateSessionId();
-            // const uid = check_if_username_exist._id.toString();
-            // sessions[sessionId] = { uid };
             req.session.userSession = {id: check_if_username_exist._id.toString(), username: check_if_username_exist.username};
-            // res.cookie('sessionId', sessionId, { httpOnly: true });
             return res.status(200).json({ message: "Loggin in...", user: check_if_username_exist});      
         } else {
             return res.status(404).json({ message: "Username and email are not valid!" });
@@ -157,8 +146,7 @@ router.post("/create_trade", async (req, res) => {
                         cards : cards
                     }
                 },
-            },
-            {returnDocument: "after"}
+            }
         );
         return res.status(201).json({ message: 'Trade created successfully', userId: result.insertedId });
 
@@ -177,7 +165,7 @@ router.get("/get_trades", async(req, res) => {
 
     } catch (error) {
         console.error("Error while fetching trade:", error);
-        return res.status(500).send("Error while fetching trad");
+        return res.status(500).send("Error while fetching trade");
     }
 })
 
@@ -199,8 +187,7 @@ router.post("/send_trade_offer", async(req, res) => {
                         cards
                     }
                 },
-            },
-            {returnDocument: "after"}
+            }
         );
         
         return res.status(200).json({ message: 'Sent successfully'});
@@ -237,9 +224,6 @@ router.post("/accept_trade_offer", async(req, res) => {
             return res.status(400).json({ error: "Bidder username not found" });
         }
 
-        console.log(listing_cardIds);
-        bidder_cards.map(c =>  console.log(c));
-
         // update user info that created the trade
         await db.collection('users_list').findOneAndUpdate(
             {
@@ -262,7 +246,7 @@ router.post("/accept_trade_offer", async(req, res) => {
                 $pull: {
                     cards : { 
                         id: { 
-                            $in: listing_card
+                            $in: listing_cardIds
                         }
                     },
                     activeTrade : {
@@ -296,7 +280,7 @@ router.post("/accept_trade_offer", async(req, res) => {
                 $pull: {
                     cards : { 
                         id: { 
-                            $in: bidder_cards.map(c =>  c)
+                            $in: bidder_cards.map(c =>  c.id)
                         }
                     }
                 }
@@ -335,8 +319,7 @@ router.post("/delete_active_trade", async(req, res) => {
                             trade_id : trade._id
                         }
                     }
-                },
-                {returnDocument: "after"}
+                }
             );
             await db.collection("trade_list").deleteOne({ _id : oid });
         } else {
@@ -540,7 +523,11 @@ router.post("/sell_card", async (req, res) => {
             const cardBidded = await db.collection("trade_list").findOne({ "bidder_user.cards.id" : c_id});
             
             if(cardTraded != null){
+                
                 const oid = new ObjectId(cardTraded._id);
+                console.log(cardTraded._id.toString());
+                console.log(oid);
+
                 updateUser = await db.collection('users_list').updateOne(
                     {
                         username: username
@@ -548,14 +535,14 @@ router.post("/sell_card", async (req, res) => {
                     {
                         $pull: {
                             activeTrade : {
-                                trade_id : cardTraded._id
-                            }
+                                trade_id : oid.toString()
+                            },
+
+                            cards: {id: c_id}
+
                         },
                         $inc: {
                             credits: 10
-                        },
-                        $pull :{
-                            cards: {id: c_id}
                         }
                     },
                     { returnDocument: "after"}
@@ -595,6 +582,26 @@ router.post("/sell_card", async (req, res) => {
                     { returnDocument: "after"}
                 )
             }
+        }
+
+        if(!isCardTraded) {
+            console.log("card not bidded or traded")
+            updateUser = await db.collection("users_list").findOneAndUpdate(
+                {
+                    username: username,
+                    "cards.id": c_id
+                },
+                {
+                    
+                    $inc: {
+                        credits: 10
+                    },
+                    $pull :{
+                        cards: {id: c_id}
+                    }
+                },
+                { returnDocument: "after"}
+            )
         }
 
         res.status(200).json({

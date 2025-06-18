@@ -41,10 +41,6 @@ app.use(cookies());
 const apiRoutes = require('./apis/api');
 app.use('/api', apiRoutes);
 
-// // Use pages routes
-// const pages = require("./apis/index");s
-// app.use('/view', pages);
-
 // Use Users api
 const users_api = require('./apis/usersdb');
 const { closeDatabaseConnection } = require('./config/mongdbconfig');
