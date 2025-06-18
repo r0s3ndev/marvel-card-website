@@ -22,10 +22,8 @@ function UserRegister({fetchCard, BACKUP}) {
     useEffect(()=>{
         async function fetchData() {
             const res = await fetchCard("register");
-            console.log(res);
             setCardList(res);
         }
-
         fetchData();
     }, []);
 
@@ -33,7 +31,6 @@ function UserRegister({fetchCard, BACKUP}) {
         e.preventDefault();
         if(!userChecked){
             try{
-                // const res = await check_user_before_next_page(userData);
                 const res = await axios.post("http://localhost:5000/users/check_user", userData);
                 if(res.status === 200){
                     setUserChecked(true);
@@ -80,17 +77,15 @@ function UserRegister({fetchCard, BACKUP}) {
     
     const handleSubmit = async () => {
         try{
-            // await registerUser(userData); 
             const res = await axios.post("http://localhost:5000/users/register", userData);
             if(res.status === 201){
                 setMessage("Loading...");
                 setTimeout(() => {
                     navitage('/login');
                     setUserChecked(false);
-                }, "3000");
+                }, "1000");
             }
-        } 
-        catch (error) {
+        } catch (error) {
             if(error.status === 409){
                 setMessage("username or email already taken.");
             } else {
@@ -103,55 +98,54 @@ function UserRegister({fetchCard, BACKUP}) {
         <div className="register-container">
             <a href="/">Home</a>
             <div className="page-wrapper">
-
-                    <div className={`page page1 ${nextPage ? "fade-in" : "fade-out"}`}>
-                        <h1>Register</h1>
-                        <p style={{color: "orange"}}>{message}</p>
-                        <label htmlFor="username">Username:</label><br/>
-                        <input type="text" id="username" name="username" value={userData.username} onChange={handleChange} required/><br/>
-                        <label htmlFor="email">Email:</label><br/>
-                        <input type="text" id="email" name="email" value={userData.email} onChange={handleChange} required/><br/>
-                        <label htmlFor="password">password:</label><br/>
-                        <input type="password" id="password" name="password" value={userData.password} onChange={handleChange} required/>
-                        <br/>
-                        <button onClick={handleUserCheckAndToggle} className="next-button">Next</button>
-                        <p> Already have an account? <a href='/login'>login</a> here.</p>
+                <div className={`page page1 ${nextPage ? "fade-in" : "fade-out"}`}>
+                    <h1>Register</h1>
+                    <p style={{color: "orange"}}>{message}</p>
+                    <label htmlFor="username">Username:</label><br/>
+                    <input type="text" id="username" name="username" value={userData.username} onChange={handleChange} required/><br/>
+                    <label htmlFor="email">Email:</label><br/>
+                    <input type="text" id="email" name="email" value={userData.email} onChange={handleChange} required/><br/>
+                    <label htmlFor="password">password:</label><br/>
+                    <input type="password" id="password" name="password" value={userData.password} onChange={handleChange} required/>
+                    <br/>
+                    <button onClick={handleUserCheckAndToggle} className="next-button">Next</button>
+                    <p> Already have an account? <a href='/login'>login</a> here.</p>
+                </div>
+                
+                {!loading ? (
+                    <div className="loader">
+                        <div className="circle"></div>
+                        <div className="circle"></div>
+                        <div className="circle"></div>
+                        <div className="circle"></div>
                     </div>
-                    
-                    {!loading ? (
-                        <div className="loader">
-                            <div className="circle"></div>
-                            <div className="circle"></div>
-                            <div className="circle"></div>
-                            <div className="circle"></div>
-                        </div>
-                    ) : (
-                        <div className={`page page2 ${nextPage ? "fade-out" : "fade-in"}`}>
-                            <h1>Select a card...</h1>
-                            <p style={{color: "orange"}}>{message}</p>
-                            <div className='card-div'>
-                                {cardlist.map((card) => (
-                                    <div 
-                                    key={card.id} 
-                                    className='card-register-div' 
-                                    style={{ 
-                                        backgroundImage: `linear-gradient(rgba(184, 103, 103, 0), rgba(121, 17, 17, 0.53), rgba(58, 4, 4, 0.85)), url(${card.image ? card.image : BACKUP.IMG})`,
-                                        backgroundSize: 'contain'
-                                        }}
-                                    onClick={()=> handleSelectedCard(card)}
-                                    tabIndex="0"
-                                    >
-                                        <p style={{textAlign: 'right', color: 'white', textDecoration: 'underline overline'}}>{card.id}</p>
-                                        <div className='card-name-desc'>
-                                            <h2 style={{textTransform: 'uppercase'}}>{card.name}</h2>
-                                        </div>
+                ) : (
+                    <div className={`page page2 ${nextPage ? "fade-out" : "fade-in"}`}>
+                        <h1>Select a card...</h1>
+                        <p style={{color: "orange"}}>{message}</p>
+                        <div className='card-div'>
+                            {cardlist.map((card) => (
+                                <div 
+                                key={card.id} 
+                                className='card-register-div' 
+                                style={{ 
+                                    backgroundImage: `linear-gradient(rgba(184, 103, 103, 0), rgba(121, 17, 17, 0.53), rgba(58, 4, 4, 0.85)), url(${card.image ? card.image : BACKUP.IMG})`,
+                                    backgroundSize: 'contain'
+                                    }}
+                                onClick={()=> handleSelectedCard(card)}
+                                tabIndex="0"
+                                >
+                                    <p style={{textAlign: 'right', color: 'white', textDecoration: 'underline overline'}}>{card.id}</p>
+                                    <div className='card-name-desc'>
+                                        <h2 style={{textTransform: 'uppercase'}}>{card.name}</h2>
                                     </div>
-                                ))}
-                            </div>
-                            <button onClick={handleUserCheckAndToggle} className="next-button">Back</button>
-                            <button className="register-button" onClick={handleSubmit}>Register</button>
+                                </div>
+                            ))}
                         </div>
-                    )}    
+                        <button onClick={handleUserCheckAndToggle} className="next-button">Back</button>
+                        <button className="register-button" onClick={handleSubmit}>Register</button>
+                    </div>
+                )}    
             </div>
         </div>
     )

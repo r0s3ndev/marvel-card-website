@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-function CustomTradeCardModal({show, onHide, modalCardInfo, userData, onCreateTradeData, setOnCreateTradeData, BACKUP}) {
-    const [availableCards, setAvailableCards] = useState(userData.cards);
+function CustomTradeCardModal({show, onHide, userData, onCreateTradeData, setOnCreateTradeData, BACKUP}) {
+    const availableCards = userData.cards;
     const excludeTradedCard = userData.activeTrade.flatMap(c => c.cards.map(tc => tc.name));
     const sortedCards = onCreateTradeData.length > 0 ? [
         ...availableCards.filter(card => card.name === onCreateTradeData[0].name), // Extract the selected card

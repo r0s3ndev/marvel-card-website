@@ -3,7 +3,7 @@ import CustomConfirmTradeCardList from '../custom/CustomConfirmTradeCardList';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
 
-function TradeConfirmSection({userData, tradeData, BACKUP}) {
+function TradeConfirmSection({userData, BACKUP}) {
     const navigate = useNavigate();
     const currentData = JSON.parse(localStorage.getItem("currentTradeData"));
     const [errorMessage, setErrorMessage] = useState("");

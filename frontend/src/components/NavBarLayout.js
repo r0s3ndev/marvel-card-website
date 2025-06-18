@@ -46,8 +46,9 @@ function NavBarLayout({children }) {
                         <NavDropdown.Item onClick={handleLogout}>
                             LOGOUT
                         </NavDropdown.Item>
-                    </NavDropdown>
+                    </NavDropdown>    
                 </Nav>
+                
                 <Navbar.Collapse className="justify-content-end"> 
                     <Navbar.Text>
                     Credits: {localCredits}

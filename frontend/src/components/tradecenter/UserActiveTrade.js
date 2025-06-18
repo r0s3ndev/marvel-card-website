@@ -2,16 +2,11 @@ import { useState } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router";
 
-
-function UserActiveTrade({userData, tradeData, setUserData, BAKCUP}) {
+//ADD MODAL TO SHOW CARD INFO
+function UserActiveTrade({userData, tradeData, BAKCUP}) {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const userActiveTrade = tradeData.filter(m => m.listing_owner.user._id === userData._id);
-    const [tradeInfo, setTradeInfo] = useState({
-    userdata: userData,
-    request: "",
-    cards: []
-  })
 
     const deleteTrade = async (trade) => {
         console.log(trade);
@@ -19,8 +14,7 @@ function UserActiveTrade({userData, tradeData, setUserData, BAKCUP}) {
         try{
             const res = await axios.post("http://localhost:5000/users/delete_active_trade", {username: userData.username, trade: trade});
             if(res.status === 200){
-                console.log("done");
-                // setUserData(prev => ({ ...prev, ...res.data.user}));
+                console.log("done deleting");
                 setTimeout(()=>{
                     setLoading(false);
                     navigate("/user_trade");
@@ -82,16 +76,14 @@ function UserActiveTrade({userData, tradeData, setUserData, BAKCUP}) {
                             <hr/>
                             <h2>Bidder: {info.userdata.username}</h2>
                             Offer:
-                            <div> {info.cards.map((card, j) => 
-                                <div key={j}>
-                                    <h2>{card.name}</h2>
-                                </div>
-                            )}
-                            <button onClick={() => acceptTrade(info.trade_id, trade)}> accept </button>
-                            
-
+                            <div> 
+                                {info.cards.map((card, j) => 
+                                    <div key={j}>
+                                        <h2>{card.name}</h2>
+                                    </div>
+                                )}
+                                <button onClick={() => acceptTrade(info.trade_id, trade)}> accept </button>
                             </div>
-                           
                         </div>
                     ))}
                     

@@ -2,9 +2,8 @@ import { useEffect, useState } from 'react';
 import CustomCardModal from '../custom/CustomCardModal';
 import { useNavigate } from 'react-router';
 import axios from 'axios';
-function UserAlbum({userData, setUserData, tradeData, onCreateTradeData, setOnCreateTradeData, BACKUP}) {
+function UserAlbum({userData, setUserData, tradeData, setOnCreateTradeData, BACKUP}) {
   const navigate = useNavigate();
-  const [errorMsg, setErrorMsg] = useState("");
   const [loading, setLoading] = useState(false);
   const [modalShow, setModalShow] = useState(false);
   const [modalCardInfo, setModalCardInfo] = useState();
@@ -20,7 +19,6 @@ function UserAlbum({userData, setUserData, tradeData, onCreateTradeData, setOnCr
     setModalShow(true);
     setModalCardInfo(card);
   }
-
 
 
   const sellCard = async (c_id) => {
@@ -39,7 +37,6 @@ function UserAlbum({userData, setUserData, tradeData, onCreateTradeData, setOnCr
           console.log("not confirmed");
         }
       } else {
-        console.log("selling");
           const res = await axios.post("http://localhost:5000/users/sell_card", {c_id: c_id, username : userData.username, isCardTraded:false});
           if(res.status === 200){
             setUserData(prev => ({ ...prev, ...res.data.updatedData}));
@@ -70,7 +67,6 @@ function UserAlbum({userData, setUserData, tradeData, onCreateTradeData, setOnCr
               <a href='/user_trade'> Your Active Trade</a>
 
               <h1>Your album:</h1>
-              <p>{errorMsg}</p>
               {/* cardi list  */}
               {loading && (
                   <div className='loading-overlay-cardPack'>

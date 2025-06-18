@@ -8,7 +8,6 @@ function TradeCreateSection({userData, tradeData, onCreateTradeData, setOnCreate
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
   const [modalShow, setModalShow] = useState(false);
-  const [modalCardInfo, setModalCardInfo] = useState([tradeData]);
   const [tradeInfo, setTradeInfo] = useState({
     userdata: userData,
     request: "",
@@ -95,7 +94,6 @@ function TradeCreateSection({userData, tradeData, onCreateTradeData, setOnCreate
           <CustomTradeCardModal
             show={modalShow}
             onHide={() => setModalShow(false)}
-            modalCardInfo={modalCardInfo}
             userData={userData}
             onCreateTradeData={onCreateTradeData}
             setOnCreateTradeData={setOnCreateTradeData}

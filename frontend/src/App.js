@@ -9,7 +9,6 @@ import axios from "axios";
 import { useContext, useEffect } from "react";
 import ProtectedRoute from "./components/custom/ProtectedRoute";
 import NavBarLayout from "./components/NavBarLayout";
-import UserProfile from "./components/userprofile/UserProfile";
 import UserAlbum from "./components/userprofile/UserAlbum";
 import TradeCreateSection from "./components/tradecenter/TradeCreateSection";
 import UserItems from "./components/userprofile/UserItems";
@@ -110,19 +109,10 @@ function App() {
               }
             />
 
-            <Route path="/profile" element={
-              // <ProtectedRoute>
-                <NavBarLayout> 
-                  <UserProfile items={userData} userData={userData}/>
-                </NavBarLayout>
-              // </ProtectedRoute>
-            }
-            />
-
             <Route path="/card_album" element={
               // <ProtectedRoute>
                 <NavBarLayout> 
-                  <UserAlbum userData={userData} setUserData={setUserData} tradeData={tradeData} onCreateTradeData={onCreateTradeData} setOnCreateTradeData={setOnCreateTradeData} BACKUP={BACKUP}/>
+                  <UserAlbum userData={userData} setUserData={setUserData} tradeData={tradeData} setOnCreateTradeData={setOnCreateTradeData} BACKUP={BACKUP}/>
                 </NavBarLayout>
               // </ProtectedRoute>
             }
@@ -140,7 +130,7 @@ function App() {
             <Route path="/trade_confirm_section" element={
               // <ProtectedRoute>
                 <NavBarLayout> 
-                  <TradeConfirmSection userData={userData} tradeData={tradeData} BACKUP={BACKUP}/>
+                  <TradeConfirmSection userData={userData} BACKUP={BACKUP}/>
                 </NavBarLayout>
               // </ProtectedRoute>
             }
@@ -158,7 +148,7 @@ function App() {
             <Route path="/user_trade" element={
               // <ProtectedRoute>
                 <NavBarLayout> 
-                  <UserActiveTrade userData={userData} tradeData={tradeData} setUserData={setUserData} BACKUP={BACKUP}/>
+                  <UserActiveTrade userData={userData} tradeData={tradeData} BACKUP={BACKUP}/>
                 </NavBarLayout>
               // </ProtectedRoute>
             }

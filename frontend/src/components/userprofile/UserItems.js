@@ -53,7 +53,6 @@ function UserItems({userData, setUserData, fetchCard}) {
                                             <div key={i.id} className='booster-pack-div'>
                                                 <img className={i.id === 1 ? "booter-pack-img one" : i.id === 2 ?  "booter-pack-img two" : i.id === 3 ?  "booter-pack-img three" :  "booter-pack-img one" } alt={"booster_" + i.id} src= {i.src} />
 
-                                                {/* <p>src: {i.src}</p> */}
                                                 <p>amount: {i.amount}</p>
                                                 <button onClick={() => openPack(i.id)}> OPEN </button>
                                             </div>

@@ -1,15 +1,12 @@
-import React, { useContext, useState } from 'react'
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import { UserContext } from '../UserProvider';
-
 
 function CustomConfirmTradeCardList({show, onHide, modalCardInfo, userData, setModalCardInfo, BACKUP}) {
     const availableCards = userData.cards;
     const excludeTradedCard = userData.activeTrade.flatMap(t => t.cards.map(ut => ut.name));
     const sortedCards = availableCards.filter(card => !excludeTradedCard.includes(card.name));
 
-    const handleChecboxChange = (e, card) => {
+    const handleChecboxChange = (card) => {
         setModalCardInfo((prev) => 
           prev.some((i) => i.id === card.id) 
             ? prev.filter((i) => i.id !== card.id)
@@ -42,7 +39,7 @@ function CustomConfirmTradeCardList({show, onHide, modalCardInfo, userData, setM
                             <td>{card.name}</td>
                             <td>
                                 <img className="table-card-img" alt={card.name} src={card.image ? card.image : BACKUP.IMG}/>
-                                <input onChange={(e)=>handleChecboxChange(e, card)} type='checkbox' checked={modalCardInfo.some((c) => c.id === card.id ? "checked" : null)}/>
+                                <input onChange={()=>handleChecboxChange(card)} type='checkbox' checked={modalCardInfo.some((c) => c.id === card.id ? "checked" : null)}/>
                             </td>
                         </tr>
                     ))}
