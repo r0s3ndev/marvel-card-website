@@ -41,9 +41,9 @@ function UserLogin({setUserData}) {
 
   return (
     <>
-      <div className='login-container'>
-          <a href="/">Home</a>
-          <div className='page-wrapper'>
+      <div className='main-div login-page'>
+          <div className='inner-main-div'>
+            <a href="/">Home</a>
             <div className=' login-page page1'>
                 <h1>Login</h1>
                 {message} <br/>
@@ -52,7 +52,7 @@ function UserLogin({setUserData}) {
                 <label htmlFor="password">password:</label><br/>
                 <input type="password" id="password" name="password" onChange={handleOnChange}/>
                 <br/>
-                <button className="next-button" onClick={handleLogin}>Login</button>
+                <button className="button button1" onClick={handleLogin}>Login</button>
                 <p>Need an account? <a href='/register'> register</a> here.</p>
             </div>
           </div>
