@@ -42,20 +42,25 @@ function UserLogin({setUserData}) {
   return (
     <>
       <div className='main-div login-page'>
-          <div className='inner-main-div'>
-            <a href="/">Home</a>
-            <div className=' login-page page1'>
-                <h1>Login</h1>
-                {message} <br/>
-                <label htmlFor="username">Username:</label><br/>
-                <input type="text" id="username" name="username" onChange={handleOnChange} required/><br/>
-                <label htmlFor="password">password:</label><br/>
-                <input type="password" id="password" name="password" onChange={handleOnChange}/>
-                <br/>
-                <button className="button button1" onClick={handleLogin}>Login</button>
-                <p>Need an account? <a href='/register'> register</a> here.</p>
-            </div>
+        <div className='inner-main-div'>
+          <div className='home-link'>
+            <a href="/"> &#8592; Home</a>
           </div>
+          <br/>
+          <div className='login'>
+              <h1>Login</h1>
+              <p>{message ? message : "Welcome back, log-in with your account!"} </p>
+              <label htmlFor="username">Username:</label><br/>
+              <input size="40" type="text" id="username" name="username" onChange={handleOnChange} required/><br/>
+              <br/>
+              <label htmlFor="password">Password:</label><br/>
+              <input size="40" type="password" id="password" name="password" onChange={handleOnChange}/>
+              <br/>
+              <br/>
+              <button className="button button1" onClick={handleLogin}>Login</button>
+              <p>Need an account? <a href='/register'> register</a> here.</p>
+          </div>
+        </div>
       </div>
     </>
   )

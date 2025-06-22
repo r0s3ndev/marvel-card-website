@@ -1,8 +1,9 @@
 
-body {
-    background: rgb(238, 238, 238);
+body, html {
+    background: rgb(224, 224, 224);
     height: 100%;
     margin: 0;
+    padding: 0;
     /* background: linear-gradient(90deg, #070F2B 0%, #1B1A55 35%, #535C91 50.00%) 100%); */
 }
 
@@ -15,8 +16,8 @@ body {
 }
 
 .inner-main-div{
-   text-align: center;
-   width: 60%
+    text-align: center;
+    width: 60%;
 }
 
 .inner-main-div a{
@@ -29,7 +30,7 @@ body {
     color: white;
     padding: 8px 25px;
     margin: 5px;
-    border-radius: 12px;
+    border-radius: 5px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -52,12 +53,109 @@ body {
 }
 
 /* REGISTER AND LOGIN COMPONENT */
-.login-page .inner-main-div a{
+.login-page a, .page-wrapper a{
     color: black;
 }
 
+.login, .register{
+    background-color: rgb(255, 255, 255);
+    padding: 30px 0px 30px 0px;
+    margin: 0px auto;
+    border-radius:5px;
+    width: 80%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    color: rgb(54, 54, 54);
+}
 
+.login label, .register label{
+    margin-right: 284px;
+}
 
+.login input, .register input{
+    box-sizing: border-box;
+    border: 2px solid rgb(224, 224, 224);
+    border-radius: 4px;
+    font-size: 16px;
+    padding: 5px 10px 5px 20px;
+}
+
+.login p, .register p{
+    color: rgb(110, 110, 110);
+}
+
+.login button, .register button{
+    width: 360px;
+}
+
+.home-link {
+    text-align: left;
+}
+/* ----------------------------------------------------------------- */
+/* .register-container , .login-container{
+    text-align: center;
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+} */
+  
+.page-wrapper {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+    background-color:rgba(253, 253, 253, 0.13);
+    opacity: 0.9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+ .page {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    transition: opacity 0.5s ease-in-out; 
+    z-index: 0; 
+    pointer-events: none; 
+} 
+
+.fade-in {
+    opacity: 1;
+    z-index: 1; 
+    pointer-events: auto; 
+}
+.fade-out {
+    opacity: 0;
+    z-index: 0; 
+    pointer-events: none; 
+}
+.page1,.page2{
+    background-color:hsl(0, 0.00%, 100.00%);
+    width:100%
+}
+
+  
+/* .next-button, .register-button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    font-size: 14px;
+    background-color:rgb(143, 94, 71);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.next-button:hover {
+    background-color:rgb(172, 93, 56);
+}
+.register-button{
+    background-color:rgb(45, 138, 57);
+}
+.register-button:hover {
+    background-color:rgb(35, 184, 53);
+} */
 
 
 
@@ -88,74 +186,6 @@ body {
 .main-container::-webkit-scrollbar-thumb {
     background: rgb(49, 54, 63);
 }
-
-
-/*USER REGISTER*/
-/* .register-container , .login-container{
-    text-align: center;
-    position: relative;
-    max-width: 1000px;
-    margin: 0 auto;
-    font-family: Arial, sans-serif;
-} */
-  
-/* .page-wrapper {
-    position: relative;
-    width: 100%;
-    height: 500px;
-    overflow: hidden;
-    background-color:rgba(253, 253, 253, 0.13);
-    opacity: 0.9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-} */
-.page {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    /* display: flex;
-    flex-direction: column;
-    justify-content: center; */
-    align-items: center;
-    transition: opacity 0.5s ease-in-out; /* Smooth fade transition */
-    z-index: 0; /* Ensure stacking order */
-    pointer-events: none; /* Disable interaction for hidden pages */
-}
-.fade-in {
-    opacity: 1;
-    z-index: 1; /* Bring to the top */
-    pointer-events: auto; /* Enable interaction */
-}
-.fade-out {
-    opacity: 0;
-    z-index: 0; /* Send to the bottom */
-    pointer-events: none; /* Disable interaction */
-}
-/* .page1,.page2{
-    background-color:hsl(0, 0.00%, 100.00%);
-    width:100%
-} */
-  
-/* .next-button, .register-button {
-    margin-top: 10px;
-    padding: 8px 16px;
-    font-size: 14px;
-    background-color:rgb(143, 94, 71);
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-.next-button:hover {
-    background-color:rgb(172, 93, 56);
-}
-.register-button{
-    background-color:rgb(45, 138, 57);
-}
-.register-button:hover {
-    background-color:rgb(35, 184, 53);
-} */
 
 
 

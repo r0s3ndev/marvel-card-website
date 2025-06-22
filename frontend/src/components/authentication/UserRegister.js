@@ -95,57 +95,67 @@ function UserRegister({fetchCard, BACKUP}) {
     };
 
     return (
-        <div className="register-container">
-            <a href="/">Home</a>
-            <div className="page-wrapper">
-                <div className={`page page1 ${nextPage ? "fade-in" : "fade-out"}`}>
-                    <h1>Register</h1>
-                    <p style={{color: "orange"}}>{message}</p>
-                    <label htmlFor="username">Username:</label><br/>
-                    <input type="text" id="username" name="username" value={userData.username} onChange={handleChange} required/><br/>
-                    <label htmlFor="email">Email:</label><br/>
-                    <input type="text" id="email" name="email" value={userData.email} onChange={handleChange} required/><br/>
-                    <label htmlFor="password">password:</label><br/>
-                    <input type="password" id="password" name="password" value={userData.password} onChange={handleChange} required/>
+        <div className="main-div register-container">
+            <div className="inner-main-div">
+                <div className='page-wrapper'>
+                    <div className='home-link'>
+                        <a href="/"> &#8592; Home</a>
+                    </div>
                     <br/>
-                    <button onClick={handleUserCheckAndToggle} className="next-button">Next</button>
-                    <p> Already have an account? <a href='/login'>login</a> here.</p>
-                </div>
-                
-                {!loading ? (
-                    <div className="loader">
-                        <div className="circle"></div>
-                        <div className="circle"></div>
-                        <div className="circle"></div>
-                        <div className="circle"></div>
-                    </div>
-                ) : (
-                    <div className={`page page2 ${nextPage ? "fade-out" : "fade-in"}`}>
-                        <h1>Select a card...</h1>
-                        <p style={{color: "orange"}}>{message}</p>
-                        <div className='card-div'>
-                            {cardlist.map((card) => (
-                                <div 
-                                key={card.id} 
-                                className='card-register-div' 
-                                style={{ 
-                                    backgroundImage: `linear-gradient(rgba(184, 103, 103, 0), rgba(121, 17, 17, 0.53), rgba(58, 4, 4, 0.85)), url(${card.image ? card.image : BACKUP.IMG})`,
-                                    backgroundSize: 'contain'
-                                    }}
-                                onClick={()=> handleSelectedCard(card)}
-                                tabIndex="0"
-                                >
-                                    <p style={{textAlign: 'right', color: 'white', textDecoration: 'underline overline'}}>{card.id}</p>
-                                    <div className='card-name-desc'>
-                                        <h2 style={{textTransform: 'uppercase'}}>{card.name}</h2>
-                                    </div>
-                                </div>
-                            ))}
+                    <div className='register'>
+                        <div className={`page page1 ${nextPage ? "fade-in" : "fade-out"}`}>
+                            <h1>Register</h1>
+                            <p style={{color: message ? "orange" : ""}}>{message ? message : "Register your email to gain access!"}</p>
+                            <label htmlFor="username">Username:</label><br/>
+                            <input size="40" type="text" id="username" name="username" value={userData.username} onChange={handleChange} required/><br/>
+                            <br/>
+                            <label htmlFor="email">Email add:</label><br/>
+                            <input size="40" type="text" id="email" name="email" value={userData.email} onChange={handleChange} required/><br/>
+                            <br/>
+                            <label htmlFor="password">Password:</label><br/>
+                            <input size="40" type="password" id="password" name="password" value={userData.password} onChange={handleChange} required/>
+                            <br/>
+                            <br/>
+                            <button onClick={handleUserCheckAndToggle} className="button button1">Next</button>
+                            <p> Already have an account? <a href='/login'>Login</a> here.</p>
                         </div>
-                        <button onClick={handleUserCheckAndToggle} className="next-button">Back</button>
-                        <button className="register-button" onClick={handleSubmit}>Register</button>
+                        
+                        {!loading ? (
+                            <div className="loader">
+                                <div className="circle"></div>
+                                <div className="circle"></div>
+                                <div className="circle"></div>
+                                <div className="circle"></div>
+                            </div>
+                        ) : (
+                            <div className={`page page2 ${nextPage ? "fade-out" : "fade-in"}`}>
+                                <h1>Select a card...</h1>
+                                <p style={{color: "orange"}}>{message}</p>
+                                <div className='card-div'>
+                                    {cardlist.map((card) => (
+                                        <div 
+                                        key={card.id} 
+                                        className='card-register-div' 
+                                        style={{ 
+                                            backgroundImage: `linear-gradient(rgba(184, 103, 103, 0), rgba(121, 17, 17, 0.53), rgba(58, 4, 4, 0.85)), url(${card.image ? card.image : BACKUP.IMG})`,
+                                            backgroundSize: 'contain'
+                                            }}
+                                        onClick={()=> handleSelectedCard(card)}
+                                        tabIndex="0"
+                                        >
+                                            <p style={{textAlign: 'right', color: 'white', textDecoration: 'underline overline'}}>{card.id}</p>
+                                            <div className='card-name-desc'>
+                                                <h2 style={{textTransform: 'uppercase'}}>{card.name}</h2>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                <button onClick={handleUserCheckAndToggle} className="button button1 next-button">Back</button>
+                                <button className="button button1 register-button" onClick={handleSubmit}>Register</button>
+                            </div>
+                        )}    
                     </div>
-                )}    
+                </div>
             </div>
         </div>
     )
