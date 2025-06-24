@@ -43,11 +43,10 @@ function UserLogin({setUserData}) {
     <>
       <div className='main-div login-page'>
         <div className='inner-main-div'>
-          <div className='home-link'>
-            <a href="/"> &#8592; Home</a>
-          </div>
-          <br/>
           <div className='login'>
+              <div className='home-link'>
+                <a href="/"> &#8592; Home</a>
+              </div>
               <h1>Login</h1>
               <p>{message ? message : "Welcome back, log-in with your account!"} </p>
               <label htmlFor="username">Username:</label><br/>

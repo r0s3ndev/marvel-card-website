@@ -6,6 +6,7 @@ import axios from 'axios';
 import { UserContext } from './UserProvider';
 function NavBarLayout({children }) {
     const { userData } = useContext(UserContext);
+    const username = userData.username.toUpperCase();
     const navigate = useNavigate();
     const [localCredits, setLocalCredits] = useState(userData?.credits || []);
 
@@ -28,11 +29,10 @@ function NavBarLayout({children }) {
     }
   return (
     <>
-        <Navbar data-bs-theme="dark" sticky="top">
+        <Navbar data-bs-theme="dark" className="navbar" sticky="top">
             <Container>
-                <Navbar.Brand href="#home">PWM-Project</Navbar.Brand>
+                <Navbar.Brand href="/homepage">PWM-Project </Navbar.Brand>
                 <Nav className="me-auto">
-                    <Nav.Link href="/homepage"> HOME</Nav.Link>
                     <Nav.Link href="/shop"> SHOP</Nav.Link>
                     <Nav.Link href="/trade_list"> TRADE</Nav.Link>
                     {/* <Nav.Link href="/profile"> PROFILE</Nav.Link> */}
@@ -47,13 +47,14 @@ function NavBarLayout({children }) {
                             LOGOUT
                         </NavDropdown.Item>
                     </NavDropdown>    
+                    <Nav.Link href="/homepage"> {username}</Nav.Link>
                 </Nav>
                 
                 <Navbar.Collapse className="justify-content-end"> 
                     <Navbar.Text>
                     Credits: {localCredits}
                     </Navbar.Text>
-                    <Button style={{marginLeft: "10px"}} variant="outline-secondary" onClick={handleLogout}>logout</Button>
+                    <Button style={{marginLeft: "10px"}} variant="dark" onClick={handleLogout}>LOGOUT</Button>
                 </Navbar.Collapse>
             </Container>
         </Navbar>

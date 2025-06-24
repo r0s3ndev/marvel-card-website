@@ -98,11 +98,11 @@ function UserRegister({fetchCard, BACKUP}) {
         <div className="main-div register-container">
             <div className="inner-main-div">
                 <div className='page-wrapper'>
-                    <div className='home-link'>
-                        <a href="/"> &#8592; Home</a>
-                    </div>
                     <br/>
                     <div className='register'>
+                        <div className='home-link'>
+                            <a href="/"> &#8592; Home</a>
+                        </div>
                         <div className={`page page1 ${nextPage ? "fade-in" : "fade-out"}`}>
                             <h1>Register</h1>
                             <p style={{color: message ? "orange" : ""}}>{message ? message : "Register your email to gain access!"}</p>
