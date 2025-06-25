@@ -49,6 +49,18 @@ body, html {
     background-color:rgb(24, 24, 24);
 }
 
+.button2 {
+    background-color:rgb(146, 136, 136);
+}
+
+.button3 {
+    background-color:rgb(240, 76, 76);
+}
+
+.button4 {
+    background-color:rgb(106, 130, 197);
+}
+
 .button:hover {
     background-color:rgb(235, 235, 235); 
     color: black;
@@ -170,7 +182,7 @@ body, html {
   background-color:rgba(73, 77, 70, 0.41);
 }
 
-.banner:hover .overlay {
+.banner:hover .overlay, .homepage-box:hover .overlay {
   opacity: 1;
 }
 
@@ -193,16 +205,79 @@ body, html {
     align-items: center;
 }
 
-.homepage > div{
+.homepage > a{
+    text-decoration: none;
+    color: white;
+}
+
+.homepage-box{
     background-color: rgb(51, 51, 51);
-    border: 1px solid rgb(131, 131, 131);
-    box-shadow: 0 4px 8px 0 rgba(19, 18, 18, 0.2), 0 6px 20px 0 rgba(73, 77, 70, 0.19);;
+    border: 3px solid rgb(131, 131, 131);
+    box-shadow: 0 4px 8px 0 rgba(92, 92, 92, 0.2), 0 6px 20px 0 rgba(155, 155, 155, 0.19);;
     border-radius: 10px;
     width: 450px;
     height: 350px;
     margin: 10px 50px 50px 50px;
     text-align: center;
     font-size: 30px;
+    transition: transform .2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;        
+    justify-content: center;        
+}
+
+.homepage-box:hover {
+    transform: scale(1.1); 
+}
+
+/* USER ALBUM */
+.user-album-div {
+    padding: 30px 0px 30px 0px;
+    width: 70%;
+    display: flex;
+    flex-wrap:wrap;
+    flex-direction: row;     
+    margin: 0 auto;
+}
+
+
+.album-text, .album-text > a{
+    background-color: rgb(150, 150, 150);
+    text-decoration: none;
+    color: black;
+    display: flex;
+    justify-content: space-between; /* Pushes h1 left and a right */
+    align-items: center;            /* Aligns them vertically */
+    padding: 0px 148px 0px 290px;  
+    transition: transform .2s;
+}
+
+.album-text a:hover{
+    transform: scale(1.1);
+}
+
+.album-single-card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;        
+    justify-content: center;
+    transition: transform .2s;
+}
+
+.album-single-card:hover {
+    transform: scale(1.1); 
+}
+
+.image-id{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(55, 31, 160, 0.51);
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 5px;
 }
 
 
@@ -214,10 +289,8 @@ body, html {
 
 
 
-
-
 .card-img{
-    margin: 0px 20px 20px 10px;
+    margin: 0px 20px 0px 20px;
     width: 200px;
     height: 300px;
     object-fit: cover;
@@ -330,23 +403,7 @@ body, html {
 
 
 
-/* USER PROFILE */
-.user-album-div {
-    display: flex;
-    flex-wrap:wrap;
-    max-width: 100%;
-    max-height: 80%;
-}
-.image-id{
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    background-color: rgba(55, 31, 160, 0.51);
-    color: white;
-    padding-left: 20px;
-    padding-right: 20px;
-    border-radius: 5px;
-}
+
 
 
 /* SHOP */

@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router';
 import axios from 'axios';
 function UserAlbum({userData, setUserData, tradeData, setOnCreateTradeData, BACKUP}) {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
   const [modalShow, setModalShow] = useState(false);
   const [modalCardInfo, setModalCardInfo] = useState();
   const userCards = userData.cards;
@@ -22,7 +21,6 @@ function UserAlbum({userData, setUserData, tradeData, setOnCreateTradeData, BACK
 
 
   const sellCard = async (c_id) => {
-    setLoading(true);
     try{
       const isCardBeingBidded = tradeData.some(trade => trade.bidder_user.some(user => user.cards.some(card => card.id === c_id && user.userdata._id === currentUserId)));
       const isCardBeingTraded = tradeData.some(trade => trade.listing_owner.card.some(card => card.id === c_id && trade.listing_owner.user._id === currentUserId));
@@ -42,9 +40,6 @@ function UserAlbum({userData, setUserData, tradeData, setOnCreateTradeData, BACK
             setUserData(prev => ({ ...prev, ...res.data.updatedData}));
           }
       }
-      setTimeout(()=>{
-          setLoading(false);
-      }, 1000); 
 
     } catch (error) {
         console.error("Error while selling card; Exception: " + error);
@@ -63,25 +58,15 @@ function UserAlbum({userData, setUserData, tradeData, setOnCreateTradeData, BACK
   return (
     <>
         <div>
-            <div className='main-container'>
-              <a href='/user_trade'> Your Active Trade</a>
-
-              <h1>Your album:</h1>
-              {/* cardi list  */}
-              {loading && (
-                  <div className='loading-overlay-cardPack'>
-                      <div className="loader">
-                          <div className="circle"></div>
-                          <div className="circle"></div>
-                          <div className="circle"></div>
-                          <div className="circle"></div>
-                      </div>
-                  </div>
-              )}
+            <div className='homepage-container'>
+              <div className='album-text'>
+                <h1>Your cards ({sortedCards.length}):</h1>
+                <a href='/user_trade'> Active trades &rarr;</a>
+              </div>
               <div>
                 <div className='user-album-div'>
                   {sortedCards.map((c, i) => (
-                    <div key={i++} >
+                    <div key={i++} className='album-single-card'>
                       <div className='image-div' onClick={() => selected_card(c)}>
                         <p className='image-id'>{c.species}</p>
                         <img className="card-img" alt={c.name} src={c.image ? c.image : BACKUP.IMG}/>
@@ -89,9 +74,10 @@ function UserAlbum({userData, setUserData, tradeData, setOnCreateTradeData, BACK
                           {c.name.replace(/\s*\(.*$/, '')} <br/>
                         </p>
                       </div>
-
-                      <button onClick={()=>sellCard(c.id)}> Sell</button>
-                      <button onClick={()=>selected_card_to_trade(c)} disabled={tradeData.some(trade => trade.listing_owner.card.some(card => card.id === c.id && trade.listing_owner.user._id === currentUserId))}> Trade</button>
+                      <div>
+                        <button className='button button3' onClick={()=>sellCard(c.id)}> Sell</button>
+                        <button className='button button4' onClick={()=>selected_card_to_trade(c)} disabled={tradeData.some(trade => trade.listing_owner.card.some(card => card.id === c.id && trade.listing_owner.user._id === currentUserId))}> Trade</button>
+                      </div>
                     </div>
                   ))}
                 </div>
