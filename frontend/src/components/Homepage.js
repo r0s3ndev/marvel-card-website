@@ -32,7 +32,7 @@ function Homepage({userData, BACKUP}) {
             </div>
           </a>
 
-          <a href='/trade_list'> 
+          <a href='/user_settings'> 
             <div className="homepage-box">
               <img src="https://img.icons8.com/?size=100&id=uVgsZ6Ybur44&format=png&color=FFFFFF" alt="logo"></img>
               <h2>Settings</h2>

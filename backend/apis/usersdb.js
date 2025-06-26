@@ -417,19 +417,51 @@ router.post("/single_pack_purchase", async (req, res) => {
 router.post("/buy_credit", async (req, res) => {
     try{
         const db = await connectToDatabase(); 
-        const {username} = req.body;
-        
-        var updateUser = await db.collection('users_list').findOneAndUpdate(
-            {
-                username: username,
-            },
-            {
-                $inc: {
-                    credits : 250
+        const {username, amount} = req.body;
+
+        if(amount === "250"){
+            var updateUser = await db.collection('users_list').findOneAndUpdate(
+                {
+                    username: username,
                 },
-            },
-            {returnDocument: "after"}
-        );
+                {
+                    $inc: {
+                        credits : 250
+                    },
+                },
+                {returnDocument: "after"}
+            );
+        }
+
+        if(amount === "500"){
+            var updateUser = await db.collection('users_list').findOneAndUpdate(
+                {
+                    username: username,
+                },
+                {
+                    $inc: {
+                        credits : 500
+                    },
+                },
+                {returnDocument: "after"}
+            );
+        }
+
+        if(amount === "1000"){
+            var updateUser = await db.collection('users_list').findOneAndUpdate(
+                {
+                    username: username,
+                },
+                {
+                    $inc: {
+                        credits : 1000
+                    },
+                },
+                {returnDocument: "after"}
+            );
+        }
+        
+       
 
         return res.status(200).json({
             message: "Purchase credit successfully",
