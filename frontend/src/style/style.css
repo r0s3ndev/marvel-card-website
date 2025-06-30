@@ -371,6 +371,79 @@ body, html {
   box-shadow: 0 4px 8px 0 rgba(92, 92, 92, 0.2), 0 6px 20px 0 rgba(155, 155, 155, 0.19);
 }
 
+/* SETTINGS */
+.user-setting-div {
+    display: flex;
+    height: 100vh;
+}
+
+.tab_settings {
+    width: 350px;
+    color: white;
+    margin: 20px 0px 0px 290px;
+}
+
+
+.tab_settings button {
+    background-color: inherit;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+    width: 200px;
+    text-align: left;
+    color: white;
+}
+
+.tab_settings button:hover {
+    background-color: #ddd;
+}
+
+.tab_settings button.active {
+    background-color: #ccc;
+}
+
+.tab_content {
+    color: white;
+    border-radius: 5px;
+    margin-top: 10px;
+    width:970px;
+}
+
+.active {
+    font-weight: bold;
+}
+
+
+.general label:nth-of-type(1) {
+    padding-right: 10px;
+}
+
+.general label:nth-of-type(2) {
+    padding-right: 40px;
+    padding-top: 20px;
+}
+
+.general input {
+    padding: 10px;
+}
+
+
+
+.general2 label:nth-of-type(1) {
+    padding-right: 25px;
+}
+
+.general2 label:nth-of-type(2) {
+    padding-right: 20px;
+    padding-top: 20px;
+}
+
+.general2 input {
+    padding: 10px;
+}
 
 
 
@@ -404,8 +477,8 @@ body, html {
     border-radius: 5px;
 }
 
-.main-container::-webkit-scrollbar {
-    /* width: .4em;  */
+/* .main-container::-webkit-scrollbar {
+    width: .4em; 
 }
 .main-container::-webkit-scrollbar,
 .main-container::-webkit-scrollbar-thumb {
@@ -414,7 +487,7 @@ body, html {
 }
 .main-container::-webkit-scrollbar-thumb {
     background: rgb(49, 54, 63);
-}
+} */
 
 
 
@@ -489,47 +562,8 @@ body, html {
 } */
 
 
-/* SETTINGS */
-.tab_settings {
-    overflow: hidden;
-    width: 200px;
-    margin-top: 20px;
-    /* border: 1px solid #ccc; */
-    /* background-color: #f1f1f1; */
-}
 
-.tab_settings button {
-    background-color: inherit;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    transition: 0.3s;
-    font-size: 17px;
-    width: 200px;
-    text-align: left;
-}
 
-.tab_settings button:hover {
-    background-color: #ddd;
-}
-
-.tab_settings button.active {
-    background-color: #ccc;
-}
-
-.tab_content {
-    background: white;
-    border-radius: 5px;
-    margin-top: 10px;
-}
-
-.active {
-    font-weight: bold;
-    color: #007bff;
-    border-bottom: 2px solid #007bff;
-}
 
 /* MODAL */
 .modal-container{

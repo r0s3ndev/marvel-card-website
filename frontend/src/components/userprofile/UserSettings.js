@@ -55,38 +55,43 @@ function UserSettings({userData}) {
   
   return (
     <>
-        <div className='main-container'> 
-          <div style={{display: "flex"}}>
+        <div className='homepage-container'> 
+          <div className='album-text'>
+            <h1>Settings:</h1>
+            <a href='/homepage'> Back &rarr;</a>
+          </div>
+          
+          <div className='user-setting-div'>
             
             <div className='tab_settings'>
               <div>
-                <button className={activeTab === "general" ? "tab active" : "tab"} onClick={() => setActiveTab('general')}> General </button>
+                <button className={activeTab === "general" ? " active" : ""} onClick={() => setActiveTab('general')}> General </button>
               </div>
               <div>
-                <button className={activeTab === "security" ? "tab active" : "tab"} onClick={() => setActiveTab('security')}> Security </button>
+                <button className={activeTab === "security" ? " active" : ""} onClick={() => setActiveTab('security')}> Security </button>
               </div>
               <div>
-                <button className={activeTab === "delete_account" ? "tab active" : "tab"} onClick={() => setActiveTab('delete_account')}> Delete Account </button>
+                <button className={activeTab === "delete_account" ? " active" : ""} onClick={() => setActiveTab('delete_account')}> Delete Account </button>
               </div>
-
             </div>
 
             <div>
-
-              <div className='tab_content'>
+              <div className='tab_content general'>
                 {activeTab === "general" && 
                   <div>
+                    <p>You can't change these information for now!</p>
                     <form>
                       <label> username </label>
                       <input type='text' value={userData ? userData.username : "not available"} disabled/><br/>
                       <label> email </label>
                       <input type='text'value={userData ? userData.email : "not available"} disabled/>
-                      <input type='submit' value='submit' disabled/> 
+                      <button type='submit' className='button button2' disabled> submit </button> 
                     </form>
                   </div>
                 }
               </div>
-              <div className='tab_content'>
+              
+              <div className='tab_content general2'>
                 {activeTab === "security" && 
                   <div>
                       {message ? (<div>{message}<br/></div>): ""}
@@ -95,16 +100,17 @@ function UserSettings({userData}) {
                       <input type='password' id="oldPass" name="oldPass" onChange={handleOnChange} required/><br/>
                       <label htmlFor="newPass"> new password </label>
                       <input type='password' id="newPass" name="newPass" onChange={handleOnChange} required/><br/>
-                      <button  onClick={handleSubmit}> submit</button> 
+                      <button className='button button2' onClick={handleSubmit}> submit</button> 
                     
                   </div>
                 }
               </div>
+
               <div className='tab_content'>
                 {activeTab === "delete_account" && 
                   <div>
                     You sure you want to delete your account?
-                    <button  onClick={deleteProfile}> submit</button> 
+                    <button className='button button3' onClick={deleteProfile}> submit</button> 
                   </div>
                 }
               </div>
