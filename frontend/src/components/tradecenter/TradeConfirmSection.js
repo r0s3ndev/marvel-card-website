@@ -33,10 +33,10 @@ function TradeConfirmSection({userData, BACKUP}) {
         } else {
             alert("You sure you want to send the request?");
             const res = await axios.post("http://localhost:5000/users/send_trade_offer", tradeInfo);
-            if(res === 200){
+            if(res.status === 200){
                  setTimeout(()=>{
                     navigate("/trade_list");
-                }, 2000);
+                }, 1000);
             }
         }
     }
@@ -44,31 +44,34 @@ function TradeConfirmSection({userData, BACKUP}) {
   return (
     <>
         <div>
-            <div className="main-container">
-                <p>TradeConfirmSection</p>
-                <div>
+            <div className="homepage-container">
+                <div className='album-text'>
+                    <h1>Manda richiesta</h1>
+                    <a href='/trade_list'> Back &rarr;</a>
+                </div>
+                <div className="user-send-trade-request-div">
                     <div>
-                        <p>User: {currentData.listing_owner.user.username}</p>
-                        <div>Cards:{currentData.listing_owner.card.map((c, k)=> (
+                        <h2>USER OWNER: {currentData.listing_owner.user.username}</h2>
+                        <h2>Cards:{currentData.listing_owner.card.map((c, k)=> (
                             <div key={k}>
-                                <h3>{c.name}</h3>
+                                <li>{c.name}</li>
                             </div>
                             ))}
-                        </div>
-                        <p>Request: {currentData.listing_owner.request}</p>
+                        </h2>
+                        <h2>Owner request: {currentData.listing_owner.request}</h2>
                     </div>
                     <hr/>
                     <div>
-                        <p>Selected Card: {modalCardInfo.length} </p>
-                        <div> Cards: {modalCardInfo.map((c, k) => (
+                        <h2>Selected Card: {modalCardInfo.length} </h2>
+                        <h2> Cards: {modalCardInfo.map((c, k) => (
                             <div key={k}>
-                                <h3>{c.name}</h3>
+                                <li>{c.name}</li>
                             </div>
                         ))}
-                        </div>
+                        </h2>
                         <p>{errorMessage}</p>
-                        <button onClick={() => open_modal()}> select card </button>
-                        <button onClick={() => send_request_trade()}>send request trade</button>
+                        <button className='button button4' onClick={() => open_modal()}> select card </button>
+                        <button className='button button5' onClick={() => send_request_trade()}>send request trade</button>
                     </div>
 
                 </div>

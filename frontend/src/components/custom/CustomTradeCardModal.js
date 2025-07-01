@@ -37,12 +37,12 @@ function CustomTradeCardModal({show, onHide, userData, onCreateTradeData, setOnC
             <div>
                 <div className='table-div'>
                     
-                {onCreateTradeData.length}
+                Selected cards: {onCreateTradeData.length}
                     <table className='table-card'>
                         <tbody>
                             {sortedCards.map((card, i) => (
                                 <tr key={i} className={onCreateTradeData[0].id === card.id ? "selected-card" : ""}>
-                                    <td>{card.id}</td>
+                                    <td>{card.species}</td>
                                     <td>{card.name}</td>
                                     <td>
                                         <img className="table-card-img" alt={card.name} src={card.image ? card.image : BACKUP.IMG}/>

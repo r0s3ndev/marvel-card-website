@@ -1,22 +1,18 @@
-import { useState } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router";
 
 //ADD MODAL TO SHOW CARD INFO
 function UserActiveTrade({userData, tradeData, BAKCUP}) {
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(false);
     const userActiveTrade = tradeData.filter(m => m.listing_owner.user._id === userData._id);
 
     const deleteTrade = async (trade) => {
         console.log(trade);
-        setLoading(true);
         try{
             const res = await axios.post("http://localhost:5000/users/delete_active_trade", {username: userData.username, trade: trade});
             if(res.status === 200){
                 console.log("done deleting");
                 setTimeout(()=>{
-                    setLoading(false);
                     navigate("/user_trade");
                 }, 1000);
             } else {
@@ -33,7 +29,6 @@ function UserActiveTrade({userData, tradeData, BAKCUP}) {
             if(res.status === 200){
                 console.log("done");
                 setTimeout(()=>{
-                    setLoading(false);
                     navigate("/user_trade");
                 }, 1000);
             }
@@ -43,55 +38,50 @@ function UserActiveTrade({userData, tradeData, BAKCUP}) {
     }
 
   return (
-    <div className="main-container">
-        {loading && (
-            <div className='loading-overlay-cardPack'>
-                <div className="loader">
-                    <div className="circle"></div>
-                    <div className="circle"></div>
-                    <div className="circle"></div>
-                    <div className="circle"></div>
-                </div>
-            </div>
-        )}
-        {userActiveTrade > 0 ? (
-            <p> no current active trade</p>
-        ) : 
-        (
-           <div>
-            {userActiveTrade.map((trade, i) => (
-                <div key={i}>
-                    <h2>Status: {trade.status}</h2>
-                    <h2>Cards: 
-                        {trade.listing_owner.card.map((card, j) => (
-                            <div key={j}>
-                                <p>{card.name}</p>
-                            </div> 
-                        ))}
-                    </h2>
-                    <h2>Your Request: {trade.listing_owner.request}</h2>
-                    <button onClick={() => deleteTrade(trade)}> delete </button>
-                    {trade.bidder_user.map((info, i) => (
-                        <div key={i}>
-                            <hr/>
-                            <h2>Bidder: {info.userdata.username}</h2>
-                            Offer:
-                            <div> 
-                                {info.cards.map((card, j) => 
+    <div className="homepage-container">
+        <div className='album-text'>
+            <h1>Active Trade</h1>
+            <a href='/card_album'> Back &rarr;</a>
+        </div>
+        <div className="user-active-trade-div">
+            {userActiveTrade > 0 ? (
+                <p> no current active trade</p>
+            ) : 
+            (
+            <div className="active-trade-inner-div">
+                {userActiveTrade.map((trade, i) => (
+                    <div className="active-trade-box" key={i}>
+                        <div>
+                            <p>Status: <span className="trade-status">{trade.status}</span></p>
+                            <p>Cards: 
+                                {trade.listing_owner.card.map((card, j) => (
                                     <div key={j}>
-                                        <h2>{card.name}</h2>
-                                    </div>
-                                )}
-                                <button onClick={() => acceptTrade(info.trade_id, trade)}> accept </button>
-                            </div>
+                                        <li>{card.name}</li>
+                                    </div> 
+                                ))}
+                            </p>
+                            <p>Your Request: {trade.listing_owner.request}</p>
+                            <button className="button button3" onClick={() => deleteTrade(trade)}> delete </button>
                         </div>
-                    ))}
-                    
-                    <hr/>
-                </div>
-            ))}
-           </div>
-        )}
+                        {trade.bidder_user.length > 0 ? trade.bidder_user.map((info, i) => (
+                            <div key={i}>
+                                <p>Bidder: {info.userdata.username}</p>
+                                <p>Offer:</p>
+                                <div> 
+                                    {info.cards.map((card, j) => 
+                                        <div key={j}>
+                                            <p>{card.name}</p>
+                                        </div>
+                                    )}
+                                    <button className="button button5" onClick={() => acceptTrade(info.trade_id, trade)}> accept </button>
+                                </div>
+                            </div>
+                        )) : (<div> <span className="bidder-status">No Bidder</span></div>)}
+                    </div>
+                ))}
+            </div>
+            )}
+        </div>
 
     </div>
   )

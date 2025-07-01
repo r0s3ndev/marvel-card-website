@@ -19,6 +19,7 @@ function TradeCreateSection({userData, tradeData, onCreateTradeData, setOnCreate
   const handleRequest = (e) => {
     e.preventDefault();
     const { name, value } = e.target;
+    setMessage("");
       setTradeInfo((prevState) => ({
           ...prevState,
           [name]: value,
@@ -55,19 +56,11 @@ function TradeCreateSection({userData, tradeData, onCreateTradeData, setOnCreate
   return (
     <>
       <div>
-        <div className="main-container">
-          <h1>Create a trade</h1>
-          <a href='/card_album'> Change card</a>
-          <h2> Card selected 
-            {onCreateTradeData.length > 1 && 
-              (<>
-                <Badge pill bg="danger">
-                  {onCreateTradeData.length}
-                </Badge>
-              </>)
-            }
-            
-          </h2>
+        <div className="homepage-container">
+          <div className='album-text'>
+            <h1>Create a trade</h1>
+            <a href='/card_album'> Change card &rarr;</a>
+          </div>
 
           <div className='trade-main-div'>
             <div className='image-div' onClick={() => selected_card()}>
@@ -77,15 +70,23 @@ function TradeCreateSection({userData, tradeData, onCreateTradeData, setOnCreate
                 {onCreateTradeData[0].name}<br/>
               </p>
             </div>
+            <h2> 
+              {onCreateTradeData.length > 1 && 
+                (<>
+                  <Badge className='counter-text' pill bg="danger">
+                    {onCreateTradeData.length}
+                  </Badge>
+                </>)
+              }
+            </h2>
 
-            <div>
+            <div className='request-trade-div'>
               <label htmlFor='request'> Request: </label><br/>
-              <input type='text' id="request" name="request" value={tradeInfo.request} onChange={handleRequest}></input>
-              <br/>{message && message}
-            </div>
-
-            <div>
-              <button onClick={send_trade}>Post trade</button>
+              <input size="40" type='text' id="request" name="request" value={tradeInfo.request} onChange={handleRequest}></input>
+              <br/>
+              {message && message}
+              <br/>
+              <button className='button button5' onClick={send_trade}>Post trade</button>
             </div>
           </div>
         </div>
