@@ -98,10 +98,28 @@ router.post("/login", async (req, res) => {
         
     } catch (error) {
         console.error("Error during loggin in:", error);
-        return res.status(500).send("Error during loggin in:.");
+        return res.status(500).send("Error during loggin in.");
     }
 })
 
+
+router.post("/login-admin", async (req, res) => {
+    try {
+        const db = await connectToDatabase(); 
+        const {username, password} = req.body;
+
+        const check_admin = await db.collection("users_list").findOne({username});
+        if(check_admin && await bcrypt.compare(password, check_admin.password)){
+            req.session.userSession = {id: check_admin._id.toString(), username: check_admin.username};
+            return res.status(200).json({ message: "Loggin in...", user: check_admin});      
+        } else {
+            return res.status(404).json({ message: "Username and email are not valid!" });
+        }
+    } catch (error) {
+        console.error("Error while loggin as admin:", error);
+        return res.status(500).send("Error while loggin as admin.");
+    }
+})
 
 router.post("/logout", (req, res) => {
     req.session.destroy((err) => {

@@ -58,7 +58,7 @@ function UserSettings({userData}) {
         <div className='homepage-container'> 
           <div className='album-text'>
             <h1>Settings:</h1>
-            <a href='/homepage'> Back &rarr;</a>
+            <a href={userData.username === "admin" ? "/admin" : "/homepage"}> Back &rarr;</a>
           </div>
           
           <div className='user-setting-div'>

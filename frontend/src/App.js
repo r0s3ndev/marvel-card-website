@@ -18,6 +18,7 @@ import TradeConfirmSection from "./components/tradecenter/TradeConfirmSection";
 import { UserContext } from "./components/UserProvider";
 import CardsShop from "./components/shop/CardsShop";
 import UserActiveTrade from "./components/tradecenter/UserActiveTrade";
+import Admin from "./components/Admin";
 
 const BACKUP = {
   DESC : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
@@ -171,6 +172,14 @@ function App() {
               </ProtectedRoute>
             }
             />
+
+            <Route path="/admin" element={
+              <ProtectedRoute>
+                  <Admin />
+              </ProtectedRoute>
+            }
+            />
+
             <Route path="/test" element={<Testing/>}/>
         </Routes>
       </Router>

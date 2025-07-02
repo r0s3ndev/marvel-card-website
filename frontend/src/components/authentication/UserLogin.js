@@ -22,15 +22,26 @@ function UserLogin({setUserData}) {
 
   const handleLogin = async () => {
     try{
-      const res = await axios.post("http://localhost:5000/users/login", loginData, {
-        withCredentials: true
-      });
+      let res;
+      if(loginData.username === "admin"){
+        res = await axios.post("http://localhost:5000/users/login-admin", loginData, {
+          withCredentials: true
+        });
+      } else {
+        res = await axios.post("http://localhost:5000/users/login", loginData, {
+          withCredentials: true
+        });
+      }
 
       if(res.status === 200){
         setUserData(res.data.user);
         setMessage(res.data.message);
         setTimeout(() => {
-            navigate('/homepage');
+            if(loginData.username === "admin"){
+             navigate('/admin');
+            } else {
+             navigate('/homepage');
+            }
         }, "3000");
       }
     } 
