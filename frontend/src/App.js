@@ -27,6 +27,7 @@ const BACKUP = {
 function App() {
   const { userData, setUserData } = useContext(UserContext);
   const { tradeData, setTradeData } = useContext(UserContext);
+  const { shopData, setShopData } = useContext(UserContext);
   const { onCreateTradeData, setOnCreateTradeData } = useContext(UserContext);
 
   //fetch most recent data 
@@ -43,8 +44,14 @@ function App() {
       setUserData(res.data);
     }
 
+    const getShopValue = async () => {
+        const r = await axios.get("http://localhost:5000/users/get-shop-value");
+        setShopData(r.data.res);
+    } 
+
     getTrade();
     getUserData();
+    getShopValue();
   }, []);
 
   
@@ -102,11 +109,11 @@ function App() {
             />
 
             <Route path="/shop" element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <NavBarLayout> 
-                  <CardsShop userData={userData} setUserData={setUserData}/>
+                  <CardsShop userData={userData} setUserData={setUserData} shopData={shopData}/>
                 </NavBarLayout>
-              </ProtectedRoute>
+              // </ProtectedRoute>
               }
             />
 
@@ -174,9 +181,9 @@ function App() {
             />
 
             <Route path="/admin" element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                   <Admin />
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
             />
 

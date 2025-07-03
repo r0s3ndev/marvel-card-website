@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Badge } from 'react-bootstrap';
 
 const pack = {
     ONE : {id: 1, price: 100, src: "https://img.icons8.com/?size=100&id=FFIT0V3dxY2k&format=png&color=FFFFFF"},
@@ -7,8 +8,11 @@ const pack = {
     THREE: {id: 3, price: 500, src: "https://img.icons8.com/?size=100&id=FFIT0V3dxY2k&format=png&color=F2FF00"}
 }
 
-function CardsShop({userData, setUserData}) {
+function CardsShop({userData, setUserData, shopData}) {
     const [loading, setLoading] = useState(false);
+    const offerType = shopData.type;
+    const whichField = shopData.whichField;
+    console.log(whichField);
 
     const buyPack = async (pack) => {
         setLoading(true);
@@ -24,6 +28,7 @@ function CardsShop({userData, setUserData}) {
             console.error("Error while buying packs; Exception: " + error);
         }
     };
+
 
     const buyCredit = async(c)=> {
         setLoading(true);
@@ -49,26 +54,40 @@ function CardsShop({userData, setUserData}) {
                         <p>Purchase credits and card packs to enhance your collection</p>
                     </div>
                     <h1>CREDITS</h1>
+                    {offerType === "special" && 
+                        (<>
+                        <Badge className='admin-c1-special' pill bg="danger">
+                            SPECIAL OFFER
+                        </Badge>
+                        </>)
+                    }
                     <div className='homepage'>
                         <div className='shop-box'>
                             <img src="https://img.icons8.com/?size=100&id=45859&format=png&color=000000" alt="logo"></img>
                              <h3>Buy 250 Credit</h3>
-                            <button className='button button5' onClick={() => buyCredit("250")}> for 1.99$ </button>
+                            <button className='button button5' onClick={() => buyCredit("250")}> for {shopData ? shopData.credits.c1 : "1.99"}$ </button>
                         </div>
 
                         <div className='shop-box'>
                             <img src="https://img.icons8.com/?size=100&id=45859&format=png&color=000000" alt="logo"></img>
                             <h3>Buy 500 Credit</h3>
-                            <button className='button button5' onClick={() => buyCredit("500")}> for 2.99$ </button>
+                            <button className='button button5' onClick={() => buyCredit("500")}> for {shopData ? shopData.credits.c2 : "2.99"}$ </button>
                         </div>
 
                         <div className='shop-box'>
                             <img src="https://img.icons8.com/?size=100&id=45859&format=png&color=000000" alt="logo"></img>
                              <h3>Buy 1000 Credit</h3>
-                            <button className='button button5' onClick={() => buyCredit("1000")}> for 5.59$ </button>
+                            <button className='button button5' onClick={() => buyCredit("1000")}> for {shopData ? shopData.credits.c3 : "5.59"}$ </button>
                         </div>
                     </div>
                     
+                    {offerType === "special" && 
+                        (<>
+                        <Badge className='admin-p1-special' pill bg="danger">
+                            SPECIAL OFFER
+                        </Badge>
+                        </>)
+                    }
                     <h1>CARD PACKS</h1>
                     <div className='homepage'>
                         {loading && (
@@ -85,19 +104,19 @@ function CardsShop({userData, setUserData}) {
                             <img className='pack-img' src={pack.ONE.src} alt="logo"></img>
                             <h3>Standard</h3>
                             <p> 5 cards </p>
-                            <button className='button button5' onClick={(e) => buyPack(pack.ONE)}> {pack.ONE.price} Credit </button>
+                            <button className='button button5' onClick={(e) => buyPack(pack.ONE)}> {shopData ? shopData.pack.p1 : "100"} Credit </button>
                         </div>
                         <div className='shop-box'>
                             <img className='pack-img' src={pack.TWO.src} alt="logo"></img>
                             <h3>Premium</h3>
                             <p> 8 cards </p>
-                            <button className='button button5' onClick={(e) => buyPack(pack.TWO)}> {pack.TWO.price} Credit </button>
+                            <button className='button button5' onClick={(e) => buyPack(pack.TWO)}> {shopData ? shopData.pack.p2 : "300"} Credit </button>
                         </div>
                         <div className='shop-box'>
                             <img className='pack-img ' src={pack.THREE.src} alt="logo"></img>
                             <h3>GOLD</h3>
                             <p> 15 cards </p>
-                            <button className='button button5' onClick={(e) => buyPack(pack.THREE)}> {pack.THREE.price} Credit </button>
+                            <button className='button button5' onClick={(e) => buyPack(pack.THREE)}> {shopData ? shopData.pack.p3 : "500"} Credit </button>
                         </div>
                     </div>
                 </div>

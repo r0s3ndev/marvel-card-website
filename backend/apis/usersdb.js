@@ -684,4 +684,50 @@ router.delete("/delete_user", async (req, res) => {
     }
 })
 
+router.get("/get-shop-value", async (req, res) => {
+    try{
+        const db = await connectToDatabase(); 
+        const result = await db.collection("shop_value").findOne({ active: "true"});
+  
+        return res.status(200).send({ message: "User deleted successfully", res: result });
+
+    } catch (error) {
+        console.error("Error while retrieving shop data:", error);
+        return res.status(500).send("Error while retrieving shop data");
+    }
+})
+
+router.post("/make-special-offers", async (req, res) => {
+    try{
+        const db = await connectToDatabase(); 
+        const shopData = {
+            credit: req.body.credit,
+            cid: req.body.cid,
+            pack: req.body.pack,
+            pid: req.body.pid
+        }
+
+        console.log(shopData);
+        await db.collection("shop_value").updateOne(
+            { 
+                active: "true"
+            }, 
+            {
+                $set: { active: "false" }
+            }
+        );
+
+        if(shopData.credit != "" || shopData.pack != ""){
+            const result = await db.collection('shop_value').insertOne(shopData);
+        }
+
+  
+        // return res.status(200).send({ message: "User deleted successfully", res: result });
+
+    } catch (error) {
+        console.error("Error while making special offersfor shop:", error);
+        return res.status(500).send("Error while making special offersfor shop");
+    }
+})
+
 module.exports = router;

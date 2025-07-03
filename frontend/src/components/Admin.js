@@ -4,49 +4,17 @@ import { Badge, Button, Container, Nav, Navbar, NavDropdown } from 'react-bootst
 import { useNavigate } from 'react-router';
 
 
-const pack = {
-    ONE : {id: 1, price: 100, src: "https://img.icons8.com/?size=100&id=FFIT0V3dxY2k&format=png&color=FFFFFF"},
-    TWO : {id: 2, price: 300, src: "https://img.icons8.com/?size=100&id=FFIT0V3dxY2k&format=png&color=ACFFF8"},
-    THREE: {id: 3, price: 500, src: "https://img.icons8.com/?size=100&id=FFIT0V3dxY2k&format=png&color=F2FF00"}
-}
 
 function Admin() {
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(false);
-    const [shopData, setShopData] = useState();
-    useEffect(()=> {
+    const [message, setMessage] = useState("");
+    const [shopData, setShopData] = useState({
+        credit: "",
+        cid:"c1",
+        pack: "",
+        pid: "p1",
+    });
 
-    }, []);
-
-    const buyPack = async (pack) => {
-        // setLoading(true);
-        // try{
-        //     const res = await axios.post("http://localhost:5000/users/single_pack_purchase", {username: userData.username, pack: pack, amount: 1});
-        //     if(res.status === 200){
-        //         setUserData(prev => ({ ...prev, ...res.data.user}));
-        //         setTimeout(()=>{
-        //             setLoading(false);
-        //         }, 1000);
-        //     }
-        // } catch (error) {
-        //     console.error("Error while buying packs; Exception: " + error);
-        // }
-    };
-
-    const buyCredit = async(c)=> {
-        // setLoading(true);
-        // try{
-        //     const res = await axios.post("http://localhost:5000/users/buy_credit", {username: userData.username, amount: c});
-        //     if(res.status === 200){
-        //         setUserData(prev => ({ ...prev, ...res.data.user}));
-        //         setTimeout(()=>{
-        //             setLoading(false);
-        //         }, 1000);
-        //     }
-        // } catch (error) {
-        //     console.error("Error while buying packs; Exception: " + error);
-        // }
-    }
 
     const handleLogout = async () => {
         try{
@@ -61,6 +29,26 @@ function Admin() {
         }
 
     }
+
+    const handleOnChange = (e) => {
+        console.log(e.target.name, e.target.value);
+        setMessage("");
+        const {name, value} = e.target;
+        setShopData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }))
+    }
+    
+    const sendAdminRequest = async () => {
+        if(shopData.credit === "" && shopData.pack === ""){
+            setMessage("Fields cannot be empty");
+        }
+        const res = await axios.post("http://localhost:5000/users/make-special-offers", shopData);
+
+
+    }
+        
 
 
 
@@ -84,62 +72,36 @@ function Admin() {
             </Container>
         </Navbar>
         <div>
-            <div className='shop-container'>
-                <div className='shop-banner'>
+            <div className='shop-banner'>
                     <h1>ADMIN CUSTOM SHOP </h1>
+            </div>
+            <div className='admin-main-div'>
+                <div className='admin-inner-div'>
+                    <label htmlFor="credit">Credit:</label><br/>
+                    <input style={{ width: '300px' }} type="number" id="credit" name="credit" onChange={handleOnChange}/><br/>
+                    <select name="cid" onChange={handleOnChange}>
+                        <option value="c1" >credit1</option>
+                        <option value="c2" >credit2</option>
+                        <option value="c3" >credit3</option>
+                    </select>
                 </div>
-                <h1>CREDITS</h1>
-                <div className='homepage'>
-                    <div className='shop-box'>
-                        <img src="https://img.icons8.com/?size=100&id=45859&format=png&color=000000" alt="logo"></img>
-                            <h3>Buy 250 Credit</h3>
-                        <button className='button button5' onClick={() => buyCredit("250")}> for 1.99$ </button>
-                    </div>
+                <br/>
 
-                    <div className='shop-box'>
-                        <img src="https://img.icons8.com/?size=100&id=45859&format=png&color=000000" alt="logo"></img>
-                        <h3>Buy 500 Credit</h3>
-                        <button className='button button5' onClick={() => buyCredit("500")}> for 2.99$ </button>
-                    </div>
+                <div className='admin-inner-div'>
+                    <label htmlFor="pack">Packs Price:</label><br/>
+                    <input style={{ width: '300px' }} type="number" id="pack" name="pack" onChange={handleOnChange}/><br/>
+                    <select name="pid" onChange={handleOnChange}>
+                        <option value="p1" >pack1</option>
+                        <option value="p2" >pack2</option>
+                        <option value="p3" >pack3</option>
+                    </select>
+                </div>
+                <br/>
+                <div className='admin-inner-div'>
+                    <button className="button button4" onClick={sendAdminRequest}>submit</button>
+                </div>
 
-                    <div className='shop-box'>
-                        <img src="https://img.icons8.com/?size=100&id=45859&format=png&color=000000" alt="logo"></img>
-                            <h3>Buy 1000 Credit</h3>
-                        <button className='button button5' onClick={() => buyCredit("1000")}> for 5.59$ </button>
-                    </div>
-                </div>
-                
-                <h1>CARD PACKS</h1>
-                <div className='homepage'>
-                    {loading && (
-                        <div className='loading-overlay-cardPack'>
-                            <div className="loader">
-                                <div className="circle"></div>
-                                <div className="circle"></div>
-                                <div className="circle"></div>
-                                <div className="circle"></div>
-                            </div>
-                        </div>
-                    )}
-                    <div className='shop-box'>
-                        <img className='pack-img' src={pack.ONE.src} alt="logo"></img>
-                        <h3>Standard</h3>
-                        <p> 5 cards </p>
-                        <button className='button button5' onClick={(e) => buyPack(pack.ONE)}> {pack.ONE.price} Credit </button>
-                    </div>
-                    <div className='shop-box'>
-                        <img className='pack-img' src={pack.TWO.src} alt="logo"></img>
-                        <h3>Premium</h3>
-                        <p> 8 cards </p>
-                        <button className='button button5' onClick={(e) => buyPack(pack.TWO)}> {pack.TWO.price} Credit </button>
-                    </div>
-                    <div className='shop-box'>
-                        <img className='pack-img ' src={pack.THREE.src} alt="logo"></img>
-                        <h3>GOLD</h3>
-                        <p> 15 cards </p>
-                        <button className='button button5' onClick={(e) => buyPack(pack.THREE)}> {pack.THREE.price} Credit </button>
-                    </div>
-                </div>
+                <p>{message ? <span className='admin-msg'>{message}</span> : "Insert value and select which data you want to update!"}</p>
             </div>
         </div>
     </>
