@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { Badge, Button, Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { Button, Container, Nav, Navbar } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
 
 
@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router';
 function Admin() {
     const navigate = useNavigate();
     const [message, setMessage] = useState("");
+    const [specialOffer, setSpecialOffer] = useState();
     const [shopData, setShopData] = useState({
         credit: "",
         cid:"c1",
@@ -15,6 +16,15 @@ function Admin() {
         pid: "p1",
     });
 
+    console.log(specialOffer);
+
+    useEffect(() => {
+        const getSpecialOffer = async () => {
+            const res = await axios.get("http://localhost:5000/users/get-shop-special-offer");
+            setSpecialOffer(res.data.res);
+        }
+        getSpecialOffer();
+    }, []);
 
     const handleLogout = async () => {
         try{
@@ -44,11 +54,18 @@ function Admin() {
         if(shopData.credit === "" && shopData.pack === ""){
             setMessage("Fields cannot be empty");
         }
-        const res = await axios.post("http://localhost:5000/users/make-special-offers", shopData);
-
-
+        await axios.post("http://localhost:5000/users/make-special-offers", shopData);
+        setTimeout(() => {
+            navigate('/admin');
+        }, "1000");
     }
-        
+    
+    const deleteOffer = async () => {
+        await axios.post("http://localhost:5000/users/remove_special_offer", shopData);
+        setTimeout(() => {
+            navigate('/admin');
+        }, "1000");
+    }
 
 
 
@@ -98,10 +115,22 @@ function Admin() {
                 </div>
                 <br/>
                 <div className='admin-inner-div'>
-                    <button className="button button4" onClick={sendAdminRequest}>submit</button>
+                    <button className="button button4" onClick={sendAdminRequest} disabled={specialOffer?.credit || specialOffer?.pack}>submit</button>
                 </div>
 
                 <p>{message ? <span className='admin-msg'>{message}</span> : "Insert value and select which data you want to update!"}</p>
+            </div>
+
+            <div className='admin-special-offer'>
+                    {(specialOffer?.credit !== "" || specialOffer?.pack !== "") && (
+                        <div className='special-offer'>
+                            <h2>{specialOffer?.credit === "" ? "ND" : specialOffer?.credit }</h2>
+                            <h2>{specialOffer?.cid === "c1" ? "credit-1" : specialOffer?.cid === "c2" ? "credit-2" : "credit-3"}</h2>
+                            <h2>{specialOffer?.pack === "" ? "ND" : specialOffer?.pack}</h2>
+                            <h2>{specialOffer?.pid === "p1" ? "pack-1" : specialOffer?.cid === "p2" ? "pack-1" : "pack-1"}</h2>
+                            <button className='button button3' onClick={deleteOffer}>Delete</button>
+                        </div>
+                    )}
             </div>
         </div>
     </>

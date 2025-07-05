@@ -1,4 +1,4 @@
-function Homepage({userData, BACKUP}) {
+function Homepage({userData}) {
   const username = userData.username.toUpperCase();
 
   return (

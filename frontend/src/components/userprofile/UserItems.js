@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import axios from 'axios';
 
 function UserItems({userData, setUserData, fetchCard}) {

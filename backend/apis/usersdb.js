@@ -515,7 +515,7 @@ router.post("/open_pack", async (req, res) => {
                     "items.$.amount": - amount
                 },
                 $push :{
-                    cards: cards[0]//{$each: cards}
+                    cards: {$each: cards}
                 }
             },
             {returnDocument: "after"}
@@ -592,7 +592,7 @@ router.post("/sell_card", async (req, res) => {
 
                         },
                         $inc: {
-                            credits: 10
+                            credits: 100
                         }
                     },
                     { returnDocument: "after"}
@@ -687,7 +687,7 @@ router.delete("/delete_user", async (req, res) => {
 router.get("/get-shop-value", async (req, res) => {
     try{
         const db = await connectToDatabase(); 
-        const result = await db.collection("shop_value").findOne({ active: "true"});
+        const result = await db.collection("shop_value").findOne({ type: "default"});
   
         return res.status(200).send({ message: "User deleted successfully", res: result });
 
@@ -704,25 +704,28 @@ router.post("/make-special-offers", async (req, res) => {
             credit: req.body.credit,
             cid: req.body.cid,
             pack: req.body.pack,
-            pid: req.body.pid
+            pid: req.body.pid,
+            type: "special"
         }
+        
 
         console.log(shopData);
-        await db.collection("shop_value").updateOne(
-            { 
-                active: "true"
+        await db.collection('shop_value').updateOne(
+            {
+                type: "special"
             }, 
             {
-                $set: { active: "false" }
+                $set: {
+                    credit: req.body.credit,
+                    cid: req.body.cid,
+                    pack: req.body.pack,
+                    pid: req.body.pid,
+                }
             }
         );
-
-        if(shopData.credit != "" || shopData.pack != ""){
-            const result = await db.collection('shop_value').insertOne(shopData);
-        }
-
+     
   
-        // return res.status(200).send({ message: "User deleted successfully", res: result });
+        return res.status(200).send({ message: "Data retrieved successfully"});
 
     } catch (error) {
         console.error("Error while making special offersfor shop:", error);
@@ -730,4 +733,39 @@ router.post("/make-special-offers", async (req, res) => {
     }
 })
 
+router.get("/get-shop-special-offer", async (req, res) => {
+    try{
+        const db = await connectToDatabase(); 
+        const result = await db.collection("shop_value").findOne({ type: "special"});
+        return res.status(200).send({ message: "Special offer retrieved  successfully", res: result });
+
+
+    } catch (error) {
+        console.error("Error while retrieving special offers:", error);
+        return res.status(500).send("Error while retrieving special offers");
+    }
+})
+
+router.post("/remove_special_offer", async (req, res) => {
+    try{
+        const db = await connectToDatabase(); 
+        await db.collection("shop_value").updateOne(
+            { type: "special" },
+            {
+                $set: {
+                    credit: "",
+                    cid: "",
+                    pack: "",
+                    pid: "",
+                }
+            }
+        );
+    
+        return res.status(200).send({ message: "Special offer deleted successfully" });
+        
+    } catch (error) {
+        console.error("Error updating pack & data:", error);
+        return res.status(500).send("Error updating pack & data");
+    }
+})
 module.exports = router;

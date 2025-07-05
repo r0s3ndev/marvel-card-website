@@ -28,6 +28,7 @@ function App() {
   const { userData, setUserData } = useContext(UserContext);
   const { tradeData, setTradeData } = useContext(UserContext);
   const { shopData, setShopData } = useContext(UserContext);
+  const { specialOffer, setSpecialOffer } = useContext(UserContext);
   const { onCreateTradeData, setOnCreateTradeData } = useContext(UserContext);
 
   //fetch most recent data 
@@ -49,9 +50,15 @@ function App() {
         setShopData(r.data.res);
     } 
 
+    const getSpecialOffer = async () => {
+        const r = await axios.get("http://localhost:5000/users/get-shop-special-offer");
+        setSpecialOffer(r.data.res);
+    }
+
     getTrade();
     getUserData();
     getShopValue();
+    getSpecialOffer()
   }, []);
 
   
@@ -96,10 +103,7 @@ function App() {
             <Route path="/register" element={<UserRegister fetchCard={fetchCard} BACKUP={BACKUP}/>}/>
             <Route path="/login" element={<UserLogin setUserData={setUserData}/>}/>
           
-          
-           {/* to protect */}
-            
-           <Route path="/homepage" element={
+            <Route path="/homepage" element={
               <ProtectedRoute>
                 <NavBarLayout> 
                   <Homepage  userData={userData} BACKUP={BACKUP} />
@@ -109,11 +113,11 @@ function App() {
             />
 
             <Route path="/shop" element={
-              // <ProtectedRoute>
+              <ProtectedRoute>
                 <NavBarLayout> 
-                  <CardsShop userData={userData} setUserData={setUserData} shopData={shopData}/>
+                  <CardsShop userData={userData} setUserData={setUserData} shopData={shopData} specialOffer={specialOffer}/>
                 </NavBarLayout>
-              // </ProtectedRoute>
+              </ProtectedRoute>
               }
             />
 
@@ -181,9 +185,9 @@ function App() {
             />
 
             <Route path="/admin" element={
-              // <ProtectedRoute>
+              <ProtectedRoute>
                   <Admin />
-              // </ProtectedRoute>
+              </ProtectedRoute>
             }
             />
 

@@ -14,6 +14,10 @@ function UserProvider({children}) {
     const [shopData , setShopData] = useState(
         JSON.parse(localStorage.getItem("shopData")) || []
     );
+    const [specialOffer , setSpecialOffer] = useState(
+        JSON.parse(localStorage.getItem("specialOffer")) || []
+    );
+
 
     useEffect(()=> {
         if(userData){
@@ -21,15 +25,16 @@ function UserProvider({children}) {
             localStorage.setItem("tradeData", JSON.stringify(tradeData));
             localStorage.setItem("onCreateTradeData", JSON.stringify(onCreateTradeData));
             localStorage.setItem("shopData", JSON.stringify(shopData));
+            localStorage.setItem("specialOffer", JSON.stringify(specialOffer));
 
         } else {
             console.log("clearing localstorage");
             localStorage.clear();
         }
-    }, [userData, tradeData, onCreateTradeData, shopData]);
+    }, [userData, tradeData, onCreateTradeData, shopData, specialOffer]);
 
     return (
-        <UserContext.Provider value={{userData, setUserData, tradeData, setTradeData, onCreateTradeData, setOnCreateTradeData, shopData, setShopData}}>
+        <UserContext.Provider value={{userData, setUserData, tradeData, setTradeData, onCreateTradeData, setOnCreateTradeData, shopData, setShopData, specialOffer, setSpecialOffer}}>
             {children}
         </UserContext.Provider>
     )
